@@ -36,7 +36,7 @@
     .results-container-wr {
       padding: 1.5rem;
       border: 1px solid var(--border-color);
-      border-radius: ; 
+      border-radius: var(--_components---card--border-radius);
     }
    @media (max-width: 768px) {
         .inputs-section, .results-container-wr { padding: 1rem; }
