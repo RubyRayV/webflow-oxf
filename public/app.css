@@ -114,10 +114,45 @@
       width: 100%;
       -webkit-appearance: none;
       appearance: none;
-      background: transparent;
+      height: 6px;
+      border-radius: 3px;
+      background: linear-gradient(
+        to right,
+        var(--primary-color) 0%,
+        var(--primary-color) 50%, /* will be updated dynamically */
+        var(--input-bg-color) 50%,
+        var(--input-bg-color) 100%
+      );
       cursor: pointer;
-      margin-top: 0.25rem; 
+      margin-top: 0.25rem;
+      outline: none;
     }
+    /* Chrome / Safari */
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 32px;
+      height: 12px;
+      border-radius: 3px;
+      background: var(--primary-color);
+      cursor: pointer;
+      margin-top: -3px;
+    }
+    
+    /* Firefox */
+    input[type="range"]::-moz-range-thumb {
+      border: none;
+      border-radius: 3px;
+      background: var(--primary-color);
+      width: 32px;
+      height: 12px;
+    }
+    
+    /* Hide the default outline in Firefox */
+    input[type="range"]::-moz-focus-outer {
+      border: 0;
+    }
+
     input[type="range"]::-webkit-slider-runnable-track {
       background: var(--input-bg-color);
       height: 6px;
