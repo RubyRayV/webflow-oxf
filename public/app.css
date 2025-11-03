@@ -1,12 +1,12 @@
   :root {
-      --primary-color: var(--_color---primary--red-main);
-      --background-color: #f8f9fa;
-      --container-bg-color: #ffffff;
-      --text-color: #212529;
-      --muted-text-color: #6c757d;
-      --border-color: #dee2e6;
-      --input-bg-color: #f1f3f5;
-      --success-color: #28a745;
+      --primary-color: var(--colors--primary-accent);
+      --background-color: var(--colors--background-second-lr);
+      --container-bg-color: var(--colors--background);
+      --text-color: var(--colors--headlines);
+      --muted-text-color: var(--colors--paragraphs);
+      --border-color: var(--colors--border-solid);
+      --input-bg-color: var(--colors--background-third-lr);
+      --success-color: var(--colors--primary-accent);
       --warning-color: #dc3545;
       --highlight-color: #fff3cd; /* Light yellow for highlighting */
     }
