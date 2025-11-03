@@ -43,9 +43,9 @@
     }
 
     .input-group {
-      margin-bottom: 1.5rem;
-      padding-right: none;
-      padding-bottom: none;
+      margin-bottom: 1rem;
+      padding-right: 0;
+      padding-bottom: 0;
     }
 
     .label-container {
