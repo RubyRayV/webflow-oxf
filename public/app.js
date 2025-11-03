@@ -1097,16 +1097,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
       });
-        
-      const sliders = document.querySelectorAll('input[type="range"]');
-      sliders.forEach(slider => {
-        slider.addEventListener('input', e => {
-          const value = (slider.value - slider.min) / (slider.max - slider.min) * 100;
-          slider.style.background = `linear-gradient(to right, var(--primary-color) ${value}%, var(--input-bg-color) ${value}%)`;
-        });
-        // initialize
-        slider.dispatchEvent(new Event('input'));
-      });
+
       
       inputs.loanType.addEventListener('change', handleLoanTypeChange);
       
@@ -1116,6 +1107,29 @@ document.addEventListener("DOMContentLoaded", () => {
         handleLoanTypeChange();
         setCalculatorMode('simple');
       }
+
+       // helper so you can reuse it anywhere
+      function updateRangeFill(el) {
+        const min = +el.min || 0;
+        const max = +el.max || 100;
+        const val = +el.value;
+        let pct = ((val - min) * 100) / (max - min);
+        pct = Math.max(0, Math.min(100, pct)); // clamp
+        el.style.background =
+          `linear-gradient(to right, var(--primary-color) ${pct}%, var(--input-bg-color) ${pct}%)`;
+      }
+      
+      // delegated listener (keeps working with dozens of sliders)
+      document.addEventListener('input', (e) => {
+        if (!e.target.matches('input[type="range"]')) return;
+        updateRangeFill(e.target);
+      });
+      
+      // init once
+      document.querySelectorAll('input[type="range"]')
+        .forEach(updateRangeFill);
+
+
       initialize();
     });
 
