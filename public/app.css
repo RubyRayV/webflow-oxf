@@ -133,15 +133,15 @@
       appearance: none;
       margin-top: -5px;
       background-color: var(--primary-color);
-      height: 16px;
+      height: 12px;
       width: 32px;
-      border-radius: 8px;
+      border-radius: 3px;
     }
     input[type="range"]::-moz-range-thumb {
       border: none;
-      border-radius: 8px;
+      border-radius: 3px;
       background-color: var(--primary-color);
-      height: 16px;
+      height: 12px;
       width: 32px;
     }
     input[type="range"]:disabled::-webkit-slider-thumb,
