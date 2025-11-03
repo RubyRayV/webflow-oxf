@@ -1,5 +1,5 @@
   :root {
-      --primary-color: #007bff;
+      --primary-color: var(--_color---primary--red-main);
       --background-color: #f8f9fa;
       --container-bg-color: #ffffff;
       --text-color: #212529;
