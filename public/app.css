@@ -185,9 +185,6 @@
       color: var(--muted-text-color);
       opacity: 0.7;
     }
-    input[type="range"]:disabled::-moz-range-thumb {
-      background-color: #adb5bd;
-    }
     input[type="range"]:disabled,
     input[type="number"].slider-number-input:disabled {
         cursor: not-allowed;
