@@ -1022,7 +1022,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       simpleModeBtn.addEventListener('click', () => setCalculatorMode('simple'));
       advancedModeBtn.addEventListener('click', () => setCalculatorMode('advanced'));
-
+      
       const sliderNumberPairs = [
         { slider: inputs.simpleLoanAmountSlider, number: inputs.simpleLoanAmountNumber },
         { slider: inputs.simpleAnnualIncomeSlider, number: inputs.simpleAnnualIncomeNumber },
@@ -1097,7 +1097,17 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
       });
-
+        
+      const sliders = document.querySelectorAll('input[type="range"]');
+      sliders.forEach(slider => {
+        slider.addEventListener('input', e => {
+          const value = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+          slider.style.background = `linear-gradient(to right, var(--primary-color) ${value}%, var(--input-bg-color) ${value}%)`;
+        });
+        // initialize
+        slider.dispatchEvent(new Event('input'));
+      });
+      
       inputs.loanType.addEventListener('change', handleLoanTypeChange);
       
       function initialize() {
@@ -1109,14 +1119,4 @@ document.addEventListener("DOMContentLoaded", () => {
       initialize();
     });
 
-      const sliders = document.querySelectorAll('input[type="range"]');
-      
-      sliders.forEach(slider => {
-        slider.addEventListener('input', e => {
-          const value = (slider.value - slider.min) / (slider.max - slider.min) * 100;
-          slider.style.background = `linear-gradient(to right, var(--primary-color) ${value}%, var(--input-bg-color) ${value}%)`;
-        });
-        // initialize
-        slider.dispatchEvent(new Event('input'));
-      });
 
