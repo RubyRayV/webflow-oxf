@@ -11,21 +11,6 @@
       --highlight-color: #fff3cd; /* Light yellow for highlighting */
     }
 
-
-    .calculator-container {
-      max-width: 1300px; 
-      margin: 0 auto;
-      background-color: var(--container-bg-color);
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    }
-     @media (max-width: 768px) {
-        .calculator-container {
-            padding: 1rem;
-        }
-    }
-
     .main-content {
       display: grid;
       grid-template-columns: 1fr 1fr;
