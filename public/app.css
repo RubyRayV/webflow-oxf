@@ -179,7 +179,6 @@
       height: 12px;
       width: 32px;
     }
-    input[type="range"]:disabled::-webkit-slider-thumb,
     input[type="number"].slider-number-input:disabled {
       background-color: #adb5bd;
       color: var(--muted-text-color);
