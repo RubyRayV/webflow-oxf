@@ -134,15 +134,15 @@
       margin-top: -5px;
       background-color: var(--primary-color);
       height: 16px;
-      width: 16px;
-      border-radius: 50%;
+      width: 32px;
+      border-radius: 8px;
     }
     input[type="range"]::-moz-range-thumb {
       border: none;
-      border-radius: 50%;
+      border-radius: 8px;
       background-color: var(--primary-color);
       height: 16px;
-      width: 16px;
+      width: 32px;
     }
     input[type="range"]:disabled::-webkit-slider-thumb,
     input[type="number"].slider-number-input:disabled {
