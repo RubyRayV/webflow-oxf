@@ -120,8 +120,8 @@
       border-radius: 3px;
       background: linear-gradient(
         to right,
-        var(--primary-color) 0%,
-        var(--primary-color) 50%, /* will be updated dynamically */
+        var(--text-color) 0%,
+        var(--text-color) 50%, /* will be updated dynamically */
         var(--input-bg-color) 50%,
         var(--input-bg-color) 100%
       );
@@ -129,26 +129,44 @@
       margin-top: 0.25rem;
       outline: none;
     }
-    /* Chrome / Safari */
+    
+     /* Chrome / Safari */
     input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
       width: 32px;
       height: 12px;
       border-radius: 3px;
-      background: var(--primary-color);
+      background: var(--text-color);
       cursor: pointer;
       margin-top: -3px;
+      box-shadow: 
+        rgba(8, 8, 8, 0.08) 0px 1px 1px 0px,
+        rgba(8, 8, 8, 0.2) 0px 1px 1px 0px,
+        rgba(255, 255, 255, 0.12) 0px 6px 12px 0px inset,
+        rgba(255, 255, 255, 0.2) 0px 1px 1px 0px inset;
     }
-    
+
     /* Firefox */
     input[type="range"]::-moz-range-thumb {
       border: none;
       border-radius: 3px;
-      background: var(--primary-color);
+      background: var(--text-color);
       width: 32px;
       height: 12px;
+      box-shadow: 
+        rgba(8, 8, 8, 0.08) 0px 1px 1px 0px,
+        rgba(8, 8, 8, 0.2) 0px 1px 1px 0px,
+        rgba(255, 255, 255, 0.12) 0px 6px 12px 0px inset,
+        rgba(255, 255, 255, 0.2) 0px 1px 1px 0px inset;
     }
+
+    /* Optional: make the thumb slightly pop on hover */
+    input[type="range"]::-webkit-slider-thumb:hover,
+    input[type="range"]::-moz-range-thumb:hover {
+      filter: brightness(1.1);
+    }
+
     
     /* Hide the default outline in Firefox */
     input[type="range"]::-moz-focus-outer {
@@ -163,22 +181,7 @@
       height: 6px;
       border-radius: 3px;
     }
-    input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      margin-top: -3px;
-      background-color: var(--primary-color);
-      height: 12px;
-      width: 32px;
-      border-radius: 3px;
-    }
-    input[type="range"]::-moz-range-thumb {
-      border: none;
-      border-radius: 3px;
-      background-color: var(--primary-color);
-      height: 12px;
-      width: 32px;
-    }
+
     input[type="number"].slider-number-input:disabled {
       background-color: #adb5bd;
       color: var(--muted-text-color);
