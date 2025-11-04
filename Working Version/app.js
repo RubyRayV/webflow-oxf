@@ -1,4 +1,4 @@
-    document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
       let currentCalculationMode = 'default'; 
       let amortizationViewMode = 'years';
       let calculatorMode = 'simple'; // 'simple' or 'advanced'
@@ -115,38 +115,6 @@
       const amortizationBody = document.getElementById("amortization-body");
       const loanTypeInfo = document.getElementById("loan-type-info");
       const downPaymentWarning = document.getElementById("down-payment-warning");
-
-      const mobileBottomBar = document.getElementById("mobile-bottom-bar");
-      const mobileBarToggle = document.getElementById("mobile-bar-toggle");
-      const mobileResults = {
-        homePrice: document.getElementById("mobile-home-price"),
-        monthlyPayment: document.getElementById("mobile-monthly-payment"),
-        resultHomePrice: document.getElementById("mobile-result-home-price"),
-        resultLoanAmount: document.getElementById("mobile-result-loan-amount"),
-        resultDownPayment: document.getElementById("mobile-result-down-payment"),
-        resultLtv: document.getElementById("mobile-result-ltv"),
-        resultMonthlyPaymentFull: document.getElementById("mobile-result-monthly-payment-full"),
-        resultPi: document.getElementById("mobile-result-pi"),
-        resultTax: document.getElementById("mobile-result-tax"),
-        resultInsurance: document.getElementById("mobile-result-insurance"),
-        resultHoa: document.getElementById("mobile-result-hoa"),
-        pmiContainer: document.getElementById("mobile-pmi-container"),
-        pmiLabel: document.getElementById("mobile-pmi-label"),
-        resultPmi: document.getElementById("mobile-result-pmi"),
-        resultTotalPaid: document.getElementById("mobile-result-total-paid"),
-        resultTotalInterest: document.getElementById("mobile-result-total-interest"),
-        resultPayoffDate: document.getElementById("mobile-result-payoff-date"),
-        resultHousingDti: document.getElementById("mobile-result-housing-dti"),
-        resultTotalDti: document.getElementById("mobile-result-total-dti")
-      };
-      const mobileAmortizationHead = document.getElementById("mobile-amortization-head");
-      const mobileAmortizationBody = document.getElementById("mobile-amortization-body");
-
-
-      // Mobile bottom bar toggle functionality
-      mobileBarToggle.addEventListener('click', () => {
-        mobileBottomBar.classList.toggle('expanded');
-      });
 
       const simpleModeBtn = document.getElementById("simple-mode-btn");
       const advancedModeBtn = document.getElementById("advanced-mode-btn");
@@ -743,36 +711,6 @@
         results.housingDTI.textContent = formatPercent(R.housingDti);
         results.totalDTI.textContent = formatPercent(R.totalDti);
 
-        mobileResults.homePrice.textContent = formatCurrency(R.homePrice);
-        mobileResults.monthlyPayment.textContent = `${formatCurrency(R.displayedPayment)}/mo`;
-        mobileResults.resultHomePrice.textContent = formatCurrency(R.homePrice);
-        mobileResults.resultLoanAmount.textContent = formatCurrency(R.loanAmount);
-        mobileResults.resultDownPayment.textContent = `${formatCurrency(R.V.downPayment)} (${formatPercent(downPaymentPercent, 1)})`;
-        mobileResults.resultLtv.textContent = formatPercent(R.ltv, 1);
-        mobileResults.resultMonthlyPaymentFull.textContent = `${formatCurrency(R.displayedPayment)}/mo`;
-        mobileResults.resultPi.textContent = formatCurrency(R.basePI);
-        mobileResults.resultTax.textContent = formatCurrency(R.tax);
-        mobileResults.resultInsurance.textContent = formatCurrency(R.insurance);
-        mobileResults.resultHoa.textContent = formatCurrency(R.hoa);
-        
-        mobileResults.pmiContainer.classList.toggle('hidden', R.pmi <= 0);
-        if (R.pmi > 0) {
-            if (R.V.loanType === 'fha') {
-                mobileResults.pmiLabel.textContent = 'MIP';
-            } else if (R.V.loanType === 'usda') {
-                mobileResults.pmiLabel.textContent = 'Guarantee Fee';
-            } else {
-                mobileResults.pmiLabel.textContent = 'PMI';
-            }
-            mobileResults.resultPmi.textContent = formatCurrency(R.pmi);
-        }
-        
-        mobileResults.resultTotalPaid.textContent = formatCurrency(totalPaidSimple);
-        mobileResults.resultTotalInterest.textContent = formatCurrency(totalInterestSimple);
-        mobileResults.resultPayoffDate.textContent = payoffDateSimple.toLocaleDateString();
-        mobileResults.resultHousingDti.textContent = formatPercent(R.housingDti);
-        mobileResults.resultTotalDti.textContent = formatPercent(R.totalDti);
-
         containers.extraPaymentResults.classList.toggle('hidden', !showExtra);
         if (showExtra) {
             results.timeSaved.textContent = formatYears(R.yearsSaved);
@@ -914,64 +852,6 @@
                 amortizationBody.appendChild(tr);
             });
         }
-
-        // Mobile Amortization Table Generation
-        mobileAmortizationBody.innerHTML = "";
-        let mobileAmortizationHeadHTML = "";
-        if (amortizationViewMode === 'years') {
-            mobileAmortizationHeadHTML = `
-                <tr>
-                    <th>Year</th>
-                    <th>Start Balance</th>
-                    <th>End Balance</th>
-                    <th class="extra-col">End Balance (w/ Extra)</th>
-                </tr>`;
-            
-            const yearlyAmortization = [];
-            for (let yr = 0; yr < R.V.loanTerm; yr++) {
-                const yearData = R.monthlyAmortization.slice(yr * 12, (yr + 1) * 12);
-                if (yearData.length === 0) break;
-                const lastMonthOfYear = yearData[yearData.length - 1];
-                yearlyAmortization.push({
-                    year: yr + 1,
-                    startBalance: yearData[0].endBalance + yearData[0].principal,
-                    endBalance: lastMonthOfYear.endBalance,
-                    extraEndBalance: lastMonthOfYear.extraEndBalance
-                });
-            }
-
-            yearlyAmortization.forEach(row => {
-                const tr = document.createElement("tr");
-                tr.innerHTML = `
-                    <td>${row.year}</td>
-                    <td>${formatCurrency(row.startBalance)}</td>
-                    <td>${formatCurrency(row.endBalance)}</td>
-                    <td class="extra-col">${showExtra ? formatCurrency(row.extraEndBalance) : '-'}</td>
-                `;
-                mobileAmortizationBody.appendChild(tr);
-            });
-
-        } else {
-            mobileAmortizationHeadHTML = `
-                <tr>
-                    <th>Month</th>
-                    <th>End Balance</th>
-                    <th class="extra-col">End Balance (w/ Extra)</th>
-                </tr>`;
-            
-            R.monthlyAmortization.forEach(row => {
-                const tr = document.createElement("tr");
-                tr.innerHTML = `
-                    <td>${row.month}</td>
-                    <td>${formatCurrency(row.endBalance)}</td>
-                    <td class="extra-col">${showExtra ? formatCurrency(row.extraEndBalance) : '-'}</td>
-                `;
-                mobileAmortizationBody.appendChild(tr);
-            });
-        }
-        mobileAmortizationHead.innerHTML = mobileAmortizationHeadHTML;
-
-
       }
       
       let updateRAFId = null;
@@ -1142,7 +1022,7 @@
 
       simpleModeBtn.addEventListener('click', () => setCalculatorMode('simple'));
       advancedModeBtn.addEventListener('click', () => setCalculatorMode('advanced'));
-
+      
       const sliderNumberPairs = [
         { slider: inputs.simpleLoanAmountSlider, number: inputs.simpleLoanAmountNumber },
         { slider: inputs.simpleAnnualIncomeSlider, number: inputs.simpleAnnualIncomeNumber },
@@ -1218,6 +1098,7 @@
         });
       });
 
+      
       inputs.loanType.addEventListener('change', handleLoanTypeChange);
       
       function initialize() {
@@ -1227,7 +1108,7 @@
         setCalculatorMode('simple');
       }
 
-        // helper so you can reuse it anywhere
+       // helper so you can reuse it anywhere
       function updateRangeFill(el) {
         const min = +el.min || 0;
         const max = +el.max || 100;
