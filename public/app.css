@@ -43,7 +43,7 @@
     }
 
     .input-group {
-      margin-bottom: 1rem;
+      margin-bottom: 2rem;
       padding-right: 0;
       padding-bottom: 0;
     }
@@ -52,7 +52,6 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 0.5rem;
     }
     .label-container label {
         flex-grow: 1;
@@ -126,7 +125,6 @@
         var(--input-bg-color) 100%
       );
       cursor: pointer;
-      margin-top: 0.25rem;
       outline: none;
     }
 
@@ -139,7 +137,7 @@
       border-radius: 8px;
       background: var(--text-color);
       cursor: pointer;
-      margin-top: -6px;
+      margin-top: -4px;
       box-shadow: 
         rgba(8, 8, 8, 0.08) 0px 1px 1px 0px,
         rgba(8, 8, 8, 0.2) 0px 1px 1px 0px,
@@ -150,7 +148,7 @@
     /* Firefox */
     input[type="range"]::-moz-range-thumb {
       border: none;
-      margin-top: -6px;
+      margin-top: -4px;
       border-radius: 8px;
       background: var(--text-color);
       width: 48px;
@@ -289,7 +287,7 @@
       color: var(--primary-color);
     }
     .result-group {
-      margin-top: 1rem;
+      /* margin-top: 1rem; */
     }
     .result-item.small {
       font-size: 0.9rem;
