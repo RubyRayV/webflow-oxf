@@ -289,7 +289,7 @@
       /* margin-top: 1rem; */
     }
     .result-item.small {
-      font-size: 0.9rem;
+      font-size: var(--_typography---h6--font-size);
       padding: 0.25rem 0;
     }
 
