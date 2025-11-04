@@ -129,12 +129,12 @@
       margin-top: 0.25rem;
       outline: none;
     }
-    
+
      /* Chrome / Safari */
     input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width: 32px;
+      width:48px;
       height: 12px;
       border-radius: 3px;
       background: var(--text-color);
@@ -152,7 +152,7 @@
       border: none;
       border-radius: 3px;
       background: var(--text-color);
-      width: 32px;
+      width: 48px;
       height: 12px;
       box-shadow: 
         rgba(8, 8, 8, 0.08) 0px 1px 1px 0px,
