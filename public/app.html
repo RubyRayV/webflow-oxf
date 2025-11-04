@@ -47,10 +47,10 @@
 
             <!-- Moved target payment section here, right after calculation mode -->
             <div class="calculation-group advanced-only" id="target-payment-input-section">
-                <h3>Target Payment</h3>
+                <h3 class="u-mb-sm">Target Payment</h3>
                 <div class="input-group slider-group" id="target-monthly-payment-input-group">
                     <div class="label-container">
-                        <label for="target-monthly-payment-slider">Target Monthly Payment</label>
+                        <label for="target-monthly-payment-slider" class="h6 u-mb-0">Target Monthly Payment</label>
                         <input type="number" id="target-monthly-payment-number" class="slider-number-input" min="500" max="15000" step="100" value="3000">
                     </div>
                     <input type="range" id="target-monthly-payment-slider" min="500" max="15000" step="100" value="3000">
@@ -59,24 +59,24 @@
 
             <!-- Moved affordability section here, after calculation mode and target payment -->
             <div class="calculation-group advanced-only">
-                <h3>Affordability Inputs</h3>
+                <h3 class="u-mb-sm">Affordability Inputs</h3>
                 <div class="input-group slider-group" id="annual-income-group">
                     <div class="label-container">
-                        <label for="annual-income-slider">Annual Income</label>
+                        <label for="annual-income-slider" class="h6 u-mb-0">Annual Income</label>
                         <input type="number" id="annual-income-number" class="slider-number-input" min="20000" max="1000000" step="1000" value="100000">
                     </div>
                     <input type="range" id="annual-income-slider" min="20000" max="1000000" step="1000" value="100000">
                 </div>
                 <div class="input-group slider-group" id="monthly-debt-group">
                     <div class="label-container">
-                        <label for="monthly-debt-slider">Monthly Debt</label>
+                        <label for="monthly-debt-slider" class="h6 u-mb-0">Monthly Debt</label>
                         <input type="number" id="monthly-debt-number" class="slider-number-input" min="0" max="10000" step="50" value="500">
                     </div>
                     <input type="range" id="monthly-debt-slider" min="0" max="10000" step="50" value="500">
                 </div>
                 <div class="input-group slider-group" id="target-dti-input-group">
                     <div class="label-container">
-                        <label for="target-dti-slider">Target DTI (%)</label>
+                        <label for="target-dti-slider" class="h6 u-mb-0">Target DTI (%)</label>
                         <input type="number" id="target-dti-number" class="slider-number-input" min="20" max="60" step="1" value="43">
                     </div>
                     <input type="range" id="target-dti-slider" min="20" max="60" step="1" value="43">
@@ -85,7 +85,7 @@
                 <p style="font-size: 0.9rem; color: var(--muted-text-color); text-align: center; margin: -0.5rem 0 1rem;">- OR -</p>
                 <div class="input-group slider-group" id="loan-amount-override-group">
                     <div class="label-container">
-                        <label for="loan-amount-override-slider">Override Loan Amount</label>
+                        <label for="loan-amount-override-slider" class="h6 u-mb-0">Override Loan Amount</label>
                         <input type="number" id="loan-amount-override-number" class="slider-number-input" min="0" max="2000000" step="1000" value="0">
                         <button id="clear-loan-override-button" title="Clear override and use affordability inputs">×</button>
                     </div>
@@ -98,7 +98,7 @@
             <!-- Simple mode affordability inputs -->
             <div class="input-group slider-group simple-affordability-only" id="simple-annual-income-group">
                 <div class="label-container">
-                    <label for="simple-annual-income-slider">Annual Income</label>
+                    <label for="simple-annual-income-slider" class="h6 u-mb-0">Annual Income</label>
                     <input type="number" id="simple-annual-income-number" class="slider-number-input" min="20000" max="1000000" step="1000" value="100000">
                 </div>
                 <input type="range" id="simple-annual-income-slider" min="20000" max="1000000" step="1000" value="100000">
@@ -106,7 +106,7 @@
 
             <div class="input-group slider-group simple-affordability-only" id="simple-monthly-debt-group">
                 <div class="label-container">
-                    <label for="simple-monthly-debt-slider">Monthly Debt</label>
+                    <label for="simple-monthly-debt-slider" class="h6 u-mb-0">Monthly Debt</label>
                     <input type="number" id="simple-monthly-debt-number" class="slider-number-input" min="0" max="10000" step="50" value="500">
                 </div>
                 <input type="range" id="simple-monthly-debt-slider" min="0" max="10000" step="50" value="500">
@@ -115,7 +115,7 @@
             <!-- Home price input for simple mode -->
             <div class="input-group slider-group simple-home-price-only" id="simple-loan-amount-group">
                 <div class="label-container">
-                    <label for="simple-loan-amount-slider">Home Price</label>
+                    <label for="simple-loan-amount-slider" class="h6 u-mb-0">Home Price</label>
                     <input type="number" id="simple-loan-amount-number" class="slider-number-input" min="50000" max="2000000" step="5000" value="500000">
                 </div>
                 <input type="range" id="simple-loan-amount-slider" min="50000" max="2000000" step="5000" value="500000">
@@ -123,7 +123,7 @@
 
             <div class="input-group slider-group">
                 <div class="label-container">
-                    <label for="down-payment-slider">Down Payment</label>
+                    <label for="down-payment-slider" class="h6 u-mb-0">Down Payment</label>
                     <input type="number" id="down-payment-number" class="slider-number-input" min="0" max="500000" step="1000" value="50000">
                 </div>
                 <input type="range" id="down-payment-slider" min="0" max="500000" step="1000" value="50000">
@@ -132,7 +132,7 @@
 
             <div class="input-group slider-group">
                 <div class="label-container">
-                    <label for="interest-rate-slider">Interest Rate (%)</label>
+                    <label for="interest-rate-slider" class="h6 u-mb-0">Interest Rate (%)</label>
                     <input type="number" id="interest-rate-number" class="slider-number-input" min="1" max="15" step="0.125" value="6.5">
                 </div>
                 <input type="range" id="interest-rate-slider" min="1" max="15" step="0.125" value="6.5">
@@ -158,7 +158,7 @@
 
             <div class="input-group slider-group">
                 <div class="label-container">
-                    <label for="loan-term-slider">Loan Term (Years)</label>
+                    <label for="loan-term-slider" class="h6 u-mb-0">Loan Term (Years)</label>
                     <input type="number" id="loan-term-number" class="slider-number-input" min="5" max="40" step="1" value="30">
                 </div>
                 <input type="range" id="loan-term-slider" min="5" max="40" step="1" value="30">
@@ -168,14 +168,14 @@
             <div class="grid-2-col advanced-only">
                 <div class="input-group slider-group">
                     <div class="label-container">
-                        <label for="property-tax-slider">Property Tax ($/mo)</label>
+                        <label for="property-tax-slider" class="h6 u-mb-0">Property Tax ($/mo)</label>
                         <input type="number" id="property-tax-number" class="slider-number-input" min="0" max="2000" step="10" value="300">
                     </div>
                     <input type="range" id="property-tax-slider" min="0" max="2000" step="10" value="300">
                 </div>
                 <div class="input-group slider-group">
                     <div class="label-container">
-                        <label for="insurance-slider">Insurance ($/mo)</label>
+                        <label for="insurance-slider" class="h6 u-mb-0">Insurance ($/mo)</label>
                         <input type="number" id="insurance-number" class="slider-number-input" min="0" max="1000" step="10" value="125">
                     </div>
                     <input type="range" id="insurance-slider" min="0" max="1000" step="10" value="125">
@@ -185,7 +185,7 @@
             <!-- Added HOA fees input -->
             <div class="input-group slider-group advanced-only">
                 <div class="label-container">
-                    <label for="hoa-slider">HOA Fees ($/mo)</label>
+                    <label for="hoa-slider" class="h6 u-mb-0">HOA Fees ($/mo)</label>
                     <input type="number" id="hoa-number" class="slider-number-input" min="0" max="1000" step="10" value="0">
                 </div>
                 <input type="range" id="hoa-slider" min="0" max="1000" step="10" value="0">
@@ -194,7 +194,7 @@
             <!-- Extra payment is advanced only -->
             <div class="input-group slider-group advanced-only">
                 <div class="label-container">
-                    <label for="additional-payment-slider">Extra Monthly Payment</label>
+                    <label for="additional-payment-slider" class="h6 u-mb-0">Extra Monthly Payment</label>
                     <input type="number" id="additional-payment-number" class="slider-number-input" min="0" max="5000" step="50" value="0">
                 </div>
                 <input type="range" id="additional-payment-slider" min="0" max="5000" step="50" value="0">

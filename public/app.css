@@ -78,16 +78,16 @@
     }
     
     .slider-number-input {
-        width: 90px; 
+        width: 90px;
         padding: 0.4rem 0.6rem;
-        font-size: 0.9rem;
+        font-size: var(--_typography---h6--font-size);
         text-align: right;
         border: 1px solid var(--border-color);
         border-radius: 4px;
         background-color: var(--container-bg-color);
         color: var(--primary-color);
-        font-weight: 600;
-        -moz-appearance: textfield; 
+        /* font-weight: 600; */
+        -moz-appearance: textfield;
     }
     .slider-number-input::-webkit-outer-spin-button,
     .slider-number-input::-webkit-inner-spin-button {
