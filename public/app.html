@@ -1,15 +1,16 @@
 <div class="calculator-container">
-    <h1>Mortgage Calculator</h1>
-    
-    <!-- Added simple/advanced mode toggle -->
-    <div class="mode-toggle-container">
-        <label>Calculator Mode:</label>
-        <div class="mode-toggle-buttons">
-            <button id="simple-mode-btn" class="active">Simple</button>
-            <button id="advanced-mode-btn">Advanced</button>
+    <div class="row u-mb-md">
+        <div class="col col-lg-6 col-sm-12"><h1>Mortgage Calculator</h1></div>
+        <div class="col col-lg-6 col-sm-12">
+            <div class="u-d-flex-right-center row-align-center-btw">
+                <div class="mode-toggle-buttons">
+                    <button id="simple-mode-btn" class="active">Simple</button>
+                    <button id="advanced-mode-btn">Advanced</button>
+                </div>
+            </div>
         </div>
     </div>
-
+    
     <div class="main-content">
         <!-- Inputs Section -->
         <div class="inputs-section">
@@ -47,7 +48,7 @@
 
             <!-- Moved target payment section here, right after calculation mode -->
             <div class="calculation-group advanced-only" id="target-payment-input-section">
-                <h3 class="u-mb-sm">Target Payment</h3>
+                <h3 class="u-mb-xs">Target Payment</h3>
                 <div class="input-group slider-group" id="target-monthly-payment-input-group">
                     <div class="label-container">
                         <label for="target-monthly-payment-slider" class="h6 u-mb-0">Target Monthly Payment</label>
@@ -59,7 +60,7 @@
 
             <!-- Moved affordability section here, after calculation mode and target payment -->
             <div class="calculation-group advanced-only">
-                <h3 class="u-mb-sm">Affordability Inputs</h3>
+                <h3 class="u-mb-xs">Affordability Inputs</h3>
                 <div class="input-group slider-group" id="annual-income-group">
                     <div class="label-container">
                         <label for="annual-income-slider" class="h6 u-mb-0">Annual Income</label>
@@ -93,7 +94,7 @@
                 </div>
             </div>
             
-            <h3 class="u-mb-sm">Loan, Property & Closing Details</h3>
+            <h3 class="u-mb-xs">Loan, Property & Closing Details</h3>
             
             <!-- Simple mode affordability inputs -->
             <div class="input-group slider-group simple-affordability-only" id="simple-annual-income-group">
@@ -245,7 +246,7 @@
 
             <!-- Monthly Payment Breakdown for Simple Mode -->
             <div class="results-container-wr">
-                <h3 >Monthly Payment Breakdown</h3>
+                <h3 class="u-mb-xs">Monthly Payment Breakdown</h3>
                 <div class="result-item small">
                     <span>Principal & Interest</span>
                     <span id="result-pi-simple"></span>
@@ -266,7 +267,7 @@
             <div class="results-container-wr">
                 <!-- Loan Summary for Simple Mode -->
                 <div class="result-group">
-                    <h3>Loan Summary</h3>
+                    <h3 class="u-mb-xs">Loan Summary</h3>
                     <div class="result-item small">
                         <span>Total Amount Paid</span>
                         <span id="result-total-paid"></span>
@@ -284,7 +285,7 @@
             <div class="results-container-wr advanced-only">
                 <!-- All closing figures are advanced only -->
                 <div class="result-group">
-                    <h3>Estimated Closing Figures</h3>
+                    <h3 class="u-mb-sm">Estimated Closing Figures</h3>
                      <div class="result-item small">
                         <span>Required Down Payment</span>
                         <span id="result-down-payment-summary" class="result-value"></span>
@@ -309,7 +310,7 @@
             </div>
             <div class="results-container-wr advanced-only">
                 <div class="result-group">
-                    <h3>Monthly Payment Breakdown</h3>
+                    <h3 class="u-mb-xs">Monthly Payment Breakdown</h3>
                     <div class="result-item small">
                         <span>Principal & Interest</span>
                         <span id="result-pi"></span>
@@ -342,7 +343,7 @@
             </div>
             <div class="results-container-wr advanced-only">
                 <div class="result-group">
-                    <h3>Debt-to-Income Ratios</h3>
+                    <h3 class="u-mb-xs">Debt-to-Income Ratios</h3>
                     <div class="result-item small">
                         <span>Calculated Housing DTI</span>
                         <span id="result-housing-dti"></span>
@@ -355,7 +356,7 @@
             </div>
             <div class="results-container-wr hidden" id="extra-payment-results">
                 <div class="result-group " >
-                    <h3>Extra Payment Impact</h3>
+                    <h3 class="u-mb-xs">Extra Payment Impact</h3>
                     <div class="result-item small">
                         <span>Time Saved</span>
                         <span id="result-time-saved"></span>
