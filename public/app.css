@@ -136,7 +136,7 @@
       appearance: none;
       width:48px;
       height: 14px;
-      border-radius: 3px;
+      border-radius: 8px;
       background: var(--text-color);
       cursor: pointer;
       margin-top: -5px;
@@ -151,7 +151,7 @@
     input[type="range"]::-moz-range-thumb {
       border: none;
       margin-top: -5px;
-      border-radius: 3px;
+      border-radius: 8px;
       background: var(--text-color);
       width: 48px;
       height: 14px;
