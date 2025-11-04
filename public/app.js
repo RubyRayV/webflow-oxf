@@ -1116,7 +1116,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let pct = ((val - min) * 100) / (max - min);
         pct = Math.max(0, Math.min(100, pct)); // clamp
         el.style.background =
-          `linear-gradient(to right, var(--primary-color) ${pct}%, var(--input-bg-color) ${pct}%)`;
+          `linear-gradient(to right, var(--text-color) ${pct}%, var(--input-bg-color) ${pct}%)`;
       }
       
       // delegated listener (keeps working with dozens of sliders)
