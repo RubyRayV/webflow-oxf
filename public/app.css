@@ -78,8 +78,8 @@
     }
     
     .slider-number-input {
-        width: 90px;
-        padding: 0.4rem 0.6rem;
+        width: 100px;
+        padding: 0.2rem 0.6rem;
         font-size: var(--_typography---h6--font-size);
         text-align: right;
         border: 1px solid var(--border-color);
