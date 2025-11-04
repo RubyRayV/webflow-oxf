@@ -131,10 +131,10 @@
     input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width:48px;
+      width:32px;
       height: 14px;
       border-radius: 8px;
-      background: var(--text-color);
+      background: var(--primary-color);
       cursor: pointer;
       margin-top: -4px;
       box-shadow: 
@@ -149,8 +149,8 @@
       border: none;
       margin-top: -4px;
       border-radius: 8px;
-      background: var(--text-color);
-      width: 48px;
+      background: var(--primary-color);
+      width: 32px;
       height: 14px;
       box-shadow: 
         rgba(8, 8, 8, 0.08) 0px 1px 1px 0px,
