@@ -144,7 +144,7 @@
       border-radius: 9px;
       background: var(--text-color);
       cursor: pointer;
-      margin-top: -3px;
+      margin-top: -2px;
       box-shadow: 
         rgba(8, 8, 8, 0.08) 0px 1px 1px 0px,
         rgba(8, 8, 8, 0.2) 0px 1px 1px 0px,
@@ -155,7 +155,7 @@
     /* Firefox */
     input[type="range"]::-moz-range-thumb {
       border: none;
-      margin-top: -3px;
+      margin-top: -2px;
       border-radius: 9px;
       background: var(--text-color);
       width: 36px;
