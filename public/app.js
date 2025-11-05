@@ -1706,19 +1706,73 @@ document.addEventListener("DOMContentLoaded", () => {
   // SLIDER VISUAL ENHANCEMENT: Fill slider track up to thumb position
   // ==========================================================================
   // This creates a visual "fill" effect on range sliders
-  function updateRangeFill(el) {
-    const min = +el.min || 0;
-    const max = +el.max || 100;
-    const val = +el.value;
-    
-    // Calculate percentage of slider filled
-    let pct = ((val - min) * 100) / (max - min);
-    pct = Math.max(0, Math.min(100, pct)); // Clamp to 0-100%
-    
-    // Apply gradient background: filled portion is darker, unfilled is lighter
-    el.style.background =
-      `linear-gradient(to right, var(--text-color) ${pct}%, var(--input-bg-color) ${pct}%)`;
-  }
+     function updateRangeFill(el) {
+      const min = parseFloat(el.min) || 0;
+      const max = parseFloat(el.max) || 100;
+      const val = parseFloat(el.value) || 0;
+      
+      // Calculate the raw percentage
+      const percentage = ((val - min) / (max - min)) * 100;
+      
+      // Account for your 36px wide pill thumb
+      const thumbWidth = 36;
+      const sliderWidth = el.offsetWidth;
+      
+      if (sliderWidth > 0) {
+        // Calculate where the thumb CENTER is positioned
+        const halfThumb = thumbWidth / 2; // 18px
+        const availableRange = sliderWidth - thumbWidth;
+        const thumbCenterPosition = halfThumb + (percentage / 100) * availableRange;
+        
+        // Convert thumb center position to percentage for gradient
+        const fillPercentage = (thumbCenterPosition / sliderWidth) * 100;
+        const clampedFill = Math.max(0, Math.min(100, fillPercentage));
+        
+        // Apply gradient with precise alignment
+        el.style.background = `linear-gradient(
+          to right,
+          var(--text-color) 0%,
+          var(--text-color) ${clampedFill}%,
+          var(--input-bg-color) ${clampedFill}%,
+          var(--input-bg-color) 100%
+        )`;
+      } else {
+        // Fallback
+        el.style.background = `linear-gradient(
+          to right,
+          var(--text-color) 0%,
+          var(--text-color) ${percentage}%,
+          var(--input-bg-color) ${percentage}%,
+          var(--input-bg-color) 100%
+        )`;
+      }
+    }
+
+    // Keep your existing event listeners
+    document.addEventListener('input', (e) => {
+      if (!e.target.matches('input[type="range"]')) return;
+      updateRangeFill(e.target);
+    });
+
+    // Add change event for final position
+    document.addEventListener('change', (e) => {
+      if (!e.target.matches('input[type="range"]')) return;
+      updateRangeFill(e.target);
+    });
+
+    // Initialize with small delay to ensure elements are rendered
+    setTimeout(() => {
+      document.querySelectorAll('input[type="range"]').forEach(updateRangeFill);
+    }, 100);
+
+    // Handle window resize
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        document.querySelectorAll('input[type="range"]').forEach(updateRangeFill);
+      }, 150);
+    });
   
   // ==========================================================================
   // EVENT DELEGATION: Update slider fill on any range input change
