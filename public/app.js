@@ -1368,14 +1368,21 @@ document.addEventListener("DOMContentLoaded", () => {
   // Instead of updating immediately on every input change, we wait until
   // the user is done adjusting (using requestAnimationFrame)
   let updateRAFId = null;
-  function scheduleFullUpdate() {
-    if (updateRAFId) cancelAnimationFrame(updateRAFId); // Cancel previous scheduled update
-    updateRAFId = requestAnimationFrame(() => { 
-      updateUI(); 
-      updateRAFId = null; 
-    });
-  }
-  
+    function scheduleFullUpdate() {
+      if (updateRAFId) cancelAnimationFrame(updateRAFId);
+      updateRAFId = requestAnimationFrame(() => { 
+        updateUI(); 
+        
+        // ADD THIS: Update all slider visual fills after UI updates
+        setTimeout(() => {
+          document.querySelectorAll('input[type="range"]').forEach(slider => {
+            updateRangeFill(slider);
+          });
+        }, 0);
+        
+        updateRAFId = null; 
+      });
+    }
   // ==========================================================================
   // MODE MANAGEMENT: Set calculation mode (default/DTI/payment)
   // ==========================================================================
