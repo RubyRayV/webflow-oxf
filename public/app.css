@@ -201,7 +201,7 @@
 
     /* Calculation Mode Selector */
 
-    /* ============================================================================
+ /* ============================================================================
    STYLED RADIO BUTTONS - PILL STYLE
    ============================================================================ */
 
@@ -240,13 +240,14 @@
     .mode-selector label {
         display: inline-flex;
         align-items: center;
-        padding: 0.6rem 1.25rem;
+        padding: var(--_components---button--vertical-padding) var(--_components---button--horizontal-padding);
         background-color: transparent;
-        border: 2px solid var(--border-color);
-        border-radius: 50px; /* Pill shape */
+        border: 1px solid var(--colors--opac-20);
+        border-radius: var(--_components---card--border-radius);
         cursor: pointer;
-        font-weight: 500;
-        font-size: 0.95rem;
+        font-size: var(--_components---button--font-size);
+        line-height: var(--_components---button--line-height);
+        font-weight: var(--_components---button--font-weight);
         color: var(--text-color);
         transition: all 0.2s ease;
         user-select: none;
@@ -254,14 +255,14 @@
 
     /* Hover effect */
     .mode-selector label:hover {
-        background-color: rgba(99, 102, 241, 0.1);
-        border-color: #6366f1;
+        background-color: rgba(108, 117, 125, 0.1);
+        border-color: var(--colors--opac-70);
     }
 
     /* SELECTED state - when radio is checked */
     .mode-selector input[type="radio"]:checked + label {
-        background-color: var(--primary-color, #6366f1);
-        border-color: var(--primary-color, #6366f1);
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
         color: white;
     }
 
@@ -272,23 +273,18 @@
         font-weight: bold;
     }
 
-    /* Focus state for accessibility */
-    .mode-selector input[type="radio"]:focus + label {
-        outline: 2px solid var(--primary-color, #6366f1);
-        outline-offset: 2px;
-    }
-
     /* Reset button - styled as a pill to MATCH radio buttons */
     #clear-mode-button {
         display: inline-flex;
         align-items: center;
-        padding: 0.6rem 1.25rem;
+        padding: var(--_components---button--vertical-padding) var(--_components---button--horizontal-padding);
         background-color: transparent;
-        border: 2px solid var(--border-color);
-        border-radius: 50px; /* Pill shape */
+        border: 1px solid var(--colors--opac-20);
+        border-radius: var(--_components---card--border-radius);
         cursor: pointer;
-        font-weight: 500;
-        font-size: 0.95rem;
+        font-size: var(--_components---button--font-size);
+        line-height: var(--_components---button--line-height);
+        font-weight: var(--_components---button--font-weight);
         color: var(--text-color);
         transition: all 0.2s ease;
         font-family: inherit;
@@ -297,7 +293,7 @@
     /* Reset button hover */
     #clear-mode-button:hover {
         background-color: rgba(108, 117, 125, 0.1);
-        border-color: #6c757d;
+        border-color: var(--colors--opac-70);
     }
 
     /* Optional: Add a reset icon */

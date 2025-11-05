@@ -1421,8 +1421,6 @@ document.addEventListener("DOMContentLoaded", () => {
       targetPaymentGroupEl.classList.remove('disabled-visual');
       targetPaymentSectionEl.style.opacity = "1";
       targetPaymentSectionEl.style.maxHeight = "200px"; 
-      targetPaymentSectionEl.style.padding = "1rem";
-      targetPaymentSectionEl.style.border = "1px solid var(--border-color)";
     } else {
       // Other modes: Disable payment target input
       targetPaymentSliderEl.disabled = true;
@@ -1437,9 +1435,13 @@ document.addEventListener("DOMContentLoaded", () => {
         targetPaymentSectionEl.style.borderWidth = "0 1px"; 
       } else { 
         // DTI mode: Show but disabled
-        targetPaymentSectionEl.style.maxHeight = "200px";
-        targetPaymentSectionEl.style.padding = "1rem";
-        targetPaymentSectionEl.style.border = "1px solid var(--border-color)";
+        //targetPaymentSectionEl.style.maxHeight = "200px";
+        //targetPaymentSectionEl.style.padding = "1rem";
+        //targetPaymentSectionEl.style.border = "1px solid var(--border-color)";
+          targetPaymentSliderEl.disabled = true;
+          targetPaymentNumberEl.disabled = true;
+          targetPaymentGroupEl.classList.add('disabled-visual');
+          targetPaymentSectionEl.style.opacity = "0.6";
       }
     }
     
