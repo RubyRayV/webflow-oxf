@@ -1420,7 +1420,7 @@ document.addEventListener("DOMContentLoaded", () => {
       targetPaymentNumberEl.disabled = false;
       targetPaymentGroupEl.classList.remove('disabled-visual');
       targetPaymentSectionEl.style.opacity = "1";
-      targetPaymentSectionEl.style.maxHeight = "200px"; 
+      targetPaymentSectionEl.style.maxHeight = "200px";
     } else {
       // Other modes: Disable payment target input
       targetPaymentSliderEl.disabled = true;
