@@ -16,30 +16,36 @@
             <div class="col col-lg-6 col-md-12">
                 <div class="cl-card">
                     <div class="inputs-section">
-
+                        <div class="selector-wrapper">
                         <!-- Added simple calculation mode toggle at top for simple mode -->
-                        <div class="simple-calc-mode-selector">
-                            <input type="radio" name="simple-calc-mode" value="home-price" id="simple-home-price" checked><label for="simple-home-price">Home Price</label>
+                        <p class="paragraph-sm">Calculate by:</p><div class="simple-calc-mode-selector">
                             
-                            <input type="radio" name="simple-calc-mode" value="affordability" id="simple-affordability"><label for="simple-affordability">Income & Debt</label>
+                            <div>
+                            <input type="radio" name="simple-calc-mode" value="home-price" id="simple-home-price" checked=""><label for="simple-home-price">Home Price</label>
+                            
+                            <input type="radio" name="simple-calc-mode" value="affordability" id="simple-affordability"><label for="simple-affordability">Income &amp; Debt</label>
+                            </div>
                         </div>
                         <!-- Moved calculation mode selector to appear before affordability in advanced mode -->
                         <div class="mode-selector-container advanced-only">
-                            <p class="paragraph-sm">Calculation Mode: Default (uses loan type's max DTI). Select below to override:</p>
-                            
-                            <div class="mode-selector">
-                                <!-- Target DTI Option -->
-                                <input type="radio" name="calculation-mode-override" value="dti" id="mode-dti">
-                                <label for="mode-dti">Target DTI</label>
-                                
-                                <!-- Target Monthly Payment Option -->
-                                <input type="radio" name="calculation-mode-override" value="payment" id="mode-payment">
-                                <label for="mode-payment">Target Monthly Payment</label>
-                                
-                                <!-- Reset Button (styled to match) -->
-                                <button id="clear-mode-button">Reset to Default</button>
+                            <p class="paragraph-sm u-mt-md">Calculation Mode: Default (uses loan type's max DTI). Select below to override:</p>
+                            <div>
+                                <div class="mode-selector">
+                                    <!-- Target DTI Option -->
+                                    <input type="radio" name="calculation-mode-override" value="dti" id="mode-dti">
+                                    <label for="mode-dti">Target DTI</label>
+                                    
+                                    <!-- Target Monthly Payment Option -->
+                                    <input type="radio" name="calculation-mode-override" value="payment" id="mode-payment">
+                                    <label for="mode-payment">Target Monthly Payment</label>
+                                    
+                                    <!-- Reset Button (styled to match) -->
+                                    <button id="clear-mode-button">Reset to Default</button>
+                                </div>
                             </div>
                         </div>
+                        </div>
+
                 <!--         <div class="mode-selector-container advanced-only">
                             <p>Calculation Mode: Default (uses loan type's max DTI). Select below to override:</p>
                             <div class="mode-selector">
