@@ -32,7 +32,7 @@
     }
   
    
-    .inputs-section,
+/*    .inputs-section,
     .results-container-wr {
       padding: 1.5rem;
       border: 1px solid var(--border-color);
@@ -40,8 +40,16 @@
     }
    @media (max-width: 768px) {
         .inputs-section, .results-container-wr { padding: 1rem; }
-    }
+    }*/
 
+    .cl-card {
+      padding: 1.5rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--_components---card--border-radius);
+    }
+    @media (max-width: 768px) {
+        .cl-card { padding: 1rem; }
+    }
     .input-group {
       margin-bottom: 2rem;
       padding-right: 0;
@@ -132,11 +140,11 @@
       -webkit-appearance: none;
       appearance: none;
       width:32px;
-      height: 14px;
+      height: 8px;
       border-radius: 8px;
       background: var(--primary-color);
       cursor: pointer;
-      margin-top: -4px;
+      margin-top: -2px;
       box-shadow: 
         rgba(8, 8, 8, 0.08) 0px 1px 1px 0px,
         rgba(8, 8, 8, 0.2) 0px 1px 1px 0px,
@@ -147,11 +155,11 @@
     /* Firefox */
     input[type="range"]::-moz-range-thumb {
       border: none;
-      margin-top: -4px;
+      margin-top: -2px;
       border-radius: 8px;
       background: var(--primary-color);
       width: 32px;
-      height: 14px;
+      height: 8px;
       box-shadow: 
         rgba(8, 8, 8, 0.08) 0px 1px 1px 0px,
         rgba(8, 8, 8, 0.2) 0px 1px 1px 0px,
@@ -506,7 +514,6 @@
         white-space: nowrap;
         word-break: keep-all;
         cursor: pointer;
-        font-weight: 600;
         border: none;
         border-radius: 4px;
         transition: all 0.2s ease-in-out;
