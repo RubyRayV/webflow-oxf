@@ -1522,7 +1522,7 @@ document.addEventListener("DOMContentLoaded", () => {
       setSimpleCalcMode(simpleCalcMode); // Apply current simple calc mode
       
       // Transfer advanced mode values to simple mode inputs
-      const currentLoanAmount = +inputs.loanAmountOverrideNumber.value || 400000;
+      const currentLoanAmount = +inputs.loanAmountOverrideNumber.value || 0;
       const currentDownPayment = +inputs.downPaymentNumber.value || 50000;
       const currentHomePrice = currentLoanAmount + currentDownPayment;
       inputs.simpleLoanAmountSlider.value = currentHomePrice;
