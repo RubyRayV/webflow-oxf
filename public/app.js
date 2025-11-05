@@ -1559,24 +1559,34 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==========================================================================
   // MODE MANAGEMENT: Set simple calculator mode (home-price vs affordability)
   // ==========================================================================
-  function setSimpleCalcMode(mode) {
-    simpleCalcMode = mode;
-    
-    const homePriceElements = document.querySelectorAll('.simple-home-price-only');
-    const affordabilityElements = document.querySelectorAll('.simple-affordability-only');
-    
-    if (mode === 'home-price') {
-      // HOME-PRICE MODE: User enters home price, calculate payment
-      homePriceElements.forEach(el => el.style.display = 'block');
-      affordabilityElements.forEach(el => el.style.display = 'none');
-    } else {
-      // AFFORDABILITY MODE: User enters income/debts, calculate max home price
-      homePriceElements.forEach(el => el.style.display = 'none');
-      affordabilityElements.forEach(el => el.style.display = 'block');
+    function setSimpleCalcMode(mode) {
+      simpleCalcMode = mode;
+      
+      const homePriceElements = document.querySelectorAll('.simple-home-price-only');
+      const affordabilityElements = document.querySelectorAll('.simple-affordability-only');
+      
+      if (mode === 'home-price') {
+        homePriceElements.forEach(el => el.style.display = 'block');
+        affordabilityElements.forEach(el => el.style.display = 'none');
+        
+        // ADD THIS: Actually check the radio button
+        const homePriceRadio = document.getElementById('simple-home-price');
+        if (homePriceRadio) {
+          homePriceRadio.checked = true;
+        }
+      } else {
+        homePriceElements.forEach(el => el.style.display = 'none');
+        affordabilityElements.forEach(el => el.style.display = 'block');
+        
+        // ADD THIS: Actually check the radio button
+        const affordabilityRadio = document.getElementById('simple-affordability');
+        if (affordabilityRadio) {
+          affordabilityRadio.checked = true;
+        }
+      }
+      
+      scheduleFullUpdate();
     }
-    
-    scheduleFullUpdate();
-  }
 
   // ==========================================================================
   // EVENT LISTENERS: Simple calculator mode radio buttons
