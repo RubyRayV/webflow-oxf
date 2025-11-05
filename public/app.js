@@ -1438,13 +1438,10 @@ document.addEventListener("DOMContentLoaded", () => {
       if (mode === 'default') { 
         // Default mode: Collapse payment section completel
         targetPaymentSectionEl.style.maxHeight = "0";
-        targetPaymentSectionEl.style.padding = "0 1rem"; 
-        targetPaymentSectionEl.style.borderWidth = "0 1px"; 
       } else { 
         // Default mode: Collapse payment section completely
         targetPaymentSectionEl.style.maxHeight = "0";
-        targetPaymentSectionEl.style.padding = "0 1rem"; 
-        targetPaymentSectionEl.style.borderWidth = "0 1px"; 
+
       }
     }
     
