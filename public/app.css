@@ -3,7 +3,6 @@
       --background-color: var(--colors--background-second-lr);
       --container-bg-color: var(--colors--background);
       --text-color: var(--colors--headlines);
-      --muted-text-color: var(--colors--paragraphs);
       --border-color: var(--colors--border-solid);
       --input-bg-color: var(--colors--background-third-lr);
       --success-color: var(--colors--primary-accent);
@@ -50,6 +49,7 @@
     @media (max-width: 768px) {
         .cl-card { padding: 1rem; }
     }
+
     .input-group {
       margin-bottom: 2rem;
       padding-right: 0;
@@ -69,7 +69,7 @@
     }
     .seller-credits-dollar-value {
         font-size: 0.85rem;
-        color: var(--muted-text-color);
+        color: var(--colors--paragraphs);
         margin-left: 0.5rem; 
         white-space: nowrap;
     }
@@ -190,7 +190,7 @@
 
     input[type="number"].slider-number-input:disabled {
       background-color: #adb5bd;
-      color: var(--muted-text-color);
+      color: color: var(--colors--paragraphs);
       opacity: 0.7;
     }
     input[type="range"]:disabled,
@@ -211,7 +211,8 @@
         margin-top: 0;
         margin-bottom: 0.5rem;
         font-size: 0.9rem;
-        color: var(--muted-text-color);
+        color: color: var(--colors--paragraphs);
+
     }
     .mode-selector {
         display: flex;
@@ -261,7 +262,8 @@
         cursor: not-allowed;
     }
     .input-group.disabled-visual label {
-        color: var(--muted-text-color);
+        color: var(--colors--paragraphs);
+
     }
     .mode-selector-container.disabled-visual {
         pointer-events: none;
@@ -273,13 +275,13 @@
       justify-content: space-between;
       align-items: center; 
       padding: 0.5rem 0;
-      border-bottom: 1px solid #f1f3f5;
+      border-bottom: 1px solid var(--colors--border-solid);
     }
     .result-item:last-child {
       border-bottom: none;
     }
     .result-item span:first-child {
-      color: var(--muted-text-color);
+      color: var(--colors--paragraphs);
       display: inline-flex; 
       align-items: center;
     }
@@ -360,7 +362,7 @@
     td {
       padding: 0.75rem;
       text-align: right;
-      border-bottom: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--colors--border-solid);
     }
     thead th {
       background-color: var(--input-bg-color);
@@ -410,8 +412,8 @@
     .tooltip .tooltip-trigger {
       cursor: help;
       font-weight: bold;
-      color: var(--muted-text-color);
-      border: 1px solid var(--muted-text-color);
+      color: var(--colors--paragraphs);
+      border: 1px solid var(--colors--paragraphs);
       border-radius: 50%;
       width: 16px;
       height: 16px;
@@ -468,7 +470,7 @@
         background: transparent;
         border: none;
         font-size: 1.5rem;
-        color: var(--muted-text-color);
+        color: var(--colors--paragraphs);
         cursor: pointer;
         padding: 0 0.5rem;
         line-height: 1;
@@ -491,7 +493,7 @@
     }
     .mode-toggle-container label {
         font-size: 0.9rem;
-        color: var(--muted-text-color);
+        color: var(--colors--paragraphs);
         font-weight: 500;
     }
     .mode-toggle-buttons {
@@ -543,7 +545,7 @@
         margin-top: 0;
         margin-bottom: 0.5rem;
         font-size: 0.9rem;
-        color: var(--muted-text-color);
+        color: var(--colors--paragraphs);
     }
     .simple-calc-mode-selector {
         display: flex;
@@ -617,7 +619,7 @@
 
     .mobile-bottom-bar-title {
       font-size: 0.875rem;
-      color: var(--muted-text-color);
+      color: var(--colors--paragraphs);
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.05em;
@@ -646,7 +648,7 @@
 
     .mobile-summary-label {
       font-size: 0.75rem;
-      color: var(--muted-text-color);
+      color: var(--colors--paragraphs);
       margin-bottom: 0.25rem;
     }
 
@@ -683,7 +685,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 0.625rem 0;
-      border-bottom: 0.0625rem solid #f1f3f5;
+      border-bottom: 1px solid var(--colors--border-solid);
     }
 
     .mobile-result-item:last-child {
@@ -691,7 +693,7 @@
     }
 
     .mobile-result-item span:first-child {
-      color: var(--muted-text-color);
+      color: var(--colors--paragraphs);
       font-size: 0.875rem;
     }
 
@@ -733,7 +735,7 @@
         background: transparent;
         border: none;
         font-size: 1.5rem;
-        color: var(--muted-text-color);
+        color: var(--colors--paragraphs);
         cursor: pointer;
         padding: 0 0.5rem;
         line-height: 1;
