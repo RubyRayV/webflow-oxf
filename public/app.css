@@ -142,7 +142,7 @@
       width:36px;
       height: 9px;
       border-radius: 9px;
-      background: var(--primary-color);
+      background: var(--text-color);
       cursor: pointer;
       margin-top: -3px;
       box-shadow: 
@@ -157,7 +157,7 @@
       border: none;
       margin-top: -3px;
       border-radius: 9px;
-      background: var(--primary-color);
+      background: var(--text-color);
       width: 36px;
       height: 9px;
       box-shadow: 
