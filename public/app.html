@@ -18,14 +18,13 @@
                     <div class="inputs-section">
 
                         <!-- Added simple calculation mode toggle at top for simple mode -->
-                        <div class="simple-calc-mode-toggle simple-only" id="simple-calc-mode-toggle">
-                            <p class="paragraph-sm">Calculate by:</p>
-                            <div class="simple-calc-mode-selector">
-                                <label><input type="radio" name="simple-calc-mode" value="home-price" checked> Home Price</label>
-                                <label><input type="radio" name="simple-calc-mode" value="affordability"> Income & Debt</label>
-                            </div>
+                        <div class="simple-calc-mode-selector">
+                            <input type="radio" name="simple-calc-mode" value="home-price" id="simple-home-price" checked>
+                            <label for="simple-home-price">Home Price</label>
+                            
+                            <input type="radio" name="simple-calc-mode" value="affordability" id="simple-affordability">
+                            <label for="simple-affordability">Income & Debt</label>
                         </div>
-
                         <!-- Moved calculation mode selector to appear before affordability in advanced mode -->
                         <div class="mode-selector-container advanced-only">
                             <p class="paragraph-sm">Calculation Mode: Default (uses loan type's max DTI). Select below to override:</p>
@@ -61,7 +60,7 @@
                                 <option value="va">VA</option>
                                 <option value="usda">USDA</option>
                             </select>
-                            <div id="loan-type-info" class="info-box"></div>
+                            <div id="loan-type-info" class="info-box paragraph-sm"></div>
                         </div>
 
                      

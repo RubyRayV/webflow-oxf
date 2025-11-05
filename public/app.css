@@ -205,116 +205,133 @@
    STYLED RADIO BUTTONS - PILL STYLE
    ============================================================================ */
 
-    .mode-selector-container {
-        background-color: var(--input-bg-color);
-        padding: 1rem;
-        border-radius: var(--_components---card--border-radius);
-        margin-bottom: 1.5rem;
-        transition: opacity 0.3s ease;
-    }
+/* Containers */
+.mode-selector-container {
+    background-color: var(--input-bg-color);
+    padding: 1rem;
+    border-radius: var(--_components---card--border-radius);
+    margin-bottom: 1.5rem;
+    transition: opacity 0.3s ease;
+}
 
-    .mode-selector-container p {
-        margin-top: 0;
-        margin-bottom: 1rem;
-        font-size: 0.9rem;
-        color: var(--colors--paragraphs);
-    }
+.mode-selector-container p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--colors--paragraphs);
+}
 
-    /* Mode selector - pill buttons layout */
-    .mode-selector {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-    }
+.simple-calc-mode-toggle {
+    margin-bottom: 1.5rem;
+}
 
-    /* HIDE the actual radio button circles */
-    .mode-selector input[type="radio"] {
-        position: absolute;
-        opacity: 0;
-        width: 0;
-        height: 0;
-        pointer-events: none;
-    }
+.simple-calc-mode-toggle .paragraph-sm {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    color: var(--colors--paragraphs);
+}
 
-    /* Style the LABEL as a pill button */
-    .mode-selector label {
-        display: inline-flex;
-        align-items: center;
-        padding: var(--_components---button--vertical-padding) var(--_components---button--horizontal-padding);
-        background-color: transparent;
-        border: 1px solid var(--colors--opac-20);
-        border-radius: var(--_components---card--border-radius);
-        cursor: pointer;
-        font-size: var(--_components---button--font-size);
-        line-height: var(--_components---button--line-height);
-        font-weight: var(--_components---button--font-weight);
-        color: var(--text-color);
-        transition: all 0.2s ease;
-        user-select: none;
-    }
+/* UNIFIED: Layout for BOTH groups */
+.mode-selector,
+.simple-calc-mode-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
 
-    /* Hover effect */
-    .mode-selector label:hover {
-        background-color: rgba(108, 117, 125, 0.1);
-        border-color: var(--colors--opac-70);
-    }
+/* UNIFIED: Hide radios in BOTH groups */
+.mode-selector input[type="radio"],
+.simple-calc-mode-selector input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
 
-    /* SELECTED state - when radio is checked */
-    .mode-selector input[type="radio"]:checked + label {
-        background-color: var(--primary-color);
-        border-color: var(--primary-color);
-        color: white;
-    }
+/* UNIFIED: Pill buttons in BOTH groups */
+.mode-selector label,
+.simple-calc-mode-selector label {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--_components---button--vertical-padding) var(--_components---button--horizontal-padding);
+    background-color: transparent;
+    border: 1px solid var(--colors--opac-20);
+    border-radius: var(--_components---card--border-radius);
+    cursor: pointer;
+    font-size: var(--_components---button--font-size);
+    line-height: var(--_components---button--line-height);
+    font-weight: var(--_components---button--font-weight);
+    color: var(--text-color);
+    transition: all 0.2s ease;
+    user-select: none;
+}
 
-    /* Add checkmark when selected */
-    .mode-selector input[type="radio"]:checked + label::before {
-        content: "✓";
-        margin-right: 0.5rem;
-        font-weight: bold;
-    }
+/* UNIFIED: Hover in BOTH groups */
+.mode-selector label:hover,
+.simple-calc-mode-selector label:hover {
+    background-color: rgba(108, 117, 125, 0.1);
+    border-color: var(--colors--opac-70);
+}
 
-    /* Reset button - styled as a pill to MATCH radio buttons */
+/* UNIFIED: Selected state in BOTH groups */
+.mode-selector input[type="radio"]:checked + label,
+.simple-calc-mode-selector input[type="radio"]:checked + label {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+/* UNIFIED: Checkmark in BOTH groups */
+.mode-selector input[type="radio"]:checked + label::before,
+.simple-calc-mode-selector input[type="radio"]:checked + label::before {
+    content: "✓";
+    margin-right: 0.5rem;
+    font-weight: bold;
+}
+
+/* Reset button */
+#clear-mode-button {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--_components---button--vertical-padding) var(--_components---button--horizontal-padding);
+    background-color: transparent;
+    border: 1px solid var(--colors--opac-20);
+    border-radius: var(--_components---card--border-radius);
+    cursor: pointer;
+    font-size: var(--_components---button--font-size);
+    line-height: var(--_components---button--line-height);
+    font-weight: var(--_components---button--font-weight);
+    color: var(--text-color);
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+#clear-mode-button:hover {
+    background-color: rgba(108, 117, 125, 0.1);
+    border-color: var(--colors--opac-70);
+}
+
+#clear-mode-button::before {
+    content: "↺";
+    margin-right: 0.5rem;
+    font-size: 1.1rem;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .mode-selector,
+    .simple-calc-mode-selector {
+        gap: 0.5rem;
+    }
+    
+    .mode-selector label,
+    .simple-calc-mode-selector label,
     #clear-mode-button {
-        display: inline-flex;
-        align-items: center;
-        padding: var(--_components---button--vertical-padding) var(--_components---button--horizontal-padding);
-        background-color: transparent;
-        border: 1px solid var(--colors--opac-20);
-        border-radius: var(--_components---card--border-radius);
-        cursor: pointer;
-        font-size: var(--_components---button--font-size);
-        line-height: var(--_components---button--line-height);
-        font-weight: var(--_components---button--font-weight);
-        color: var(--text-color);
-        transition: all 0.2s ease;
-        font-family: inherit;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
     }
-
-    /* Reset button hover */
-    #clear-mode-button:hover {
-        background-color: rgba(108, 117, 125, 0.1);
-        border-color: var(--colors--opac-70);
-    }
-
-    /* Optional: Add a reset icon */
-    #clear-mode-button::before {
-        content: "↺";
-        margin-right: 0.5rem;
-        font-size: 1.1rem;
-    }
-
-    /* Mobile responsive */
-    @media (max-width: 768px) {
-        .mode-selector {
-            gap: 0.5rem;
-        }
-        
-        .mode-selector label,
-        #clear-mode-button {
-            padding: 0.5rem 1rem;
-            font-size: 0.9rem;
-        }
-    }
+}
 /*    .mode-selector-container {
         background-color: var(--input-bg-color);
         padding: 0.75rem;
@@ -658,8 +675,7 @@
     }
     .simple-calc-mode-toggle p {
         margin-top: 0;
-        margin-bottom: 0.5rem;
-        font-size: 0.9rem;
+        margin-bottom: 1rem;
         color: var(--colors--paragraphs);
     }
     .simple-calc-mode-selector {
