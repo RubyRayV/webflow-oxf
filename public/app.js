@@ -1438,10 +1438,10 @@ document.addEventListener("DOMContentLoaded", () => {
         //targetPaymentSectionEl.style.maxHeight = "200px";
         //targetPaymentSectionEl.style.padding = "1rem";
         //targetPaymentSectionEl.style.border = "1px solid var(--border-color)";
-          targetPaymentSliderEl.disabled = true;
-          targetPaymentNumberEl.disabled = true;
-          targetPaymentGroupEl.classList.add('disabled-visual');
-          targetPaymentSectionEl.style.opacity = "0.6";
+        // Default mode: Collapse payment section completely
+        targetPaymentSectionEl.style.maxHeight = "0";
+        targetPaymentSectionEl.style.padding = "0 1rem"; 
+        targetPaymentSectionEl.style.borderWidth = "0 1px"; 
       }
     }
     
