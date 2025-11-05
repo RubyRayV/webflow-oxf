@@ -29,13 +29,29 @@
                         <!-- Moved calculation mode selector to appear before affordability in advanced mode -->
                         <div class="mode-selector-container advanced-only">
                             <p>Calculation Mode: Default (uses loan type's max DTI). Select below to override:</p>
+                            
+                            <div class="mode-selector">
+                                <!-- Target DTI Option -->
+                                <input type="radio" name="calculation-mode-override" value="dti" id="mode-dti">
+                                <label for="mode-dti">Target DTI</label>
+                                
+                                <!-- Target Monthly Payment Option -->
+                                <input type="radio" name="calculation-mode-override" value="payment" id="mode-payment">
+                                <label for="mode-payment">Target Monthly Payment</label>
+                                
+                                <!-- Reset Button (styled to match) -->
+                                <button id="clear-mode-button">Reset to Default</button>
+                            </div>
+                        </div>
+                <!--         <div class="mode-selector-container advanced-only">
+                            <p>Calculation Mode: Default (uses loan type's max DTI). Select below to override:</p>
                             <div class="mode-selector">
                                 <label><input type="radio" name="calculation-mode-override" value="dti"> Target DTI</label>
                                 <label><input type="radio" name="calculation-mode-override" value="payment"> Target Monthly Payment</label>
                             </div>
                             <button id="clear-mode-button">Reset to Default Mode</button>
                         </div>
-
+ -->
                         <!-- Moved loan type to top and removed advanced-only class so it shows in simple mode -->
                         <div class="input-group">
                             <label for="loan-type" class="h3 u-mb-xs">Loan Type</label>
@@ -299,7 +315,7 @@
                         </div>
                     </div>
 
-                    <div class="cl-card">
+                    <div class="cl-card advanced-only">
                         <div class="results-container-wr advanced-only">
                             <!-- All closing figures are advanced only -->
                             <div class="result-group">
@@ -328,7 +344,7 @@
                         </div>
                     </div>
 
-                    <div class="cl-card">
+                    <div class="cl-card advanced-only">
                         <div class="results-container-wr advanced-only">
                             <div class="result-group">
                                 <h3 class="u-mb-xs">Monthly Payment Breakdown</h3>
@@ -364,7 +380,7 @@
                         </div>
                     </div>
 
-                    <div class="cl-card">
+                    <div class="cl-card advanced-only">
                         <div class="results-container-wr advanced-only">
                             <div class="result-group">
                                 <h3 class="u-mb-xs">Debt-to-Income Ratios</h3>
@@ -380,7 +396,7 @@
                         </div>
                     </div>
 
-                    <div class="cl-card">
+                    <div class="cl-card hidden">
                         <div class="results-container-wr hidden" id="extra-payment-results">
                             <div class="result-group " >
                                 <h3 class="u-mb-xs">Extra Payment Impact</h3>

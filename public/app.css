@@ -200,7 +200,126 @@
 
 
     /* Calculation Mode Selector */
+
+    /* ============================================================================
+   STYLED RADIO BUTTONS - PILL STYLE
+   ============================================================================ */
+
     .mode-selector-container {
+        background-color: var(--input-bg-color);
+        padding: 1rem;
+        border-radius: var(--_components---card--border-radius);
+        margin-bottom: 1.5rem;
+        transition: opacity 0.3s ease;
+    }
+
+    .mode-selector-container p {
+        margin-top: 0;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+        color: var(--colors--paragraphs);
+    }
+
+    /* Mode selector - pill buttons layout */
+    .mode-selector {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    /* HIDE the actual radio button circles */
+    .mode-selector input[type="radio"] {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+        pointer-events: none;
+    }
+
+    /* Style the LABEL as a pill button */
+    .mode-selector label {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.6rem 1.25rem;
+        background-color: transparent;
+        border: 2px solid var(--border-color);
+        border-radius: 50px; /* Pill shape */
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 0.95rem;
+        color: var(--text-color);
+        transition: all 0.2s ease;
+        user-select: none;
+    }
+
+    /* Hover effect */
+    .mode-selector label:hover {
+        background-color: rgba(99, 102, 241, 0.1);
+        border-color: #6366f1;
+    }
+
+    /* SELECTED state - when radio is checked */
+    .mode-selector input[type="radio"]:checked + label {
+        background-color: var(--primary-color, #6366f1);
+        border-color: var(--primary-color, #6366f1);
+        color: white;
+    }
+
+    /* Add checkmark when selected */
+    .mode-selector input[type="radio"]:checked + label::before {
+        content: "✓";
+        margin-right: 0.5rem;
+        font-weight: bold;
+    }
+
+    /* Focus state for accessibility */
+    .mode-selector input[type="radio"]:focus + label {
+        outline: 2px solid var(--primary-color, #6366f1);
+        outline-offset: 2px;
+    }
+
+    /* Reset button - styled as a pill to MATCH radio buttons */
+    #clear-mode-button {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.6rem 1.25rem;
+        background-color: transparent;
+        border: 2px solid var(--border-color);
+        border-radius: 50px; /* Pill shape */
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 0.95rem;
+        color: var(--text-color);
+        transition: all 0.2s ease;
+        font-family: inherit;
+    }
+
+    /* Reset button hover */
+    #clear-mode-button:hover {
+        background-color: rgba(108, 117, 125, 0.1);
+        border-color: #6c757d;
+    }
+
+    /* Optional: Add a reset icon */
+    #clear-mode-button::before {
+        content: "↺";
+        margin-right: 0.5rem;
+        font-size: 1.1rem;
+    }
+
+    /* Mobile responsive */
+    @media (max-width: 768px) {
+        .mode-selector {
+            gap: 0.5rem;
+        }
+        
+        .mode-selector label,
+        #clear-mode-button {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+    }
+/*    .mode-selector-container {
         background-color: var(--input-bg-color);
         padding: 0.75rem;
         border-radius: var(--_components---card--border-radius);
@@ -240,7 +359,7 @@
     }
     #clear-mode-button:hover {
         background-color: #5a6268;
-    }
+    }*/
 
 
     .calculation-group { 
