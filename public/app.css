@@ -111,8 +111,8 @@
 
     .info-box {
       font-size: 0.8rem;
-      background-color: #e7f3ff;
-      color: #004085;
+      background-color: var(--_color---secondary--oxford-blue-100);
+      color: var(--_color---secondary--oxford-blue);
       padding: 0.75rem;
       border-radius: var(--_components---card--border-radius);
       margin-top: 0.5rem;
