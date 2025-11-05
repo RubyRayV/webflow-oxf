@@ -10,7 +10,7 @@
       --highlight-color: #fff3cd; /* Light yellow for highlighting */
     }
 
-    .main-content {
+/*    .main-content {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 2rem;
@@ -20,7 +20,7 @@
         grid-template-columns: 1fr;
         gap: 1.5rem;
       }
-    }
+    }*/
 
 
     .results-section {
@@ -275,7 +275,7 @@
       justify-content: space-between;
       align-items: center; 
       padding: 0.5rem 0;
-      border-bottom: 1px solid var(--colors--border-solid);
+/*      border-bottom: 1px solid var(--colors--border-solid);*/
     }
     .result-item:last-child {
       border-bottom: none;
