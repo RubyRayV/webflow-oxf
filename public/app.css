@@ -248,6 +248,7 @@
         border-radius: 6px;*/
         transition: opacity 0.3s ease, max-height 0.3s ease-out, padding 0.3s ease-out, border 0.3s ease-out;
         margin-bottom: 1rem;
+        overflow-x: hidden;
     }
    
     .disabled-visual,
