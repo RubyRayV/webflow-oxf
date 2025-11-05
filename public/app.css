@@ -206,18 +206,15 @@
    ============================================================================ */
 
 /* Containers */
-.mode-selector-container {
+.selector-wrapper {
     background-color: var(--input-bg-color);
     padding: 1rem;
     border-radius: var(--_components---card--border-radius);
     margin-bottom: 1.5rem;
-    transition: opacity 0.3s ease;
 }
 
-.mode-selector-container p {
-    margin-top: 0;
-    margin-bottom: 1rem;
-    color: var(--colors--paragraphs);
+.mode-selector-container {
+    transition: opacity 0.3s ease;
 }
 
 .simple-calc-mode-toggle {
