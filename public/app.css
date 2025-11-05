@@ -675,20 +675,6 @@
         margin-bottom: 1rem;
         color: var(--colors--paragraphs);
     }
-    .simple-calc-mode-selector {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-    }
-    .simple-calc-mode-selector label {
-        cursor: pointer;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-    }
-    .simple-calc-mode-selector input[type="radio"] {
-        margin-right: 0.5rem;
-    }
     .simple-affordability-only {
         display: none;
     }
