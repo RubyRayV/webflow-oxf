@@ -867,3 +867,10 @@
     .calculator-container.simple-mode .advanced-only {
       display: none !important;
     }
+
+    /* Keep the mode radios always clickable and visible */
+    .mode-selector label,
+    .mode-selector input[type="radio"] {
+      pointer-events: auto !important;
+      opacity: 1 !important;
+    }
