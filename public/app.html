@@ -40,6 +40,9 @@
                                     <!-- Target Monthly Payment Option -->
                                     <input type="radio" name="calculation-mode-override" value="payment" id="mode-payment">
                                     <label for="mode-payment">Target Monthly Payment</label>
+
+                                    <input type="radio" name="calculation-mode-override" value="override" id="mode-override">
+                                    <label for="mode-override">Override Loan Amount</label>
                                     
                                     <!-- Reset Button (styled to match) -->
                                     <button id="clear-mode-button">Reset to Default</button>
@@ -99,7 +102,6 @@
                                 <div class="label-container">
                                     <label for="loan-amount-override-slider" class="h6 u-mb-0">Override Loan Amount</label>
                                     <input type="number" id="loan-amount-override-number" class="slider-number-input" min="0" max="2000000" step="1000" value="0">
-                                    <button id="clear-loan-override-button" title="Clear override and use affordability inputs">×</button>
                                 </div>
                                 <input type="range" id="loan-amount-override-slider" min="0" max="2000000" step="1000" value="0">
                         </div>

@@ -1435,122 +1435,82 @@ document.addEventListener("DOMContentLoaded", () => {
   //   scheduleFullUpdate(); // Recalculate with new mode
   // }
 
-    function setMode(mode) {
-    document.querySelectorAll('input[name="calculation-mode-override"]').forEach(radio => {
-      radio.addEventListener('change', event => setMode(event.target.value));
-    });
+  function setMode(mode) {
+    currentCalculationMode = mode;
+    const loanCfg = loanTypeConfig[inputs.loanType.value];
 
-      currentCalculationMode = mode;
-      const loanCfg = loanTypeConfig[inputs.loanType.value];
+    // Get references to all input groups
+    const targetDtiGroupEl = containers.targetDtiInputGroup;
+    const targetDTISliderEl = inputs.targetDTISlider;
+    const targetDTINumberEl = inputs.targetDTINumber;
 
-      // DTI controls
-      const targetDtiGroupEl = containers.targetDtiInputGroup;
-      const targetDTISliderEl = inputs.targetDTISlider;
-      const targetDTINumberEl = inputs.targetDTINumber;
+    const targetPaymentGroupEl = containers.targetMonthlyPaymentInputGroup;
+    const targetPaymentSliderEl = inputs.targetMonthlyPaymentSlider;
+    const targetPaymentNumberEl = inputs.targetMonthlyPaymentNumber;
 
-      // Payment controls
-      const targetPaymentGroupEl = containers.targetMonthlyPaymentInputGroup;
-      const targetPaymentSliderEl = inputs.targetMonthlyPaymentSlider;
-      const targetPaymentNumberEl = inputs.targetMonthlyPaymentNumber;
-      const targetPaymentSectionEl = containers.targetPaymentInputSection;
+    const loanOverrideGroupEl = document.getElementById('loan-amount-override-group');
+    const loanOverrideSliderEl = inputs.loanAmountOverrideSlider;
+    const loanOverrideNumberEl = inputs.loanAmountOverrideNumber;
 
-      // Loan override controls
-      const loanOverrideGroupEl = document.getElementById('loan-amount-override-group');
-      const loanOverrideSliderEl = inputs.loanAmountOverrideSlider;
-      const loanOverrideNumberEl = inputs.loanAmountOverrideNumber;
-
-      // This version disables only sliders, numbers, and selects — not radios
-        const setDisabledVisual = (el, disabled) => {
-          if (!el) return;
-          el.classList.toggle('disabled-visual', !!disabled);
-          el.querySelectorAll('input[type="range"], input[type="number"], select')
-            .forEach(i => i.disabled = !!disabled);
-        };
-
-
-      // Baseline: show sections (no collapsing), then disable as needed
-      // Keep payment section visible at all times
-      targetPaymentSectionEl.style.opacity = '1';
-      targetPaymentSectionEl.style.maxHeight = '200px'; // no collapse
-
-      // DEFAULT — enable neither override nor custom DTI/payment editing
-      if (mode === 'default') {
-        // DTI disabled, reset to loan default
-        targetDTISliderEl.disabled = true;
-        targetDTINumberEl.disabled = true;
-        setDisabledVisual(targetDtiGroupEl, true);
-        targetDTISliderEl.value = loanCfg.maxDtiTotalDefault;
-        targetDTINumberEl.value = loanCfg.maxDtiTotalDefault;
-
-        // Payment disabled
-        targetPaymentSliderEl.disabled = true;
-        targetPaymentNumberEl.disabled = true;
-        setDisabledVisual(targetPaymentGroupEl, true);
-
-        // Override disabled
-        loanOverrideSliderEl.disabled = true;
-        loanOverrideNumberEl.disabled = true;
-        setDisabledVisual(loanOverrideGroupEl, true);
+    // Helper function to enable/disable a group with opacity effect
+    const setGroupState = (groupEl, sliderEl, numberEl, enabled) => {
+      if (enabled) {
+        sliderEl.disabled = false;
+        numberEl.disabled = false;
+        groupEl.classList.remove('disabled-visual');
+      } else {
+        sliderEl.disabled = true;
+        numberEl.disabled = true;
+        groupEl.classList.add('disabled-visual');
       }
+    };
 
-      // DTI — enable DTI, disable Payment and Override
-      else if (mode === 'dti') {
-        targetDTISliderEl.disabled = false;
-        targetDTINumberEl.disabled = false;
-        setDisabledVisual(targetDtiGroupEl, false);
-
-        targetPaymentSliderEl.disabled = true;
-        targetPaymentNumberEl.disabled = true;
-        setDisabledVisual(targetPaymentGroupEl, true);
-
-        loanOverrideSliderEl.disabled = true;
-        loanOverrideNumberEl.disabled = true;
-        setDisabledVisual(loanOverrideGroupEl, true);
-      }
-
-      // PAYMENT — enable Payment, disable DTI and Override
-      else if (mode === 'payment') {
-        targetPaymentSliderEl.disabled = false;
-        targetPaymentNumberEl.disabled = false;
-        setDisabledVisual(targetPaymentGroupEl, false);
-
-        targetDTISliderEl.disabled = true;
-        targetDTINumberEl.disabled = true;
-        setDisabledVisual(targetDtiGroupEl, true);
-
-        loanOverrideSliderEl.disabled = true;
-        loanOverrideNumberEl.disabled = true;
-        setDisabledVisual(loanOverrideGroupEl, true);
-      }
-
-      // OVERRIDE — enable Override + (per your rule) keep Payment active; DTI disabled
-      else if (mode === 'override') {
-        // Enable override editing
-        loanOverrideSliderEl.disabled = false;
-        loanOverrideNumberEl.disabled = false;
-        setDisabledVisual(loanOverrideGroupEl, false);
-
-        // Payment active (enabled)
-        targetPaymentSliderEl.disabled = false;
-        targetPaymentNumberEl.disabled = false;
-        setDisabledVisual(targetPaymentGroupEl, false);
-
-        // DTI disabled
-        targetDTISliderEl.disabled = true;
-        targetDTINumberEl.disabled = true;
-        setDisabledVisual(targetDtiGroupEl, true);
-      }
-
-      // Default initialization on page load
-        window.addEventListener('DOMContentLoaded', () => {
-          const defaultRadio = document.getElementById('mode-default');
-          if (defaultRadio) defaultRadio.checked = true;
-          setMode('default'); // disable groups but keep radios clickable
-        });
-
-
-  scheduleFullUpdate();
-}
+    // DEFAULT MODE: All three disabled
+    if (mode === 'default') {
+      // Reset DTI to loan default
+      targetDTISliderEl.value = loanCfg.maxDtiTotalDefault;
+      targetDTINumberEl.value = loanCfg.maxDtiTotalDefault;
+      setGroupState(targetDtiGroupEl, targetDTISliderEl, targetDTINumberEl, false);
+      
+      setGroupState(targetPaymentGroupEl, targetPaymentSliderEl, targetPaymentNumberEl, false);
+      
+      // Clear override value
+      loanOverrideSliderEl.value = 0;
+      loanOverrideNumberEl.value = 0;
+      setGroupState(loanOverrideGroupEl, loanOverrideSliderEl, loanOverrideNumberEl, false);
+    }
+    
+    // DTI MODE: Enable DTI, disable others
+    else if (mode === 'dti') {
+      setGroupState(targetDtiGroupEl, targetDTISliderEl, targetDTINumberEl, true);
+      setGroupState(targetPaymentGroupEl, targetPaymentSliderEl, targetPaymentNumberEl, false);
+      
+      // Clear override value
+      loanOverrideSliderEl.value = 0;
+      loanOverrideNumberEl.value = 0;
+      setGroupState(loanOverrideGroupEl, loanOverrideSliderEl, loanOverrideNumberEl, false);
+    }
+    
+    // PAYMENT MODE: Enable Payment, disable others
+    else if (mode === 'payment') {
+      setGroupState(targetPaymentGroupEl, targetPaymentSliderEl, targetPaymentNumberEl, true);
+      setGroupState(targetDtiGroupEl, targetDTISliderEl, targetDTINumberEl, false);
+      
+      // Clear override value
+      loanOverrideSliderEl.value = 0;
+      loanOverrideNumberEl.value = 0;
+      setGroupState(loanOverrideGroupEl, loanOverrideSliderEl, loanOverrideNumberEl, false);
+    }
+    
+    // OVERRIDE MODE: Enable Override, disable DTI and Payment
+    else if (mode === 'override') {
+      setGroupState(loanOverrideGroupEl, loanOverrideSliderEl, loanOverrideNumberEl, true);
+      setGroupState(targetDtiGroupEl, targetDTISliderEl, targetDTINumberEl, false);
+      setGroupState(targetPaymentGroupEl, targetPaymentSliderEl, targetPaymentNumberEl, false);
+    }
+    
+    scheduleFullUpdate();
+  }
 
 
   // ==========================================================================
@@ -1624,8 +1584,6 @@ document.addEventListener("DOMContentLoaded", () => {
       calculatorContainer.classList.add('simple-mode'); // Add CSS class to show/hide elements
       simpleModeBtn.classList.add('active');
       advancedModeBtn.classList.remove('active');
-      simpleCalcModeToggle.style.display = 'block'; // Show simple mode toggle
-      simpleCalcModeToggle.classList.remove('advanced-only');
       setSimpleCalcMode(simpleCalcMode); // Apply current simple calc mode
       
       // Transfer advanced mode values to simple mode inputs
@@ -1640,7 +1598,7 @@ document.addEventListener("DOMContentLoaded", () => {
       advancedModeBtn.classList.add('active');
       simpleModeBtn.classList.remove('active');
       
-      // Hide all simple-only elements
+      // Hide simple-only input fields (but keep the mode selector visible)
       document.querySelectorAll('.simple-affordability-only, .simple-home-price-only').forEach(el => {
         el.style.display = 'none';
       });
