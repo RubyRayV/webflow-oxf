@@ -1,14 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
 // ============================================================================
 // MORTGAGE CALCULATOR - COMPREHENSIVE COMMENTED VERSION
 // ============================================================================
@@ -977,8 +966,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // When loan amount is manually set, disable affordability inputs
     const isLoanOverrideActive = R.V.loanAmountOverride > 0;
     containers.modeSelector.classList.toggle('disabled-visual', isLoanOverrideActive);
-    containers.annualIncomeGroup.classList.toggle('disabled-visual', isLoanOverrideActive);
-    containers.monthlyDebtGroup.classList.toggle('disabled-visual', isLoanOverrideActive);
     containers.targetDtiInputGroup.classList.toggle('disabled-visual', isLoanOverrideActive);
     containers.targetPaymentInputSection.classList.toggle('disabled-visual', isLoanOverrideActive);
     
