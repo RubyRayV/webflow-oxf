@@ -192,8 +192,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==========================================================================
   const containers = {
     modeSelector: document.querySelector('.mode-selector-container'),
-    // annualIncomeGroup: document.getElementById('annual-income-group'),
-    // monthlyDebtGroup: document.getElementById('monthly-debt-group'),
     targetDtiInputGroup: document.getElementById("target-dti-input-group"),
     targetMonthlyPaymentInputGroup: document.getElementById("target-monthly-payment-input-group"),
     targetPaymentInputSection: document.getElementById("target-payment-input-section"),
@@ -678,9 +676,8 @@ document.addEventListener("DOMContentLoaded", () => {
       // monthlyDebt: calculatorMode === 'simple' && simpleCalcMode === 'affordability'
       //   ? +inputs.simpleMonthlyDebtNumber.value
       //   : +inputs.monthlyDebtNumber.value,
-      
-      annualIncome: +inputs.simpleAnnualIncomeNumber.value || 0,
-      monthlyDebt: +inputs.simpleMonthlyDebtNumber.value || 0,
+        annualIncome: +inputs.simpleAnnualIncomeNumber.value || 0,
+        monthlyDebt: +inputs.simpleMonthlyDebtNumber.value || 0,
       
       targetDti: +inputs.targetDTINumber.value, 
       targetPayment: +inputs.targetMonthlyPaymentNumber.value,
@@ -1613,8 +1610,6 @@ document.addEventListener("DOMContentLoaded", () => {
     { slider: inputs.simpleLoanAmountSlider, number: inputs.simpleLoanAmountNumber },
     { slider: inputs.simpleAnnualIncomeSlider, number: inputs.simpleAnnualIncomeNumber },
     { slider: inputs.simpleMonthlyDebtSlider, number: inputs.simpleMonthlyDebtNumber },
-    // { slider: inputs.annualIncomeSlider, number: inputs.annualIncomeNumber },
-    // { slider: inputs.monthlyDebtSlider, number: inputs.monthlyDebtNumber },
     { slider: inputs.targetDTISlider, number: inputs.targetDTINumber },
     { slider: inputs.targetMonthlyPaymentSlider, number: inputs.targetMonthlyPaymentNumber },
     { slider: inputs.loanAmountOverrideSlider, number: inputs.loanAmountOverrideNumber },
