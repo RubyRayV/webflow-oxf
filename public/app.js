@@ -971,10 +971,10 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // PART 2: Sync input elements with calculated values
     // This ensures displayed values match what was actually used in calculations
-    inputs.annualIncomeSlider.value = R.V.annualIncome;
-    inputs.annualIncomeNumber.value = R.V.annualIncome;
-    inputs.monthlyDebtSlider.value = R.V.monthlyDebt;
-    inputs.monthlyDebtNumber.value = R.V.monthlyDebt;
+    inputs.simpleAnnualIncomeSlider.value = R.V.annualIncome;
+    inputs.simpleAnnualIncomeNumber.value = R.V.annualIncome;
+    inputs.simpleMonthlyDebtSlider.value = R.V.monthlyDebt;
+    inputs.simpleMonthlyDebtNumber.value = R.V.monthlyDebt;
     inputs.targetDTISlider.value = R.V.targetDti; 
     inputs.targetDTINumber.value = R.V.targetDti;
     inputs.targetMonthlyPaymentSlider.value = R.V.targetPayment;

@@ -18,12 +18,14 @@
                     <div class="inputs-section">
                         <div class="selector-wrapper">
                         <!-- Added simple calculation mode toggle at top for simple mode -->
-                        <p class="paragraph-sm">Calculate by:</p><div class="simple-calc-mode-selector">
-                            
-                            <div class="mode-selector">
-                            <input type="radio" name="simple-calc-mode" value="home-price" id="simple-home-price" checked=""><label for="simple-home-price">Home Price</label>
-                            
-                            <input type="radio" name="simple-calc-mode" value="affordability" id="simple-affordability"><label for="simple-affordability">Income &amp; Debt</label>
+                            <div class="simple-calc-mode-toggle simple-only" id="simple-calc-mode-toggle">
+                                <p class="paragraph-sm">Calculate by:</p><div class="simple-calc-mode-selector">
+                                
+                                <div class="mode-selector">
+                                <input type="radio" name="simple-calc-mode" value="home-price" id="simple-home-price" checked=""><label for="simple-home-price">Home Price</label>
+                                
+                                <input type="radio" name="simple-calc-mode" value="affordability" id="simple-affordability"><label for="simple-affordability">Income &amp; Debt</label>
+                                </div>
                             </div>
                         </div>
                         <!-- Moved calculation mode selector to appear before affordability in advanced mode -->

@@ -858,3 +858,12 @@
     #clear-loan-override-button:hover {
         color: var(--warning-color);
     }
+    /* Hide simple-only elements when NOT in simple mode */
+    .calculator-container:not(.simple-mode) .simple-only {
+      display: none !important;
+    }
+
+    /* OR if you use advanced-only class: */
+    .calculator-container.simple-mode .advanced-only {
+      display: none !important;
+    }
