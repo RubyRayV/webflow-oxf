@@ -18,7 +18,7 @@
                     <div class="inputs-section">
                         <div class="selector-wrapper">
                         <!-- Added simple calculation mode toggle at top for simple mode -->
-                            <div class="simple-calc-mode-toggle simple-only" id="simple-calc-mode-toggle">
+                            <!-- <div class="simple-calc-mode-toggle simple-only" id="simple-calc-mode-toggle"> -->
                                 <p class="paragraph-sm">Calculate by:</p><div class="simple-calc-mode-selector">
                                 
                                 <div class="mode-selector">
@@ -26,7 +26,7 @@
                                 
                                 <input type="radio" name="simple-calc-mode" value="affordability" id="simple-affordability"><label for="simple-affordability">Income &amp; Debt</label>
                                 </div>
-                            </div>
+                            <!-- </div> -->
                         </div>
                         <!-- Moved calculation mode selector to appear before affordability in advanced mode -->
                         <div class="mode-selector-container advanced-only">
@@ -70,10 +70,22 @@
                         </div>
 
                      
+                        <h3 class="u-mb-xs">Loan, Property & Closing Details</h3>
+                        
+  
+                        <div class="calculation-group advanced-only">
+                            <div class="input-group slider-group" id="target-dti-input-group">
+                                <div class="label-container">
+                                    <label for="target-dti-slider" class="h6 u-mb-0">Target DTI (%)</label>
+                                    <input type="number" id="target-dti-number" class="slider-number-input" min="20" max="60" step="1" value="43">
+                                </div>
+                                <input type="range" id="target-dti-slider" min="20" max="60" step="1" value="43">
+                            </div>
+                        </div>
 
                         <!-- Moved target payment section here, right after calculation mode -->
+
                         <div class="calculation-group advanced-only" id="target-payment-input-section">
-                            <h3 class="u-mb-xs">Target Payment</h3>
                             <div class="input-group slider-group" id="target-monthly-payment-input-group">
                                 <div class="label-container">
                                     <label for="target-monthly-payment-slider" class="h6 u-mb-0">Target Monthly Payment</label>
@@ -83,28 +95,15 @@
                             </div>
                         </div>
 
-                        <!-- Moved affordability section here, after calculation mode and target payment -->
-                        <div class="calculation-group advanced-only">
-                            <div class="input-group slider-group" id="target-dti-input-group">
-                                <div class="label-container">
-                                    <label for="target-dti-slider" class="h6 u-mb-0">Target DTI (%)</label>
-                                    <input type="number" id="target-dti-number" class="slider-number-input" min="20" max="60" step="1" value="43">
-                                </div>
-                                <input type="range" id="target-dti-slider" min="20" max="60" step="1" value="43">
-                            </div>
-                            <hr style="border-style: dashed; margin: 1rem 0; border-top-width: 1px; border-color: rgba(0,0,0,0.1);">
-                            <p style="font-size: 0.9rem; color: var(--muted-text-color); text-align: center; margin: -0.5rem 0 1rem;">- OR -</p>
-                            <div class="input-group slider-group" id="loan-amount-override-group">
+                        <div class="input-group slider-group" id="loan-amount-override-group">
                                 <div class="label-container">
                                     <label for="loan-amount-override-slider" class="h6 u-mb-0">Override Loan Amount</label>
                                     <input type="number" id="loan-amount-override-number" class="slider-number-input" min="0" max="2000000" step="1000" value="0">
                                     <button id="clear-loan-override-button" title="Clear override and use affordability inputs">×</button>
                                 </div>
                                 <input type="range" id="loan-amount-override-slider" min="0" max="2000000" step="1000" value="0">
-                            </div>
                         </div>
-                        
-                        <h3 class="u-mb-xs">Loan, Property & Closing Details</h3>
+
                         
                         <!-- Simple mode affordability inputs -->
                         <div class="input-group slider-group simple-affordability-only" id="simple-annual-income-group">
@@ -148,7 +147,15 @@
                             </div>
                             <input type="range" id="interest-rate-slider" min="1" max="15" step="0.125" value="6.5">
                         </div>
-                        
+
+                        <div class="input-group slider-group">
+                            <div class="label-container">
+                                <label for="loan-term-slider" class="h6 u-mb-0">Loan Term (Years)</label>
+                                <input type="number" id="loan-term-number" class="slider-number-input" min="5" max="40" step="1" value="30">
+                            </div>
+                            <input type="range" id="loan-term-slider" min="5" max="40" step="1" value="30">
+                        </div>
+
                         <!-- Seller credits is advanced only -->
                         <div class="input-group slider-group advanced-only">
                             <div class="label-container">
@@ -167,14 +174,7 @@
                             <input type="range" id="seller-credits-percent-slider" min="0" max="10" step="0.1" value="0">
                         </div>
 
-                        <div class="input-group slider-group">
-                            <div class="label-container">
-                                <label for="loan-term-slider" class="h6 u-mb-0">Loan Term (Years)</label>
-                                <input type="number" id="loan-term-number" class="slider-number-input" min="5" max="40" step="1" value="30">
-                            </div>
-                            <input type="range" id="loan-term-slider" min="5" max="40" step="1" value="30">
-                        </div>
-
+                   
                         <!-- Property tax and insurance are advanced only -->
                         <div class="grid-2-col advanced-only">
                             <div class="input-group slider-group">

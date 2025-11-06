@@ -1373,67 +1373,172 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==========================================================================
   // MODE MANAGEMENT: Set calculation mode (default/DTI/payment)
   // ==========================================================================
-  function setMode(mode) {
-    currentCalculationMode = mode;
-    const loanCfg = loanTypeConfig[inputs.loanType.value];
+  // function setMode(mode) {
+  //   currentCalculationMode = mode;
+  //   const loanCfg = loanTypeConfig[inputs.loanType.value];
 
-    // Get references to DTI input elements
-    const targetDtiGroupEl = containers.targetDtiInputGroup;
-    const targetDTISliderEl = inputs.targetDTISlider;
-    const targetDTINumberEl = inputs.targetDTINumber;
+  //   // Get references to DTI input elements
+  //   const targetDtiGroupEl = containers.targetDtiInputGroup;
+  //   const targetDTISliderEl = inputs.targetDTISlider;
+  //   const targetDTINumberEl = inputs.targetDTINumber;
 
-    // Handle DTI input state based on mode
-    if (mode === 'dti') {
-      // DTI mode: Enable custom DTI input
-      targetDTISliderEl.disabled = false;
-      targetDTINumberEl.disabled = false;
-      targetDtiGroupEl.classList.remove('disabled-visual');
-    } else {
-      // Other modes: Disable DTI input
-      targetDTISliderEl.disabled = true;
-      targetDTINumberEl.disabled = true;
-      targetDtiGroupEl.classList.add('disabled-visual');
+  //   // Handle DTI input state based on mode
+  //   if (mode === 'dti') {
+  //     // DTI mode: Enable custom DTI input
+  //     targetDTISliderEl.disabled = false;
+  //     targetDTINumberEl.disabled = false;
+  //     targetDtiGroupEl.classList.remove('disabled-visual');
+  //   } else {
+  //     // Other modes: Disable DTI input
+  //     targetDTISliderEl.disabled = true;
+  //     targetDTINumberEl.disabled = true;
+  //     targetDtiGroupEl.classList.add('disabled-visual');
       
-      // Reset to default DTI for the loan type
-      if (mode === 'default') {
-        targetDTISliderEl.value = loanCfg.maxDtiTotalDefault;
-        targetDTINumberEl.value = loanCfg.maxDtiTotalDefault;
-      }
-    }
+  //     // Reset to default DTI for the loan type
+  //     if (mode === 'default') {
+  //       targetDTISliderEl.value = loanCfg.maxDtiTotalDefault;
+  //       targetDTINumberEl.value = loanCfg.maxDtiTotalDefault;
+  //     }
+  //   }
 
-    // Get references to payment target elements
-    const targetPaymentGroupEl = containers.targetMonthlyPaymentInputGroup;
-    const targetPaymentSliderEl = inputs.targetMonthlyPaymentSlider;
-    const targetPaymentNumberEl = inputs.targetMonthlyPaymentNumber;
-    const targetPaymentSectionEl = containers.targetPaymentInputSection;
+  //   // Get references to payment target elements
+  //   const targetPaymentGroupEl = containers.targetMonthlyPaymentInputGroup;
+  //   const targetPaymentSliderEl = inputs.targetMonthlyPaymentSlider;
+  //   const targetPaymentNumberEl = inputs.targetMonthlyPaymentNumber;
+  //   const targetPaymentSectionEl = containers.targetPaymentInputSection;
 
-    // Handle payment target input state based on mode
-    if (mode === 'payment') {
-      // Payment mode: Enable target payment input and expand section
-      targetPaymentSliderEl.disabled = false;
-      targetPaymentNumberEl.disabled = false;
-      targetPaymentGroupEl.classList.remove('disabled-visual');
-      targetPaymentSectionEl.style.opacity = "1";
-      targetPaymentSectionEl.style.maxHeight = "200px";
-    } else {
-      // Other modes: Disable payment target input
-      targetPaymentSliderEl.disabled = true;
-      targetPaymentNumberEl.disabled = true;
-      targetPaymentGroupEl.classList.add('disabled-visual');
-      targetPaymentSectionEl.style.opacity = "0.6";
+  //   // Handle payment target input state based on mode
+  //   if (mode === 'payment') {
+  //     // Payment mode: Enable target payment input and expand section
+  //     targetPaymentSliderEl.disabled = false;
+  //     targetPaymentNumberEl.disabled = false;
+  //     targetPaymentGroupEl.classList.remove('disabled-visual');
+  //     targetPaymentSectionEl.style.opacity = "1";
+  //     targetPaymentSectionEl.style.maxHeight = "200px";
+  //   } else {
+  //     // Other modes: Disable payment target input
+  //     targetPaymentSliderEl.disabled = true;
+  //     targetPaymentNumberEl.disabled = true;
+  //     targetPaymentGroupEl.classList.add('disabled-visual');
+  //     targetPaymentSectionEl.style.opacity = "0.6";
       
-      if (mode === 'default') { 
-        // Default mode: Collapse payment section completel
-        targetPaymentSectionEl.style.maxHeight = "0";
-      } else { 
-        // Default mode: Collapse payment section completely
-        targetPaymentSectionEl.style.maxHeight = "0";
+  //     if (mode === 'default') { 
+  //       // Default mode: Collapse payment section completel
+  //       targetPaymentSectionEl.style.maxHeight = "0";
+  //     } else { 
+  //       // Default mode: Collapse payment section completely
+  //       targetPaymentSectionEl.style.maxHeight = "0";
 
-      }
-    }
+  //     }
+  //   }
     
-    scheduleFullUpdate(); // Recalculate with new mode
+  //   scheduleFullUpdate(); // Recalculate with new mode
+  // }
+
+    function setMode(mode) {
+  currentCalculationMode = mode;
+  const loanCfg = loanTypeConfig[inputs.loanType.value];
+
+  // DTI controls
+  const targetDtiGroupEl = containers.targetDtiInputGroup;
+  const targetDTISliderEl = inputs.targetDTISlider;
+  const targetDTINumberEl = inputs.targetDTINumber;
+
+  // Payment controls
+  const targetPaymentGroupEl = containers.targetMonthlyPaymentInputGroup;
+  const targetPaymentSliderEl = inputs.targetMonthlyPaymentSlider;
+  const targetPaymentNumberEl = inputs.targetMonthlyPaymentNumber;
+  const targetPaymentSectionEl = containers.targetPaymentInputSection;
+
+  // Loan override controls
+  const loanOverrideGroupEl = document.getElementById('loan-amount-override-group');
+  const loanOverrideSliderEl = inputs.loanAmountOverrideSlider;
+  const loanOverrideNumberEl = inputs.loanAmountOverrideNumber;
+
+  // Helper to disable/enable + style
+  const setDisabledVisual = (el, disabled) => {
+    if (!el) return;
+    el.classList.toggle('disabled-visual', !!disabled);
+    const inputsInside = el.querySelectorAll('input, select, button');
+    inputsInside.forEach(i => i.disabled = !!disabled);
+  };
+
+  // Baseline: show sections (no collapsing), then disable as needed
+  // Keep payment section visible at all times
+  targetPaymentSectionEl.style.opacity = '1';
+  targetPaymentSectionEl.style.maxHeight = '200px'; // no collapse
+
+  // DEFAULT — enable neither override nor custom DTI/payment editing
+  if (mode === 'default') {
+    // DTI disabled, reset to loan default
+    targetDTISliderEl.disabled = true;
+    targetDTINumberEl.disabled = true;
+    setDisabledVisual(targetDtiGroupEl, true);
+    targetDTISliderEl.value = loanCfg.maxDtiTotalDefault;
+    targetDTINumberEl.value = loanCfg.maxDtiTotalDefault;
+
+    // Payment disabled
+    targetPaymentSliderEl.disabled = true;
+    targetPaymentNumberEl.disabled = true;
+    setDisabledVisual(targetPaymentGroupEl, true);
+
+    // Override disabled
+    loanOverrideSliderEl.disabled = true;
+    loanOverrideNumberEl.disabled = true;
+    setDisabledVisual(loanOverrideGroupEl, true);
   }
+
+  // DTI — enable DTI, disable Payment and Override
+  else if (mode === 'dti') {
+    targetDTISliderEl.disabled = false;
+    targetDTINumberEl.disabled = false;
+    setDisabledVisual(targetDtiGroupEl, false);
+
+    targetPaymentSliderEl.disabled = true;
+    targetPaymentNumberEl.disabled = true;
+    setDisabledVisual(targetPaymentGroupEl, true);
+
+    loanOverrideSliderEl.disabled = true;
+    loanOverrideNumberEl.disabled = true;
+    setDisabledVisual(loanOverrideGroupEl, true);
+  }
+
+  // PAYMENT — enable Payment, disable DTI and Override
+  else if (mode === 'payment') {
+    targetPaymentSliderEl.disabled = false;
+    targetPaymentNumberEl.disabled = false;
+    setDisabledVisual(targetPaymentGroupEl, false);
+
+    targetDTISliderEl.disabled = true;
+    targetDTINumberEl.disabled = true;
+    setDisabledVisual(targetDtiGroupEl, true);
+
+    loanOverrideSliderEl.disabled = true;
+    loanOverrideNumberEl.disabled = true;
+    setDisabledVisual(loanOverrideGroupEl, true);
+  }
+
+  // OVERRIDE — enable Override + (per your rule) keep Payment active; DTI disabled
+  else if (mode === 'override') {
+    // Enable override editing
+    loanOverrideSliderEl.disabled = false;
+    loanOverrideNumberEl.disabled = false;
+    setDisabledVisual(loanOverrideGroupEl, false);
+
+    // Payment active (enabled)
+    targetPaymentSliderEl.disabled = false;
+    targetPaymentNumberEl.disabled = false;
+    setDisabledVisual(targetPaymentGroupEl, false);
+
+    // DTI disabled
+    targetDTISliderEl.disabled = true;
+    targetDTINumberEl.disabled = true;
+    setDisabledVisual(targetDtiGroupEl, true);
+  }
+
+  scheduleFullUpdate();
+}
+
 
   // ==========================================================================
   // EVENT LISTENERS: Calculation mode radio buttons
@@ -1521,8 +1626,6 @@ document.addEventListener("DOMContentLoaded", () => {
       calculatorContainer.classList.remove('simple-mode');
       advancedModeBtn.classList.add('active');
       simpleModeBtn.classList.remove('active');
-      simpleCalcModeToggle.style.display = 'none'; // Hide simple mode toggle
-      simpleCalcModeToggle.classList.add('advanced-only');
       
       // Hide all simple-only elements
       document.querySelectorAll('.simple-affordability-only, .simple-home-price-only').forEach(el => {
