@@ -98,7 +98,7 @@
                             </div>
                         </div>
 
-                        <div class="input-group slider-group" id="loan-amount-override-group">
+                        <div class="input-group slider-group advanced-only" id="loan-amount-override-group">
                                 <div class="label-container">
                                     <label for="loan-amount-override-slider" class="h6 u-mb-0">Override Loan Amount</label>
                                     <input type="number" id="loan-amount-override-number" class="slider-number-input" min="0" max="2000000" step="1000" value="0">
@@ -429,7 +429,7 @@
     <!-- </div> -->
 
     <!-- Amortization is advanced only -->
-    <details class="amortization-section advanced-only">
+    <details class="amortization-section advanced-only u-sm-d-none">
         <div class="amortization-header">
             <summary>Amortization Schedule</summary>
             <div class="amortization-view-toggle">
@@ -451,23 +451,30 @@
 <!-- Added mobile sticky bottom bar -->
 <div class="mobile-bottom-bar" id="mobile-bottom-bar">
     <div class="mobile-bottom-bar-collapsed" id="mobile-bar-toggle">
-        <div class="mobile-bottom-bar-header">
-            <span class="mobile-bottom-bar-title">Results Summary</span>
-            <span class="mobile-expand-icon">▲</span>
+        <div class="container">
+                <div class="mobile-bottom-bar-header">
+                    <span class="mobile-bottom-bar-title">Results Summary</span>
+                    <div class="mobile-expand-icon">
+                        <div class="u-icon-corner w-embed"><svg width="100%" height="100%" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8.53027 8.75L8.53027 0.75L0.530274 0.75M8.03027 1.25C5.10134 4.17893 3.4592 5.82107 0.530273 8.75" stroke="currentColor" stroke-width="1.5"></path>
+                        </svg></div>
+                    </div>
+                </div>
+                <div class="mobile-summary-quick">
+                <div class="mobile-summary-item">
+                    <div class="mobile-summary-label paragraph">Home Price</div>
+                    <div class="mobile-summary-value h3" id="mobile-home-price">$22682,000</div>
+                </div>
+                <div class="mobile-summary-item">
+                    <div class="mobile-summary-label paragraph">Monthly Payment</div>
+                    <div class="mobile-summary-value primary h3" id="mobile-monthly-payment">$99,683/mo</div>
+                </div>
         </div>
-        <div class="mobile-summary-quick">
-            <div class="mobile-summary-item">
-                <div class="mobile-summary-label">Home Price</div>
-                <div class="mobile-summary-value" id="mobile-home-price">$0</div>
-            </div>
-            <div class="mobile-summary-item">
-                <div class="mobile-summary-label">Monthly Payment</div>
-                <div class="mobile-summary-value primary" id="mobile-monthly-payment">$0/mo</div>
-            </div>
         </div>
     </div>
     
     <div class="mobile-bottom-bar-expanded">
+        <div class="container">
         <div class="mobile-results-full">
             <div class="mobile-result-item">
                 <span>Estimated Home Price</span>
@@ -564,5 +571,6 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </div>

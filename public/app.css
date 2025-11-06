@@ -760,13 +760,13 @@
       flex: 1;
     }
 
-    .mobile-summary-label {
+/*    .mobile-summary-label {
       font-size: 0.75rem;
       color: var(--colors--paragraphs);
       margin-bottom: 0.25rem;
     }
-
-    .mobile-summary-value {
+*/
+/*    .mobile-summary-value {
       font-size: 1.125rem;
       font-weight: 700;
       color: var(--text-color);
@@ -775,7 +775,7 @@
     .mobile-summary-value.primary {
       color: var(--primary-color);
       font-size: 1.25rem;
-    }
+    }*/
 
     .mobile-bottom-bar-expanded {
       max-height: 0;
