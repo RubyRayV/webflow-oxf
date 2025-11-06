@@ -84,10 +84,10 @@ document.addEventListener("DOMContentLoaded", () => {
     simpleMonthlyDebtNumber: document.getElementById("simple-monthly-debt-number"),
 
     // Income and debt inputs (for affordability calculations)
-    annualIncomeSlider: document.getElementById("annual-income-slider"),
-    annualIncomeNumber: document.getElementById("annual-income-number"),
-    monthlyDebtSlider: document.getElementById("monthly-debt-slider"),
-    monthlyDebtNumber: document.getElementById("monthly-debt-number"),
+    // annualIncomeSlider: document.getElementById("annual-income-slider"),
+    // annualIncomeNumber: document.getElementById("annual-income-number"),
+    // monthlyDebtSlider: document.getElementById("monthly-debt-slider"),
+    // monthlyDebtNumber: document.getElementById("monthly-debt-number"),
     
     // Target DTI input (custom debt-to-income ratio)
     targetDTISlider: document.getElementById("target-dti-slider"),
@@ -192,8 +192,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==========================================================================
   const containers = {
     modeSelector: document.querySelector('.mode-selector-container'),
-    annualIncomeGroup: document.getElementById('annual-income-group'),
-    monthlyDebtGroup: document.getElementById('monthly-debt-group'),
+    // annualIncomeGroup: document.getElementById('annual-income-group'),
+    // monthlyDebtGroup: document.getElementById('monthly-debt-group'),
     targetDtiInputGroup: document.getElementById("target-dti-input-group"),
     targetMonthlyPaymentInputGroup: document.getElementById("target-monthly-payment-input-group"),
     targetPaymentInputSection: document.getElementById("target-payment-input-section"),
@@ -672,12 +672,15 @@ document.addEventListener("DOMContentLoaded", () => {
       loanType: inputs.loanType.value,
       
       // Use simple mode inputs if in simple affordability mode, otherwise use advanced inputs
-      annualIncome: calculatorMode === 'simple' && simpleCalcMode === 'affordability' 
-        ? +inputs.simpleAnnualIncomeNumber.value 
-        : +inputs.annualIncomeNumber.value,
-      monthlyDebt: calculatorMode === 'simple' && simpleCalcMode === 'affordability'
-        ? +inputs.simpleMonthlyDebtNumber.value
-        : +inputs.monthlyDebtNumber.value,
+      // annualIncome: calculatorMode === 'simple' && simpleCalcMode === 'affordability' 
+      //   ? +inputs.simpleAnnualIncomeNumber.value 
+      //   : +inputs.annualIncomeNumber.value,
+      // monthlyDebt: calculatorMode === 'simple' && simpleCalcMode === 'affordability'
+      //   ? +inputs.simpleMonthlyDebtNumber.value
+      //   : +inputs.monthlyDebtNumber.value,
+      
+      annualIncome: +inputs.simpleAnnualIncomeNumber.value || 0,
+      monthlyDebt: +inputs.simpleMonthlyDebtNumber.value || 0,
       
       targetDti: +inputs.targetDTINumber.value, 
       targetPayment: +inputs.targetMonthlyPaymentNumber.value,
@@ -1610,8 +1613,8 @@ document.addEventListener("DOMContentLoaded", () => {
     { slider: inputs.simpleLoanAmountSlider, number: inputs.simpleLoanAmountNumber },
     { slider: inputs.simpleAnnualIncomeSlider, number: inputs.simpleAnnualIncomeNumber },
     { slider: inputs.simpleMonthlyDebtSlider, number: inputs.simpleMonthlyDebtNumber },
-    { slider: inputs.annualIncomeSlider, number: inputs.annualIncomeNumber },
-    { slider: inputs.monthlyDebtSlider, number: inputs.monthlyDebtNumber },
+    // { slider: inputs.annualIncomeSlider, number: inputs.annualIncomeNumber },
+    // { slider: inputs.monthlyDebtSlider, number: inputs.monthlyDebtNumber },
     { slider: inputs.targetDTISlider, number: inputs.targetDTINumber },
     { slider: inputs.targetMonthlyPaymentSlider, number: inputs.targetMonthlyPaymentNumber },
     { slider: inputs.loanAmountOverrideSlider, number: inputs.loanAmountOverrideNumber },
