@@ -1087,56 +1087,61 @@ document.addEventListener("DOMContentLoaded", () => {
     results.totalDTI.textContent = formatPercent(R.totalDti);
 
     // PART 5: Update Mobile Results (duplicate of desktop results)
-    mobileResults.homePrice.textContent = formatCurrency(R.homePrice);
-    mobileResults.monthlyPayment.textContent = `${formatCurrency(R.displayedPayment)}/mo`;
-    mobileResults.resultHomePrice.textContent = formatCurrency(R.homePrice);
-    mobileResults.resultLoanAmount.textContent = formatCurrency(R.loanAmount);
-    mobileResults.resultDownPayment.textContent = `${formatCurrency(R.V.downPayment)} (${formatPercent(downPaymentPercent, 1)})`;
-    mobileResults.resultLtv.textContent = formatPercent(R.ltv, 1);
-    mobileResults.resultMonthlyPaymentFull.textContent = `${formatCurrency(R.displayedPayment)}/mo`;
-    mobileResults.resultPi.textContent = formatCurrency(R.basePI);
-    mobileResults.resultTax.textContent = formatCurrency(R.tax);
-    mobileResults.resultInsurance.textContent = formatCurrency(R.insurance);
-    mobileResults.resultHoa.textContent = formatCurrency(R.hoa);
+    // Add null checks to prevent errors when mobile elements don't exist
+    if (mobileResults.homePrice) mobileResults.homePrice.textContent = formatCurrency(R.homePrice);
+    if (mobileResults.monthlyPayment) mobileResults.monthlyPayment.textContent = `${formatCurrency(R.displayedPayment)}/mo`;
+    if (mobileResults.resultHomePrice) mobileResults.resultHomePrice.textContent = formatCurrency(R.homePrice);
+    if (mobileResults.resultLoanAmount) mobileResults.resultLoanAmount.textContent = formatCurrency(R.loanAmount);
+    if (mobileResults.resultDownPayment) mobileResults.resultDownPayment.textContent = `${formatCurrency(R.V.downPayment)} (${formatPercent(downPaymentPercent, 1)})`;
+    if (mobileResults.resultLtv) mobileResults.resultLtv.textContent = formatPercent(R.ltv, 1);
+    if (mobileResults.resultMonthlyPaymentFull) mobileResults.resultMonthlyPaymentFull.textContent = `${formatCurrency(R.displayedPayment)}/mo`;
+    if (mobileResults.resultPi) mobileResults.resultPi.textContent = formatCurrency(R.basePI);
+    if (mobileResults.resultTax) mobileResults.resultTax.textContent = formatCurrency(R.tax);
+    if (mobileResults.resultInsurance) mobileResults.resultInsurance.textContent = formatCurrency(R.insurance);
+    if (mobileResults.resultHoa) mobileResults.resultHoa.textContent = formatCurrency(R.hoa);
     
     // Mobile PMI display
-    mobileResults.pmiContainer.classList.toggle('hidden', R.pmi <= 0);
-    if (R.pmi > 0) {
-      if (R.V.loanType === 'fha') {
-        mobileResults.pmiLabel.textContent = 'MIP';
-      } else if (R.V.loanType === 'usda') {
-        mobileResults.pmiLabel.textContent = 'Guarantee Fee';
-      } else {
-        mobileResults.pmiLabel.textContent = 'PMI';
+    if (mobileResults.pmiContainer) {
+      mobileResults.pmiContainer.classList.toggle('hidden', R.pmi <= 0);
+      if (R.pmi > 0) {
+        if (R.V.loanType === 'fha') {
+          if (mobileResults.pmiLabel) mobileResults.pmiLabel.textContent = 'MIP';
+        } else if (R.V.loanType === 'usda') {
+          if (mobileResults.pmiLabel) mobileResults.pmiLabel.textContent = 'Guarantee Fee';
+        } else {
+          if (mobileResults.pmiLabel) mobileResults.pmiLabel.textContent = 'PMI';
+        }
+        if (mobileResults.resultPmi) mobileResults.resultPmi.textContent = formatCurrency(R.pmi);
       }
-      mobileResults.resultPmi.textContent = formatCurrency(R.pmi);
     }
     
-    mobileResults.resultTotalPaid.textContent = formatCurrency(totalPaidSimple);
-    mobileResults.resultTotalInterest.textContent = formatCurrency(totalInterestSimple);
-    mobileResults.resultPayoffDate.textContent = payoffDateSimple.toLocaleDateString();
-    mobileResults.resultHousingDti.textContent = formatPercent(R.housingDti);
-    mobileResults.resultTotalDti.textContent = formatPercent(R.totalDti);
+    if (mobileResults.resultTotalPaid) mobileResults.resultTotalPaid.textContent = formatCurrency(totalPaidSimple);
+    if (mobileResults.resultTotalInterest) mobileResults.resultTotalInterest.textContent = formatCurrency(totalInterestSimple);
+    if (mobileResults.resultPayoffDate) mobileResults.resultPayoffDate.textContent = payoffDateSimple.toLocaleDateString();
+    if (mobileResults.resultHousingDti) mobileResults.resultHousingDti.textContent = formatPercent(R.housingDti);
+    if (mobileResults.resultTotalDti) mobileResults.resultTotalDti.textContent = formatPercent(R.totalDti);
 
     // PART 6: Update Extra Payment Results (shown only when extra payment is made)
-    containers.extraPaymentResults.classList.toggle('hidden', !showExtra);
-    if (showExtra) {
-      results.timeSaved.textContent = formatYears(R.yearsSaved);
-      results.interestSaved.textContent = formatCurrency(R.interestSaved);
-      results.payoffDate.textContent = R.payoffDate.toLocaleDateString();
+    if (containers.extraPaymentResults) {
+      containers.extraPaymentResults.classList.toggle('hidden', !showExtra);
+      if (showExtra) {
+        if (results.timeSaved) results.timeSaved.textContent = formatYears(R.yearsSaved);
+        if (results.interestSaved) results.interestSaved.textContent = formatCurrency(R.interestSaved);
+        if (results.payoffDate) results.payoffDate.textContent = R.payoffDate.toLocaleDateString();
 
-      // Show when PMI drops off with extra payments (if applicable)
-      if (R.cfg.requiresPmi && R.pmi > 0 && R.pmiDropOffDateWithExtra && R.cfg.canRemovePmi) {
-        results.pmiDropoffExtraContainer.classList.remove('hidden');
-        results.pmiDropoffExtraDate.textContent = R.pmiDropOffDateWithExtra.toLocaleDateString();
+        // Show when PMI drops off with extra payments (if applicable)
+        if (R.cfg.requiresPmi && R.pmi > 0 && R.pmiDropOffDateWithExtra && R.cfg.canRemovePmi) {
+          if (results.pmiDropoffExtraContainer) results.pmiDropoffExtraContainer.classList.remove('hidden');
+          if (results.pmiDropoffExtraDate) results.pmiDropoffExtraDate.textContent = R.pmiDropOffDateWithExtra.toLocaleDateString();
+        } else {
+          if (results.pmiDropoffExtraContainer) results.pmiDropoffExtraContainer.classList.add('hidden');
+        }
+        
+        // Show effective interest rate (reduced by extra payments)
+        if (results.effectiveRate) results.effectiveRate.textContent = formatPercent(R.netEffectiveRateFromExtraPayments, 3); 
       } else {
-        results.pmiDropoffExtraContainer.classList.add('hidden');
+        if (results.pmiDropoffExtraContainer) results.pmiDropoffExtraContainer.classList.add('hidden');
       }
-      
-      // Show effective interest rate (reduced by extra payments)
-      results.effectiveRate.textContent = formatPercent(R.netEffectiveRateFromExtraPayments, 3); 
-    } else {
-      results.pmiDropoffExtraContainer.classList.add('hidden');
     }
 
     // PART 7: Show/hide down payment warning
@@ -1354,12 +1359,15 @@ document.addEventListener("DOMContentLoaded", () => {
       updateRAFId = requestAnimationFrame(() => { 
         updateUI(); 
         
-        // ADD THIS: Update all slider visual fills after UI updates
+        // Update all slider visual fills after UI updates
+        // Use a longer timeout to ensure DOM is fully updated
         setTimeout(() => {
           document.querySelectorAll('input[type="range"]').forEach(slider => {
-            updateRangeFill(slider);
+            if (slider && !slider.disabled) {
+              updateRangeFill(slider);
+            }
           });
-        }, 0);
+        }, 50); // Increased from 0 to 50ms for better reliability
         
         updateRAFId = null; 
       });
@@ -1598,6 +1606,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
     scheduleFullUpdate();
+    
+    // Update range fills after mode switch
+    setTimeout(() => {
+      document.querySelectorAll('input[type="range"]').forEach(slider => {
+        if (slider && !slider.disabled) {
+          updateRangeFill(slider);
+        }
+      });
+    }, 100);
   }
 
   // ==========================================================================
