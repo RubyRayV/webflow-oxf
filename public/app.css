@@ -932,31 +932,12 @@
   /* Smaller font for mobile */
   .amortization-section table {
     font-size: 0.75rem;
-    min-width: 600px; /* Prevent squishing */
   }
   
   .amortization-section th,
   .amortization-section td {
     padding: 0.5rem 0.4rem;
     white-space: nowrap;
-  }
-  
-  /* Scroll hint */
-  .amortization-section .table-container::after {
-    content: '← Swipe to see more →';
-    position: sticky;
-    bottom: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.75);
-    color: white;
-    padding: 0.25rem 0.75rem;
-    font-size: 0.65rem;
-    border-radius: 12px;
-    pointer-events: none;
-    z-index: 5;
-    display: inline-block;
-    animation: fadeInOut 3s ease-in-out 2; /* Show twice then hide */
   }
   
   @keyframes fadeInOut {
@@ -990,11 +971,11 @@
   
   /* When closed - show preview */
   .amortization-section:not([open]) {
-    max-height: 450px;
+    min-height: 450px;
   }
   
   .amortization-section:not([open]) .table-container {
-    max-height: 300px;
+    min-height: 300px;
     overflow: hidden;
     position: relative;
   }
@@ -1017,25 +998,6 @@
     z-index: 2;
   }
   
-  /* "Show More" button when closed */
-  .amortization-section:not([open])::after {
-    content: 'Show Full Table ▼';
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 0.75rem 2rem;
-    background: var(--primary-color);
-    color: white;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 0.95rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    cursor: pointer;
-    z-index: 3;
-    white-space: nowrap;
-  }
-  
   .amortization-section:not([open]):hover::after {
     transform: translateX(-50%) translateY(-2px);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
@@ -1053,58 +1015,7 @@
   .amortization-section[open]::after {
     display: none;
   }
-  
-  /* "Hide" text when open */
-  .amortization-section[open] summary::after {
-    content: '▲ Hide Table';
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    font-weight: 600;
-    color: var(--primary-color);
-    font-size: 0.9rem;
-  }
 }
-
-/* ===========================================================================
-   GENERAL MOBILE IMPROVEMENTS
-   =========================================================================== */
-
-@media (max-width: 768px) {
-  /* Better spacing on mobile */
-  .cl-card {
-    padding: 1rem;
-  }
-  
-  .input-group {
-    margin-bottom: 1.5rem;
-  }
-  
-  /* Larger touch targets */
-  input[type="range"],
-  input[type="number"],
-  select,
-  button {
-    min-height: 44px;
-  }
-  
-  /* Better readability */
-  .result-item {
-    font-size: 0.9rem;
-    padding: 0.5rem 0;
-  }
-  
-  .result-value {
-    font-size: 0.95rem;
-  }
-  
-  /* Stack columns on mobile */
-  .grid-2-col {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-}
-
 
 /* ===========================================================================
    PRINT STYLES
