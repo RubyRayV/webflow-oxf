@@ -433,6 +433,8 @@
     }
 
     .amortization-section {
+      position: relative;
+      overflow: hidden;
       margin-top: 2rem;
       border: 1px solid var(--border-color);
       border-radius: var(--_components---card--border-radius);
@@ -951,13 +953,6 @@
    =========================================================================== */
 
 @media (min-width: 769px) {
-  .amortization-section {
-    position: relative;
-    margin-top: 2rem;
-    border: 1px solid var(--border-color);
-    border-radius: var(--_components---card--border-radius);
-    overflow: hidden;
-  }
   
   /* Hide default summary arrow */
   .amortization-section summary {
