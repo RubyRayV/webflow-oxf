@@ -875,36 +875,53 @@
 
 
 /* ============================================================================
-   MORTGAGE CALCULATOR - ADDITIONAL CSS FIXES
+   MORTGAGE CALCULATOR - SIMPLIFIED CSS (No Mobile Bottom Bar)
    ============================================================================
-   This file contains CSS fixes for Issues #7 and #8
-   Add this to your existing CSS file or include as a separate stylesheet
+   This replaces the previous calculator-fixes.css
+   Focuses on fixing the actual issues without mobile bottom bar
    ============================================================================ */
 
 /* ===========================================================================
-   ISSUE #7: MOBILE TABLE UX IMPROVEMENTS
+   MOBILE RESPONSIVENESS - Show Regular Results on Mobile
    =========================================================================== */
 
-/* Mobile amortization table scrolling */
+/* Remove any bottom padding that was for the mobile bar */
 @media (max-width: 768px) {
-  /* Make table container horizontally scrollable */
-  .mobile-result-group {
+  body {
+    padding-bottom: 0 !important;
+  }
+  
+  /* Ensure results section is visible on mobile */
+  .results-section {
+    display: flex !important;
+  }
+  
+  /* Make results stack nicely on mobile */
+  .row.row-justify-between {
+    flex-direction: column;
+  }
+  
+  .col {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+/* ===========================================================================
+   AMORTIZATION TABLE - Mobile Improvements
+   =========================================================================== */
+
+@media (max-width: 768px) {
+  /* Make table scrollable horizontally */
+  .amortization-section .table-container {
     overflow-x: auto;
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-    margin: 0 -1rem; /* Extend to edges */
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -1rem;
     padding: 0 1rem;
   }
   
-  /* Mobile amortization table styling */
-  #mobile-amortization-table {
-    width: 100%;
-    min-width: 500px; /* Minimum width to prevent squishing */
-    border-collapse: collapse;
-    font-size: 0.75rem;
-  }
-  
-  /* Sticky header for mobile table */
-  #mobile-amortization-head {
+  /* Sticky header */
+  .amortization-section table thead {
     position: sticky;
     top: 0;
     background-color: var(--container-bg-color);
@@ -912,34 +929,25 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   
-  /* Compact mobile table cells */
-  #mobile-amortization-table th,
-  #mobile-amortization-table td {
+  /* Smaller font for mobile */
+  .amortization-section table {
+    font-size: 0.75rem;
+    min-width: 600px; /* Prevent squishing */
+  }
+  
+  .amortization-section th,
+  .amortization-section td {
     padding: 0.5rem 0.4rem;
     white-space: nowrap;
-    font-size: 0.7rem;
   }
   
-  #mobile-amortization-table th {
-    font-weight: 600;
-    background-color: var(--input-bg-color);
-    border-bottom: 2px solid var(--border-color);
-  }
-  
-  #mobile-amortization-table td {
-    border-bottom: 1px solid var(--colors--border-solid);
-  }
-  
-  /* Scroll indicator hint */
-  .mobile-result-group[data-scrollable="true"] {
-    position: relative;
-  }
-  
-  .mobile-result-group[data-scrollable="true"]::after {
+  /* Scroll hint */
+  .amortization-section .table-container::after {
     content: '← Swipe to see more →';
-    position: absolute;
+    position: sticky;
     bottom: 8px;
-    right: 16px;
+    left: 50%;
+    transform: translateX(-50%);
     background: rgba(0, 0, 0, 0.75);
     color: white;
     padding: 0.25rem 0.75rem;
@@ -947,7 +955,8 @@
     border-radius: 12px;
     pointer-events: none;
     z-index: 5;
-    animation: fadeInOut 3s ease-in-out infinite;
+    display: inline-block;
+    animation: fadeInOut 3s ease-in-out 2; /* Show twice then hide */
   }
   
   @keyframes fadeInOut {
@@ -957,10 +966,9 @@
 }
 
 /* ===========================================================================
-   ISSUE #8: DESKTOP AMORTIZATION PREVIEW WITH GRADIENT
+   DESKTOP AMORTIZATION PREVIEW (Issue #8)
    =========================================================================== */
 
-/* Desktop only (> 768px) */
 @media (min-width: 769px) {
   .amortization-section {
     position: relative;
@@ -968,10 +976,9 @@
     border: 1px solid var(--border-color);
     border-radius: var(--_components---card--border-radius);
     overflow: hidden;
-    transition: all 0.3s ease;
   }
   
-  /* Hide default summary triangle */
+  /* Hide default summary arrow */
   .amortization-section summary {
     list-style: none;
     cursor: pointer;
@@ -981,19 +988,18 @@
     display: none;
   }
   
-  /* Preview mode (when closed) */
+  /* When closed - show preview */
   .amortization-section:not([open]) {
-    max-height: 400px; /* 300px table + 100px for header */
+    max-height: 450px;
   }
   
-  /* Table container in preview mode */
   .amortization-section:not([open]) .table-container {
     max-height: 300px;
     overflow: hidden;
     position: relative;
   }
   
-  /* Gradient overlay (only when closed) */
+  /* Gradient overlay when closed */
   .amortization-section:not([open]) .table-container::after {
     content: '';
     position: absolute;
@@ -1003,17 +1009,17 @@
     height: 150px;
     background: linear-gradient(
       to bottom,
-      rgba(var(--background-rgb, 255, 255, 255), 0) 0%,
-      rgba(var(--background-rgb, 255, 255, 255), 0.8) 50%,
-      rgba(var(--background-rgb, 255, 255, 255), 1) 100%
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.8) 50%,
+      rgba(255, 255, 255, 1) 100%
     );
     pointer-events: none;
     z-index: 2;
   }
   
-  /* "Show More" button (only when closed) */
-  .amortization-section:not([open]) .amortization-header::after {
-    content: 'Show Full Table';
+  /* "Show More" button when closed */
+  .amortization-section:not([open])::after {
+    content: 'Show Full Table ▼';
     position: absolute;
     bottom: 20px;
     left: 50%;
@@ -1021,57 +1027,35 @@
     padding: 0.75rem 2rem;
     background: var(--primary-color);
     color: white;
-    border: none;
     border-radius: 8px;
     font-weight: 600;
     font-size: 0.95rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     cursor: pointer;
     z-index: 3;
-    transition: all 0.2s ease;
+    white-space: nowrap;
   }
   
-  .amortization-section:not([open]) .amortization-header:hover::after {
+  .amortization-section:not([open]):hover::after {
     transform: translateX(-50%) translateY(-2px);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
-    background: var(--primary-color-dark, var(--primary-color));
   }
   
-  /* Arrow icon in "Show More" button */
-  .amortization-section:not([open]) summary::after {
-    content: '▼';
-    position: absolute;
-    bottom: 28px;
-    left: calc(50% + 65px); /* Position after text */
-    font-size: 0.8rem;
-    color: white;
-    z-index: 4;
-    pointer-events: none;
-  }
-  
-  /* When opened - hide gradient and show full content */
+  /* When open - show everything */
   .amortization-section[open] .table-container {
     max-height: none;
-    overflow: visible;
   }
   
   .amortization-section[open] .table-container::after {
     display: none;
   }
   
-  .amortization-section[open] .amortization-header::after {
+  .amortization-section[open]::after {
     display: none;
   }
   
+  /* "Hide" text when open */
   .amortization-section[open] summary::after {
-    display: none;
-  }
-  
-  /* Change summary text when open */
-  .amortization-section[open] summary::before {
     content: '▲ Hide Table';
     position: absolute;
     top: 1rem;
@@ -1080,90 +1064,94 @@
     color: var(--primary-color);
     font-size: 0.9rem;
   }
-  
-  /* Smooth transition */
-  .amortization-section .table-container {
-    transition: max-height 0.3s ease, opacity 0.3s ease;
-  }
 }
 
 /* ===========================================================================
-   ISSUE #6: MOBILE MODE-SPECIFIC VISIBILITY
-   =========================================================================== */
-
-/* Hide advanced-only elements in simple mode on mobile */
-@media (max-width: 768px) {
-  .simple-mode .advanced-only {
-    display: none !important;
-  }
-  
-  /* Ensure mobile bottom bar respects mode */
-  .mobile-bottom-bar .simple-mode .advanced-only,
-  .simple-mode .mobile-bottom-bar .advanced-only {
-    display: none !important;
-  }
-}
-
-/* ===========================================================================
-   ADDITIONAL MOBILE IMPROVEMENTS
+   GENERAL MOBILE IMPROVEMENTS
    =========================================================================== */
 
 @media (max-width: 768px) {
-  /* Better touch targets for mobile */
-  .mobile-bottom-bar button,
-  .mobile-bottom-bar .amortization-view-toggle label {
-    min-height: 44px; /* Apple's recommended touch target size */
-    min-width: 44px;
+  /* Better spacing on mobile */
+  .cl-card {
+    padding: 1rem;
   }
   
-  /* Improve readability on small screens */
-  .mobile-result-item {
+  .input-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Larger touch targets */
+  input[type="range"],
+  input[type="number"],
+  select,
+  button {
+    min-height: 44px;
+  }
+  
+  /* Better readability */
+  .result-item {
     font-size: 0.9rem;
-    line-height: 1.4;
+    padding: 0.5rem 0;
   }
   
-  .mobile-result-item .result-value {
+  .result-value {
     font-size: 0.95rem;
-    font-weight: 600;
   }
   
-  /* Better spacing in mobile bar */
-  .mobile-results-full {
-    padding-bottom: 2rem; /* Extra space at bottom */
-  }
-  
-  /* Smooth scrolling for mobile bar */
-  .mobile-bottom-bar-expanded {
-    scroll-behavior: smooth;
+  /* Stack columns on mobile */
+  .grid-2-col {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 }
 
 /* ===========================================================================
-   ACCESSIBILITY IMPROVEMENTS
+   HIDE ADVANCED-ONLY IN SIMPLE MODE
    =========================================================================== */
 
-/* Focus states for keyboard navigation */
+.simple-mode .advanced-only {
+  display: none !important;
+}
+
+/* ===========================================================================
+   ACCESSIBILITY
+   =========================================================================== */
+
+/* Focus states */
 .amortization-section summary:focus {
   outline: 2px solid var(--primary-color);
   outline-offset: 2px;
 }
 
-.mobile-bottom-bar button:focus,
-.amortization-view-toggle input:focus + label {
+button:focus,
+input:focus,
+select:focus {
   outline: 2px solid var(--primary-color);
   outline-offset: 2px;
 }
 
-/* Reduce motion for users who prefer it */
+/* Reduce motion */
 @media (prefers-reduced-motion: reduce) {
-  .amortization-section,
-  .amortization-section .table-container,
-  .mobile-result-group[data-scrollable="true"]::after {
-    transition: none;
-    animation: none;
+  * {
+    animation: none !important;
+    transition: none !important;
   }
 }
 
+/* ===========================================================================
+   DARK MODE SUPPORT
+   =========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+  .amortization-section:not([open]) .table-container::after {
+    background: linear-gradient(
+      to bottom,
+      rgba(18, 18, 18, 0) 0%,
+      rgba(18, 18, 18, 0.8) 50%,
+      rgba(18, 18, 18, 1) 100%
+    );
+  }
+}
 
 /* ===========================================================================
    PRINT STYLES
@@ -1180,14 +1168,12 @@
   }
   
   .amortization-section:not([open]) .table-container::after,
-  .amortization-section:not([open]) .amortization-header::after,
-  .amortization-section:not([open]) summary::after {
+  .amortization-section:not([open])::after {
     display: none !important;
   }
   
-  /* Hide mobile bottom bar when printing */
-  .mobile-bottom-bar {
-    display: none !important;
+  /* Hide mode toggles when printing */
+  .mode-toggle-buttons {
+    display: none;
   }
 }
-

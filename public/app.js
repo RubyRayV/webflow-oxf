@@ -200,43 +200,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // DOM REFERENCES - Mobile-specific elements
   // ==========================================================================
   // Mobile version has a collapsible bottom bar with results
-  const mobileBottomBar = document.getElementById("mobile-bottom-bar");
-  const mobileBarToggle = document.getElementById("mobile-bar-toggle");
-  
-  // Mobile result displays (duplicates of desktop results)
-  const mobileResults = {
-    homePrice: document.getElementById("mobile-home-price"),
-    monthlyPayment: document.getElementById("mobile-monthly-payment"),
-    resultHomePrice: document.getElementById("mobile-result-home-price"),
-    resultLoanAmount: document.getElementById("mobile-result-loan-amount"),
-    resultDownPayment: document.getElementById("mobile-result-down-payment"),
-    resultLtv: document.getElementById("mobile-result-ltv"),
-    resultMonthlyPaymentFull: document.getElementById("mobile-result-monthly-payment-full"),
-    resultPi: document.getElementById("mobile-result-pi"),
-    resultTax: document.getElementById("mobile-result-tax"),
-    resultInsurance: document.getElementById("mobile-result-insurance"),
-    resultHoa: document.getElementById("mobile-result-hoa"),
-    pmiContainer: document.getElementById("mobile-pmi-container"),
-    pmiLabel: document.getElementById("mobile-pmi-label"),
-    resultPmi: document.getElementById("mobile-result-pmi"),
-    resultTotalPaid: document.getElementById("mobile-result-total-paid"),
-    resultTotalInterest: document.getElementById("mobile-result-total-interest"),
-    resultPayoffDate: document.getElementById("mobile-result-payoff-date"),
-    resultHousingDti: document.getElementById("mobile-result-housing-dti"),
-    resultTotalDti: document.getElementById("mobile-result-total-dti")
-  };
-  
-  // Mobile amortization table
-  const mobileAmortizationHead = document.getElementById("mobile-amortization-head");
-  const mobileAmortizationBody = document.getElementById("mobile-amortization-body");
 
-  // ==========================================================================
-  // EVENT LISTENER: Mobile bottom bar toggle
-  // ==========================================================================
-  // Allows user to expand/collapse the results bar on mobile
-  mobileBarToggle.addEventListener('click', () => {
-    mobileBottomBar.classList.toggle('expanded');
-  });
+
+
+
 
   // ==========================================================================
   // DOM REFERENCES - Mode toggle buttons
@@ -1086,40 +1053,6 @@ document.addEventListener("DOMContentLoaded", () => {
     results.housingDTI.textContent = formatPercent(R.housingDti);
     results.totalDTI.textContent = formatPercent(R.totalDti);
 
-    // PART 5: Update Mobile Results (duplicate of desktop results)
-    // Add null checks to prevent errors when mobile elements don't exist
-    if (mobileResults.homePrice) mobileResults.homePrice.textContent = formatCurrency(R.homePrice);
-    if (mobileResults.monthlyPayment) mobileResults.monthlyPayment.textContent = `${formatCurrency(R.displayedPayment)}/mo`;
-    if (mobileResults.resultHomePrice) mobileResults.resultHomePrice.textContent = formatCurrency(R.homePrice);
-    if (mobileResults.resultLoanAmount) mobileResults.resultLoanAmount.textContent = formatCurrency(R.loanAmount);
-    if (mobileResults.resultDownPayment) mobileResults.resultDownPayment.textContent = `${formatCurrency(R.V.downPayment)} (${formatPercent(downPaymentPercent, 1)})`;
-    if (mobileResults.resultLtv) mobileResults.resultLtv.textContent = formatPercent(R.ltv, 1);
-    if (mobileResults.resultMonthlyPaymentFull) mobileResults.resultMonthlyPaymentFull.textContent = `${formatCurrency(R.displayedPayment)}/mo`;
-    if (mobileResults.resultPi) mobileResults.resultPi.textContent = formatCurrency(R.basePI);
-    if (mobileResults.resultTax) mobileResults.resultTax.textContent = formatCurrency(R.tax);
-    if (mobileResults.resultInsurance) mobileResults.resultInsurance.textContent = formatCurrency(R.insurance);
-    if (mobileResults.resultHoa) mobileResults.resultHoa.textContent = formatCurrency(R.hoa);
-    
-    // Mobile PMI display
-    if (mobileResults.pmiContainer) {
-      mobileResults.pmiContainer.classList.toggle('hidden', R.pmi <= 0);
-      if (R.pmi > 0) {
-        if (R.V.loanType === 'fha') {
-          if (mobileResults.pmiLabel) mobileResults.pmiLabel.textContent = 'MIP';
-        } else if (R.V.loanType === 'usda') {
-          if (mobileResults.pmiLabel) mobileResults.pmiLabel.textContent = 'Guarantee Fee';
-        } else {
-          if (mobileResults.pmiLabel) mobileResults.pmiLabel.textContent = 'PMI';
-        }
-        if (mobileResults.resultPmi) mobileResults.resultPmi.textContent = formatCurrency(R.pmi);
-      }
-    }
-    
-    if (mobileResults.resultTotalPaid) mobileResults.resultTotalPaid.textContent = formatCurrency(totalPaidSimple);
-    if (mobileResults.resultTotalInterest) mobileResults.resultTotalInterest.textContent = formatCurrency(totalInterestSimple);
-    if (mobileResults.resultPayoffDate) mobileResults.resultPayoffDate.textContent = payoffDateSimple.toLocaleDateString();
-    if (mobileResults.resultHousingDti) mobileResults.resultHousingDti.textContent = formatPercent(R.housingDti);
-    if (mobileResults.resultTotalDti) mobileResults.resultTotalDti.textContent = formatPercent(R.totalDti);
 
     // PART 6: Update Extra Payment Results (shown only when extra payment is made)
     if (containers.extraPaymentResults) {
@@ -1285,67 +1218,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    // PART 9: Generate Mobile Amortization Table (Simplified)
-    mobileAmortizationBody.innerHTML = "";
-    let mobileAmortizationHeadHTML = "";
-    
-    if (amortizationViewMode === 'years') {
-      // Mobile yearly view (simplified - fewer columns)
-      mobileAmortizationHeadHTML = `
-        <tr>
-          <th>Year</th>
-          <th>Start Balance</th>
-          <th>End Balance</th>
-          <th class="extra-col">End Balance (w/ Extra)</th>
-        </tr>`;
-      
-      // Aggregate monthly data into yearly
-      const yearlyAmortization = [];
-      for (let yr = 0; yr < R.V.loanTerm; yr++) {
-        const yearData = R.monthlyAmortization.slice(yr * 12, (yr + 1) * 12);
-        if (yearData.length === 0) break;
-        const lastMonthOfYear = yearData[yearData.length - 1];
-        yearlyAmortization.push({
-          year: yr + 1,
-          startBalance: yearData[0].endBalance + yearData[0].principal,
-          endBalance: lastMonthOfYear.endBalance,
-          extraEndBalance: lastMonthOfYear.extraEndBalance
-        });
-      }
-
-      // Generate mobile table rows
-      yearlyAmortization.forEach(row => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${row.year}</td>
-          <td>${formatCurrency(row.startBalance)}</td>
-          <td>${formatCurrency(row.endBalance)}</td>
-          <td class="extra-col">${showExtra ? formatCurrency(row.extraEndBalance) : '-'}</td>
-        `;
-        mobileAmortizationBody.appendChild(tr);
-      });
-
-    } else {
-      // Mobile monthly view (simplified)
-      mobileAmortizationHeadHTML = `
-        <tr>
-          <th>Month</th>
-          <th>End Balance</th>
-          <th class="extra-col">End Balance (w/ Extra)</th>
-        </tr>`;
-      
-      // Generate mobile table rows
-      R.monthlyAmortization.forEach(row => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${row.month}</td>
-          <td>${formatCurrency(row.endBalance)}</td>
-          <td class="extra-col">${showExtra ? formatCurrency(row.extraEndBalance) : '-'}</td>
-        `;
-        mobileAmortizationBody.appendChild(tr);
-      });
-    }
-    mobileAmortizationHead.innerHTML = mobileAmortizationHeadHTML;
   }
   
   // ==========================================================================
@@ -1540,6 +1412,17 @@ document.addEventListener("DOMContentLoaded", () => {
       if (event.target.checked) {
         amortizationViewMode = event.target.value;
         scheduleFullUpdate(); // Regenerate table
+      }
+    });
+  });
+  
+  // Mobile amortization view toggle (if exists)
+  const mobileAmortViewRadios = document.querySelectorAll('input[name="mobile-amortization-view"]');
+  mobileAmortViewRadios.forEach(radio => {
+    radio.addEventListener('change', (event) => {
+      if (event.target.checked) {
+        amortizationViewMode = event.target.value;
+        scheduleFullUpdate();
       }
     });
   });
