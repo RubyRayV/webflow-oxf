@@ -1105,53 +1105,6 @@
   }
 }
 
-/* ===========================================================================
-   HIDE ADVANCED-ONLY IN SIMPLE MODE
-   =========================================================================== */
-
-.simple-mode .advanced-only {
-  display: none !important;
-}
-
-/* ===========================================================================
-   ACCESSIBILITY
-   =========================================================================== */
-
-/* Focus states */
-.amortization-section summary:focus {
-  outline: 2px solid var(--primary-color);
-  outline-offset: 2px;
-}
-
-button:focus,
-input:focus,
-select:focus {
-  outline: 2px solid var(--primary-color);
-  outline-offset: 2px;
-}
-
-/* Reduce motion */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation: none !important;
-    transition: none !important;
-  }
-}
-
-/* ===========================================================================
-   DARK MODE SUPPORT
-   =========================================================================== */
-
-@media (prefers-color-scheme: dark) {
-  .amortization-section:not([open]) .table-container::after {
-    background: linear-gradient(
-      to bottom,
-      rgba(18, 18, 18, 0) 0%,
-      rgba(18, 18, 18, 0.8) 50%,
-      rgba(18, 18, 18, 1) 100%
-    );
-  }
-}
 
 /* ===========================================================================
    PRINT STYLES
