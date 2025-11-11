@@ -1819,19 +1819,39 @@ document.addEventListener("DOMContentLoaded", () => {
   // AMORTIZATION TABLE SHOW/HIDE BUTTONS
   // ==========================================================================
   
-  const learnMoreBtn = document.querySelector('.table-fade .button');
+  // Find elements - be more specific to get the right ones
+  const amortizationSection = document.querySelector('.amortization-section');
+  const tableContainer = amortizationSection ? amortizationSection.querySelector('.table-container') : null;
+  const tableFade = tableContainer ? tableContainer.querySelector('.table-fade') : null;
+  const learnMoreBtn = tableFade ? tableFade.querySelector('.button') : null;
   const hideTableBtn = document.getElementById('hide-tabble');
-  const tableContainer = document.querySelector('.table-container');
-  const tableFade = document.querySelector('.table-fade');
+  
+  // Debug logging
+  console.log('Amortization elements found:', {
+    amortizationSection: !!amortizationSection,
+    tableContainer: !!tableContainer,
+    tableFade: !!tableFade,
+    learnMoreBtn: !!learnMoreBtn,
+    hideTableBtn: !!hideTableBtn
+  });
   
   // Function to show table
   function showAmortizationTable() {
+    console.log('showAmortizationTable called');
     if (tableContainer && tableFade) {
-      // Remove hidden class from BOTH table-fade and table-container
+      console.log('Before show - tableContainer classes:', tableContainer.className);
+      console.log('Before show - tableFade classes:', tableFade.className);
+      
+      // Add hidden to fade, remove from container
       tableFade.classList.add('hidden');
       tableContainer.classList.remove('hidden');
+      
+      console.log('After show - tableContainer classes:', tableContainer.className);
+      console.log('After show - tableFade classes:', tableFade.className);
+      
       // Mark table as visible
       isAmortizationTableVisible = true;
+      
       // Trigger immediate update to generate table
       if (debounceTimerId) clearTimeout(debounceTimerId);
       if (updateRAFId) cancelAnimationFrame(updateRAFId);
@@ -1846,17 +1866,35 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 50);
         updateRAFId = null;
       });
+    } else {
+      console.error('showAmortizationTable: Missing elements', {
+        tableContainer: !!tableContainer,
+        tableFade: !!tableFade
+      });
     }
   }
   
   // Function to hide table
   function hideAmortizationTable() {
+    console.log('hideAmortizationTable called');
     if (tableContainer && tableFade) {
-      // Add hidden class to table-container, remove from table-fade
+      console.log('Before hide - tableContainer classes:', tableContainer.className);
+      console.log('Before hide - tableFade classes:', tableFade.className);
+      
+      // Add hidden to container, remove from fade
       tableContainer.classList.add('hidden');
       tableFade.classList.remove('hidden');
+      
+      console.log('After hide - tableContainer classes:', tableContainer.className);
+      console.log('After hide - tableFade classes:', tableFade.className);
+      
       // Mark table as not visible
       isAmortizationTableVisible = false;
+    } else {
+      console.error('hideAmortizationTable: Missing elements', {
+        tableContainer: !!tableContainer,
+        tableFade: !!tableFade
+      });
     }
   }
   
@@ -1864,15 +1902,21 @@ document.addEventListener("DOMContentLoaded", () => {
   if (learnMoreBtn) {
     learnMoreBtn.addEventListener('click', (e) => {
       e.preventDefault();
+      console.log('Learn More button clicked');
       showAmortizationTable();
     });
+  } else {
+    console.warn('Learn More button not found');
   }
   
   if (hideTableBtn) {
     hideTableBtn.addEventListener('click', (e) => {
       e.preventDefault();
+      console.log('Hide Table button clicked');
       hideAmortizationTable();
     });
+  } else {
+    console.warn('Hide Table button not found');
   }
   
   // ==========================================================================
