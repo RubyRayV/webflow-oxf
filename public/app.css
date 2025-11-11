@@ -522,11 +522,7 @@
         display: inline-flex !important; 
         align-items: center;
     }
-
-
-    .hidden {
-      display: none;
-    }
+    
     .grid-2-col {
       display: grid;
       grid-template-columns: 1fr 1fr;
