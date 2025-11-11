@@ -831,12 +831,10 @@
   background: linear-gradient(
     to top,
     var(--background-color) 0%,
-    rgba(0, 0, 0, 0.05) 25%,
-    rgba(0, 0, 0, 0.02) 50%,
     rgba(0, 0, 0, 0) 100%
   );
   display: flex;
-  align-items: center;
+  align-items: end;
   justify-content: center;
   pointer-events: auto; /* allow clicking if you want interactivity */
   z-index: 3; /* above table content */
@@ -851,6 +849,7 @@
 
 /* Center content (text + icon) */
 .table-fade span {
+  margin-bottom: 2rem;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
@@ -859,7 +858,7 @@
   color: var(--text-color, #222);
   background: rgba(255, 255, 255, 0.85);
   padding: 0.5rem 1rem;
-  border-radius: 999px;
+  border-radius: var(--_components---card--border-radius);
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   cursor: pointer;
   user-select: none;
