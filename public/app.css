@@ -483,6 +483,7 @@
     }
      @media (max-width: 768px) {
         .amortization-header { padding: 0.75rem; flex-direction: column; align-items: flex-start; gap: 0.5rem;}
+    
     }
     .table-container {
       overflow-x: auto;
@@ -586,7 +587,19 @@
       opacity: 1;
     }
     @media (max-width: 768px) {
-        .tooltip .tooltip-content { width: 250px; margin-left: -125px; }
+        
+        .tooltip {
+            position: unset;
+        }
+
+        .tooltip .tooltip-content { 
+            width: 250px; 
+            margin-left: -125px; 
+            bottom: 23%;
+            left: 50%;
+        }
+
+    
     }
 
     .cta-button {
@@ -961,6 +974,7 @@
    =========================================================================== */
 
 @media (min-width: 769px) {
+    
   
   /* Hide default summary arrow */
   .amortization-section summary {
