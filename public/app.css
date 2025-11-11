@@ -820,6 +820,7 @@
 /*Hover for table of amortization section*/
 
 .table-container {
+  max-height: 300px;
   position: relative;
   overflow: hidden; /* ensures overlay fits neatly */
 }
@@ -845,6 +846,10 @@
 .table-fade.hidden {
   opacity: 0;
   visibility: hidden;
+}
+
+.table-container.hidden {
+  max-height: none;
 }
 
 /* Center content (text + icon) */
