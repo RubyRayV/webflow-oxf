@@ -1085,6 +1085,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
     // PART 8: Generate Amortization Table (Desktop)
+    // Only generate if table is visible (performance optimization)
+    if (!isAmortizationTableVisible) {
+      // Table is hidden, skip generation to save CPU
+      return;
+    }
+    
     amortizationBody.innerHTML = ""; // Clear existing table
     
     if (amortizationViewMode === 'years') {
@@ -1225,25 +1231,47 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==========================================================================
   // Instead of updating immediately on every input change, we wait until
   // the user is done adjusting (using requestAnimationFrame)
+  // ==========================================================================
+  // PERFORMANCE OPTIMIZATION - Debounced Updates & Table Visibility Control
+  // ==========================================================================
+  
   let updateRAFId = null;
-    function scheduleFullUpdate() {
-      if (updateRAFId) cancelAnimationFrame(updateRAFId);
+  let debounceTimerId = null;
+  const DEBOUNCE_DELAY = 1500; // Wait 1.5 seconds after user stops interacting
+  
+  // Track whether amortization table is visible (for performance)
+  let isAmortizationTableVisible = false;
+  
+  function scheduleFullUpdate() {
+    // Cancel any pending debounced update
+    if (debounceTimerId) {
+      clearTimeout(debounceTimerId);
+    }
+    
+    // Cancel any pending animation frame
+    if (updateRAFId) {
+      cancelAnimationFrame(updateRAFId);
+    }
+    
+    // Schedule debounced update
+    debounceTimerId = setTimeout(() => {
       updateRAFId = requestAnimationFrame(() => { 
         updateUI(); 
         
         // Update all slider visual fills after UI updates
-        // Use a longer timeout to ensure DOM is fully updated
         setTimeout(() => {
           document.querySelectorAll('input[type="range"]').forEach(slider => {
             if (slider && !slider.disabled) {
               updateRangeFill(slider);
             }
           });
-        }, 50); // Increased from 0 to 50ms for better reliability
+        }, 50);
         
         updateRAFId = null; 
       });
-    }
+      debounceTimerId = null;
+    }, DEBOUNCE_DELAY);
+  }
   // ==========================================================================
   // MODE MANAGEMENT: Set calculation mode (default/DTI/payment)
   // ==========================================================================
@@ -1743,13 +1771,77 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   
   // ==========================================================================
+  // AMORTIZATION TABLE SHOW/HIDE BUTTONS
+  // ==========================================================================
+  
+  const learnMoreBtn = document.querySelector('.table-fade .button');
+  const hideTableBtn = document.getElementById('hide-tabble');
+  const tableContainer = document.querySelector('.table-container');
+  const tableFade = document.querySelector('.table-fade');
+  
+  // Function to show table
+  function showAmortizationTable() {
+    if (tableContainer && tableFade) {
+      // Remove hidden class from container
+      tableContainer.classList.remove('hidden');
+      // Add hidden class to fade overlay (hide the Learn More button)
+      tableFade.classList.add('hidden');
+      // Mark table as visible
+      isAmortizationTableVisible = true;
+      // Trigger immediate update to generate table
+      if (debounceTimerId) clearTimeout(debounceTimerId);
+      if (updateRAFId) cancelAnimationFrame(updateRAFId);
+      updateRAFId = requestAnimationFrame(() => {
+        updateUI();
+        setTimeout(() => {
+          document.querySelectorAll('input[type="range"]').forEach(slider => {
+            if (slider && !slider.disabled) {
+              updateRangeFill(slider);
+            }
+          });
+        }, 50);
+        updateRAFId = null;
+      });
+    }
+  }
+  
+  // Function to hide table
+  function hideAmortizationTable() {
+    if (tableContainer && tableFade) {
+      // Add hidden class to container
+      tableContainer.classList.add('hidden');
+      // Remove hidden class from fade overlay (show the Learn More button)
+      tableFade.classList.remove('hidden');
+      // Mark table as not visible
+      isAmortizationTableVisible = false;
+    }
+  }
+  
+  // Event listeners for buttons
+  if (learnMoreBtn) {
+    learnMoreBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      showAmortizationTable();
+    });
+  }
+  
+  if (hideTableBtn) {
+    hideTableBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      hideAmortizationTable();
+    });
+  }
+  
+  // ==========================================================================
   // INITIALIZE SLIDER FILLS: Run once on page load
   // ==========================================================================
   document.querySelectorAll('input[type="range"]')
     .forEach(updateRangeFill);
 
   // ==========================================================================
-  // START THE CALCULATOR
+  // START THE CALCULATOR - Render table with default values on load
   // ==========================================================================
+  // Show table by default on page load and generate with initial values
+  isAmortizationTableVisible = true;
   initialize();
 });
