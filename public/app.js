@@ -1843,7 +1843,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log('Before show - tableFade classes:', tableFade.className);
       
       // Add hidden to fade, remove from container
-      tableFade.classList.remove('hidden');
+      tableFade.classList.add('hidden');
       tableContainer.classList.remove('hidden');
       
       console.log('After show - tableContainer classes:', tableContainer.className);
@@ -1883,7 +1883,7 @@ document.addEventListener("DOMContentLoaded", () => {
       
       // Add hidden to container, remove from fade
       tableContainer.classList.add('hidden');
-      tableFade.classList.add('hidden');
+      tableFade.classList.remove('hidden');
       
       console.log('After hide - tableContainer classes:', tableContainer.className);
       console.log('After hide - tableFade classes:', tableFade.className);
