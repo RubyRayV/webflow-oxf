@@ -98,14 +98,15 @@
                             </div>
                         </div>
 
-                        <div class="input-group slider-group advanced-only" id="loan-amount-override-group">
+                        <div class="calculation-group advanced-only" >
+                        <div class="input-group slider-group" id="loan-amount-override-group">
                                 <div class="label-container">
                                     <label for="loan-amount-override-slider" class="h6 u-mb-0">Override Loan Amount</label>
                                     <input type="number" id="loan-amount-override-number" class="slider-number-input" min="0" max="2000000" step="1000" value="0">
                                 </div>
                                 <input type="range" id="loan-amount-override-slider" min="0" max="2000000" step="1000" value="0">
                         </div>
-
+                     </div>
                         
                         <!-- Simple mode affordability inputs -->
                         <div class="input-group slider-group simple-affordability-only" id="simple-annual-income-group">
@@ -388,8 +389,8 @@
                         </div>
                     </div>
 
-                    <div class="cl-card advanced-only">
-                        <div class="results-container-wr hidden" id="extra-payment-results">
+                    <div class="">
+                        <div class="results-container-wr hidden cl-card" id="extra-payment-results">
                             <div class="result-group " >
                                 <h3 class="u-mb-xs">Extra Payment Impact</h3>
                                 <div class="result-item small">
@@ -429,7 +430,7 @@
     <!-- </div> -->
 
     <!-- Amortization is advanced only -->
-    <details class="amortization-section advanced-only">
+    <div class="amortization-section advanced-only">
         <div class="amortization-header">
             <summary>Amortization Schedule</summary>
             <div class="amortization-view-toggle">
@@ -440,163 +441,11 @@
             </div>
         </div>
         <div class="table-container">
+            <div class="table-fade"><span>Learn More</span></div>
             <table id="amortization-table">
                 <thead id="amortization-head"></thead>
                 <tbody id="amortization-body"></tbody>
             </table>
         </div>
-    </details>
-</div>
-
-<!-- Added mobile sticky bottom bar -->
-<div class="mobile-bottom-bar" id="mobile-bottom-bar">
-    <div class="mobile-bottom-bar-collapsed" id="mobile-bar-toggle">
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <div class="mobile-bottom-bar-header">
-                        <span class="h6 u-mb-0">Results Summary</span>
-                        <div class="mobile-expand-icon">
-                            <div class="u-icon-corner w-embed"><svg width="100%" height="100%" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8.53027 8.75L8.53027 0.75L0.530274 0.75M8.03027 1.25C5.10134 4.17893 3.4592 5.82107 0.530273 8.75" stroke="currentColor" stroke-width="1.5"></path>
-                            </svg></div>
-                        </div>
-                    </div>
-                    <div class="mobile-summary-quick u-mb-sm">
-                    <div class="mobile-summary-item">
-                        <div class="paragraph">Home Price</div>
-                        <div class="h3" id="mobile-home-price">$22682,000</div>
-                    </div>
-                    <div class="mobile-summary-item">
-                        <div class="paragraph">Monthly Payment</div>
-                        <div class="h3 u-text-primary" id="mobile-monthly-payment">$99,683/mo</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </div>
-    </div>
-    
-    <div class="mobile-bottom-bar-expanded">
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                <div class="mobile-results-full">
-                    <div class="mobile-result-item">
-                        <span>Estimated Home Price</span>
-                        <span id="mobile-result-home-price" class="result-value">$0</span>
-                    </div>
-                    <div class="mobile-result-item">
-                        <span>Estimated Loan Amount</span>
-                        <span id="mobile-result-loan-amount" class="result-value">$0</span>
-                    </div>
-                    <div class="mobile-result-item">
-                        <span>Down Payment</span>
-                        <span id="mobile-result-down-payment" class="result-value">$0</span>
-                    </div>
-                    <!-- Added advanced-only class to LTV -->
-                    <div class="mobile-result-item advanced-only">
-                        <span>Loan-to-Value (LTV)</span>
-                        <span id="mobile-result-ltv" class="result-value">0%</span>
-                    </div>
-                   <!--  <div class="mobile-result-item" style="background-color: #f8f9fa; margin: 0.5rem -1rem; padding: 0.75rem 1rem;">
-                        <span style="font-weight: 600; color: var(--text-color);">Total Monthly Payment</span>
-                        <span id="mobile-result-monthly-payment-full" class="result-value" style="color: var(--primary-color); font-size: 1.125rem;">$0/mo</span>
-                    </div> -->
-                    
-                    <div class="mobile-result-group">
-                        <h3>Monthly Payment Breakdown</h3>
-                        <div class="mobile-result-item">
-                            <span>Principal & Interest</span>
-                            <span id="mobile-result-pi" class="result-value">$0</span>
-                        </div>
-                        <div class="mobile-result-item">
-                            <span>Property Tax</span>
-                            <span id="mobile-result-tax" class="result-value">$0</span>
-                        </div>
-                        <div class="mobile-result-item">
-                            <span>Home Insurance</span>
-                            <span id="mobile-result-insurance" class="result-value">$0</span>
-                        </div>
-                        <!-- Added advanced-only class to HOA -->
-                        <div class="mobile-result-item advanced-only">
-                            <span>HOA Fees</span>
-                            <span id="mobile-result-hoa" class="result-value">$0</span>
-                        </div>
-                        <div class="mobile-result-item" id="mobile-pmi-container">
-                            <span id="mobile-pmi-label">PMI</span>
-                            <span id="mobile-result-pmi" class="result-value">$0</span>
-                        </div>
-                    </div>
-                    
-                    <div class="mobile-result-group">
-                        <h3>Loan Summary</h3>
-                        <div class="mobile-result-item">
-                            <span>Total Amount Paid</span>
-                            <span id="mobile-result-total-paid" class="result-value">$0</span>
-                        </div>
-                        <div class="mobile-result-item">
-                            <span>Total Interest Paid</span>
-                            <span id="mobile-result-total-interest" class="result-value">$0</span>
-                        </div>
-                        <div class="mobile-result-item">
-                            <span>Payoff Date</span>
-                            <span id="mobile-result-payoff-date" class="result-value">-</span>
-                        </div>
-                    </div>
-                    
-                    <!-- Added advanced-only class to DTI section -->
-                    <div class="mobile-result-group advanced-only">
-                        <h3>Debt-to-Income Ratios</h3>
-                        <div class="mobile-result-item">
-                            <span>Housing DTI</span>
-                            <span id="mobile-result-housing-dti" class="result-value">0%</span>
-                        </div>
-                        <div class="mobile-result-item">
-                            <span>Total DTI</span>
-                            <span id="mobile-result-total-dti" class="result-value">0%</span>
-                        </div>
-                    </div>
-                    
-                    <!-- <details class="amortization-section advanced-only">
-                        <div class="amortization-header">
-                            <summary>Amortization Schedule</summary>
-                            <div class="amortization-view-toggle">
-                                <input type="radio" name="amortization-view" value="years" id="view-years" checked>
-                                <label for="view-years">Yearly</label>
-                                <input type="radio" name="amortization-view" value="months" id="view-months">
-                                <label for="view-months">Monthly</label>
-                            </div>
-                        </div>
-                        <div class="table-container">
-                            <table id="amortization-table">
-                                <thead id="amortization-head amortization-header"></thead>
-                                <tbody id="amortization-body"></tbody>
-                            </table>
-                        </div>
-                    </details> -->
-
-                    <!-- Added amortization schedule to mobile view -->
-                    <div class="mobile-result-group advanced-only" style="margin-top: 1.5rem;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                            <h3 style="margin: 0;">Amortizat ion Schedule</h3>
-                            <div class="amortization-view-toggle">
-                                <input type="radio" name="mobile-amortization-view" value="years" id="mobile-view-years" checked>
-                                <label for="mobile-view-years">Yearly</label>
-                                <input type="radio" name="mobile-amortization-view" value="months" id="mobile-view-months">
-                                <label for="mobile-view-months">Monthly</label>
-                            </div>
-                        </div>
-                        <div style="overflow-x: auto; margin: 0 -1rem; padding: 0 1rem;" data-scrollable="true">
-                            <table id="mobile-amortization-table" style="width: 100%; border-collapse: collapse; font-size: 0.75rem;">
-                                <thead id="mobile-amortization-head"></thead>
-                                <tbody id="mobile-amortization-body"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     </div>
 </div>

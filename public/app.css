@@ -815,3 +815,68 @@
   .amortization-section summary::-webkit-details-marker {
     display: none;
   }
+
+
+/*Hover for table of amortization section*/
+
+.table-container {
+  position: relative;
+  overflow: hidden; /* ensures overlay fits neatly */
+}
+
+/* Full-cover gradient overlay */
+.table-fade {
+  position: absolute;
+  inset: 0; /* top:0; right:0; bottom:0; left:0 */
+  background: linear-gradient(
+    to top,
+    var(--background-color) 0%,
+    rgba(0, 0, 0, 0.05) 25%,
+    rgba(0, 0, 0, 0.02) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto; /* allow clicking if you want interactivity */
+  z-index: 3; /* above table content */
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+/* Optional hidden state when expanded */
+.table-fade.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Center content (text + icon) */
+.table-fade span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-color, #222);
+  background: rgba(255, 255, 255, 0.85);
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.25s ease;
+}
+
+/* Optional hover effect */
+.table-fade span:hover {
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transform: translateY(-1px);
+}
+
+/* If you include an SVG arrow */
+.table-fade span svg {
+  width: 16px;
+  height: 16px;
+  stroke-width: 2;
+  color: currentColor;
+}
