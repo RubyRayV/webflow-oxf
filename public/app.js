@@ -1242,6 +1242,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // Track whether amortization table is visible (for performance)
   let isAmortizationTableVisible = false;
   
+  // Loading state
+  let isCalculating = false;
+  
   function scheduleFullUpdate() {
     // Cancel any pending debounced update
     if (debounceTimerId) {
@@ -1253,10 +1256,16 @@ document.addEventListener("DOMContentLoaded", () => {
       cancelAnimationFrame(updateRAFId);
     }
     
+    // Show loading indicator
+    showLoadingIndicator();
+    
     // Schedule debounced update
     debounceTimerId = setTimeout(() => {
       updateRAFId = requestAnimationFrame(() => { 
         updateUI(); 
+        
+        // Hide loading indicator
+        hideLoadingIndicator();
         
         // Update all slider visual fills after UI updates
         setTimeout(() => {
@@ -1271,6 +1280,42 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       debounceTimerId = null;
     }, DEBOUNCE_DELAY);
+  }
+  
+  // Show loading indicator on results section
+  function showLoadingIndicator() {
+    const resultsSection = document.querySelector('.results-section');
+    if (resultsSection && !isCalculating) {
+      isCalculating = true;
+      resultsSection.classList.add('calculating');
+      
+      // Add loading spinner if it doesn't exist
+      let loadingSpinner = resultsSection.querySelector('.loading-indicator');
+      if (!loadingSpinner) {
+        loadingSpinner = document.createElement('div');
+        loadingSpinner.className = 'loading-indicator';
+        loadingSpinner.innerHTML = `
+          <div class="spinner"></div>
+          <span>Calculating...</span>
+        `;
+        resultsSection.insertBefore(loadingSpinner, resultsSection.firstChild);
+      }
+      loadingSpinner.style.display = 'flex';
+    }
+  }
+  
+  // Hide loading indicator
+  function hideLoadingIndicator() {
+    const resultsSection = document.querySelector('.results-section');
+    if (resultsSection) {
+      isCalculating = false;
+      resultsSection.classList.remove('calculating');
+      
+      const loadingSpinner = resultsSection.querySelector('.loading-indicator');
+      if (loadingSpinner) {
+        loadingSpinner.style.display = 'none';
+      }
+    }
   }
   // ==========================================================================
   // MODE MANAGEMENT: Set calculation mode (default/DTI/payment)
@@ -1782,10 +1827,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // Function to show table
   function showAmortizationTable() {
     if (tableContainer && tableFade) {
-      // Remove hidden class from container
-      tableContainer.classList.remove('hidden');
-      // Add hidden class to fade overlay (hide the Learn More button)
+      // Remove hidden class from BOTH table-fade and table-container
       tableFade.classList.add('hidden');
+      tableContainer.classList.remove('hidden');
       // Mark table as visible
       isAmortizationTableVisible = true;
       // Trigger immediate update to generate table
@@ -1808,9 +1852,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Function to hide table
   function hideAmortizationTable() {
     if (tableContainer && tableFade) {
-      // Add hidden class to container
+      // Add hidden class to table-container, remove from table-fade
       tableContainer.classList.add('hidden');
-      // Remove hidden class from fade overlay (show the Learn More button)
       tableFade.classList.remove('hidden');
       // Mark table as not visible
       isAmortizationTableVisible = false;
