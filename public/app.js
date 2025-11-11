@@ -1830,7 +1830,7 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log('Amortization elements found:', {
     amortizationSection: !!amortizationSection,
     tableContainer: !!tableContainer,
-    tableFade: !!tableFade,
+    tableFade: !!tableFade, 
     learnMoreBtn: !!learnMoreBtn,
     hideTableBtn: !!hideTableBtn
   });
