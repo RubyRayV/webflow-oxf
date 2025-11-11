@@ -946,10 +946,13 @@
   /* Sticky header */
   .amortization-section table thead {
     position: sticky;
-    top: 0;
     background-color: var(--container-bg-color);
     z-index: 10;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+   .amortization-section table thead tr {
+    position: sticky;
+    top: 24;
   }
   
   /* Smaller font for mobile */
