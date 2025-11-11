@@ -411,8 +411,6 @@
     }
     .result-item span:first-child {
       color: var(--colors--paragraphs);
-      display: inline-flex; 
-      align-items: center;
     }
     .result-item .result-value {
       font-weight: 600;
