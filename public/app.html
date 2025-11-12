@@ -440,12 +440,44 @@
                 <label for="view-months">Monthly</label>
             </div>
         </div>
-        <div class="table-container">
-            <div class="table-fade"><span>Learn More</span></div>
-            <table id="amortization-table">
-                <thead id="amortization-head"></thead>
-                <tbody id="amortization-body"></tbody>
-            </table>
-        </div>
-    </div>
+         <div class="table-container">
+          <!-- FADE OVERLAY with Learn More button -->
+          <div class="table-fade">
+            <div data-wf--button--variant="primary" class="button u-mb-sm">
+              <div class="u-overflow-clip u-z-index-2">
+                <div aria-hidden="true" class="btn-txt">Learn More</div>
+                <div aria-hidden="true" class="btn-txt2">Learn More</div>
+              </div>
+              <a href="#" class="u-link-cover w-inline-block">
+                <div class="u-sr-only">Learn More</div>
+              </a>
+              <div class="btn-bg"></div>
+            </div>
+          </div>
+
+          <!-- ACTUAL TABLE -->
+          <table id="amortization-table">
+            <thead id="amortization-head"></thead>
+            <tbody id="amortization-body"></tbody>
+          </table>
+
+          <!-- HIDE BUTTON (at bottom) -->
+          <div class="row row-justify-center">
+            <div class="col col-shrink">
+              <div class="u-mb-md u-mt-md">
+                <div data-wf--button--variant="primary" class="button u-mb-sm" id="hide-tabble">
+                    <div class="u-overflow-clip u-z-index-2">
+                      <div aria-hidden="true" class="btn-txt">Hide Table</div>
+                      <div aria-hidden="true" class="btn-txt2">Hide Table</div>
+                    </div>
+                    <a href="#" class="u-link-cover w-inline-block">
+                      <div class="u-sr-only">Hide Table</div>
+                    </a>
+                    <div class="btn-bg"></div>
+                </div>
+              </div>
+            </div>                  
+          </div>
+          
+  </div>
 </div>

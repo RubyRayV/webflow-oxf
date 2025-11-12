@@ -802,8 +802,6 @@
   }
 }
 
-/* Desktop amortization preview using details[open] */
-@media (min-width: 769px) {
   .amortization-section summary {
     list-style: none;
     cursor: pointer;
@@ -866,18 +864,6 @@
   transition: all 0.25s ease;
 }
 
-/* Optional hover effect */
-.table-fade span:hover {
-  background: rgba(245, 245, 245, 1);
-}
-
-/* If you include an SVG arrow */
-.table-fade span svg {
-  width: 16px;
-  height: 16px;
-  stroke-width: 2;
-  color: currentColor;
-}
 
 
 /* ============================================================================
@@ -962,4 +948,4 @@
   .loading-indicator span {
     font-size: 0.85rem;
   }
-}
+
