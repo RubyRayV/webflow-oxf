@@ -425,12 +425,12 @@ document.addEventListener("DOMContentLoaded", () => {
     
     function updateRangeFill(el) {
         if (!el || el.type !== 'range') return;
-        const min = parseFloat(el.min) || 0, max = parseFloat(el.max) || 100, val = parseFloat(el.value) || min;
-        const pct = ((val - min) / (max - min)) * 100;
-        const thumbWidth = 48, sliderWidth = el.offsetWidth || 200, availWidth = sliderWidth - thumbWidth;
-        const thumbCenter = thumbWidth / 2 + (pct / 100) * availWidth;
-        const fillPct = Math.max(0, Math.min(100, (thumbCenter / sliderWidth) * 100));
-        el.style.background = `linear-gradient(to right, var(--text-color) 0%, var(--text-color) ${fillPct}%, var(--input-bg-color) ${fillPct}%, var(--input-bg-color) 100%)`;
+        const min = parseFloat(el.min) || 0;
+        const max = parseFloat(el.max) || 100;
+        const val = parseFloat(el.value) || min;
+        let pct = ((val - min) * 100) / (max - min);
+        pct = Math.max(0, Math.min(100, pct)); // clamp
+        el.style.background = `linear-gradient(to right, var(--text-color) 0%, var(--text-color) ${pct}%, var(--input-bg-color) ${pct}%)`;
     }
     
     function setupEventListeners() {
@@ -461,8 +461,31 @@ document.addEventListener("DOMContentLoaded", () => {
         if (hideBtn && tableFade && tableContainer) hideBtn.addEventListener('click', () => { tableFade.classList.remove('hidden'); tableContainer.classList.remove('expanded'); });
     }
     
-    function initialize() { setCalculatorMode('simple'); setupEventListeners(); document.querySelectorAll('input[type="range"]').forEach(updateRangeFill); updateRefinanceTypeUI(); updateUI(); }
+    function initialize() { 
+        setCalculatorMode('simple'); 
+        setupEventListeners(); 
+        // Initialize all sliders after a brief delay to ensure DOM is ready
+        setTimeout(() => {
+            document.querySelectorAll('input[type="range"]').forEach(updateRangeFill);
+        }, 50);
+        updateRefinanceTypeUI(); 
+        updateUI(); 
+    }
     initialize();
+    
+    // Update fills on resize with debounce
     let resizeTimer;
-    window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => document.querySelectorAll('input[type="range"]').forEach(updateRangeFill), 150); });
+    window.addEventListener('resize', () => { 
+        clearTimeout(resizeTimer); 
+        resizeTimer = setTimeout(() => {
+            document.querySelectorAll('input[type="range"]').forEach(updateRangeFill);
+        }, 150); 
+    });
+    
+    // Also update on input events (delegated listener for all sliders)
+    document.addEventListener('input', (e) => {
+        if (e.target.matches('input[type="range"]')) {
+            updateRangeFill(e.target);
+        }
+    });
 });
