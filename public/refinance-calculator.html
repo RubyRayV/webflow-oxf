@@ -1,0 +1,410 @@
+<div class="calculator-container">
+    <div class="row u-mb-md">
+        <div class="col col-lg-6 col-sm-12"><h1>Refinance Calculator</h1></div>
+        <div class="col col-lg-6 col-sm-12">
+            <div class="u-d-flex-right-center cc-sm-left">
+                <div class="mode-toggle-buttons">
+                    <button id="simple-mode-btn" class="active">Simple</button>
+                    <button id="advanced-mode-btn">Advanced</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row row-justify-between">
+        <div class="col col-lg-6 col-md-12">
+            <div class="cl-card">
+                <div class="inputs-section">
+                    <div class="input-group">
+                        <label for="loan-type" class="h3 u-mb-xs">Loan Type</label>
+                        <select id="loan-type">
+                            <option value="conventional">Conventional</option>
+                            <option value="fha">FHA</option>
+                            <option value="va">VA</option>
+                            <option value="usda">USDA</option>
+                        </select>
+                        <div id="loan-type-info" class="info-box paragraph-sm"></div>
+                    </div>
+                    
+                    <div class="selector-wrapper">
+                        <p class="paragraph-sm u-mb-xs">Refinance Type:</p>
+                        <div class="refinance-type-toggle">
+                            <input type="radio" name="refinance-type" value="rate-term" id="rate-term" checked>
+                            <label for="rate-term">Rate & Term</label>
+                            <input type="radio" name="refinance-type" value="streamline" id="streamline">
+                            <label for="streamline">Streamline</label>
+                            <input type="radio" name="refinance-type" value="cashout" id="cashout">
+                            <label for="cashout">Cash-Out</label>
+                        </div>
+                        <div id="refinance-type-info" class="info-box paragraph-sm u-mt-xs"></div>
+                    </div>
+
+                    <h3 class="u-mb-xs u-mt-md">Current Loan Details</h3>
+                    
+                    <div class="input-group slider-group">
+                        <div class="label-container">
+                            <label for="home-value-slider" class="h6 u-mb-0">Current Home Value</label>
+                            <input type="number" id="home-value-number" class="slider-number-input" min="50000" max="2000000" step="5000" value="400000">
+                        </div>
+                        <input type="range" id="home-value-slider" min="50000" max="2000000" step="5000" value="400000">
+                        <div id="home-value-guidance" class="slider-guidance"></div>
+                    </div>
+                    
+                    <div class="input-group slider-group">
+                        <div class="label-container">
+                            <label for="current-balance-slider" class="h6 u-mb-0">Current Loan Balance</label>
+                            <input type="number" id="current-balance-number" class="slider-number-input" min="10000" max="1500000" step="1000" value="300000">
+                        </div>
+                        <input type="range" id="current-balance-slider" min="10000" max="1500000" step="1000" value="300000">
+                        <div id="balance-guidance" class="slider-guidance"></div>
+                    </div>
+                    
+                    <div class="input-group slider-group">
+                        <div class="label-container">
+                            <label for="current-rate-slider" class="h6 u-mb-0">Current Interest Rate (%)</label>
+                            <input type="number" id="current-rate-number" class="slider-number-input" min="1" max="15" step="0.125" value="7.5">
+                        </div>
+                        <input type="range" id="current-rate-slider" min="1" max="15" step="0.125" value="7.5">
+                    </div>
+                    
+                    <div class="input-group slider-group">
+                        <div class="label-container">
+                            <label for="current-payment-slider" class="h6 u-mb-0">Current Monthly Payment (PITI)</label>
+                            <input type="number" id="current-payment-number" class="slider-number-input" min="500" max="15000" step="50" value="2500">
+                        </div>
+                        <input type="range" id="current-payment-slider" min="500" max="15000" step="50" value="2500">
+                    </div>
+                    
+                    <div class="input-group slider-group">
+                        <div class="label-container">
+                            <label for="remaining-term-slider" class="h6 u-mb-0">Remaining Term (Years)</label>
+                            <input type="number" id="remaining-term-number" class="slider-number-input" min="1" max="30" step="1" value="27">
+                        </div>
+                        <input type="range" id="remaining-term-slider" min="1" max="30" step="1" value="27">
+                    </div>
+
+                    <h3 class="u-mb-xs u-mt-md">New Loan Details</h3>
+                    
+                    <div class="input-group slider-group">
+                        <div class="label-container">
+                            <label for="new-rate-slider" class="h6 u-mb-0">New Interest Rate (%)</label>
+                            <input type="number" id="new-rate-number" class="slider-number-input" min="1" max="15" step="0.125" value="6.0">
+                        </div>
+                        <input type="range" id="new-rate-slider" min="1" max="15" step="0.125" value="6.0">
+                        <div id="rate-guidance" class="slider-guidance"></div>
+                    </div>
+                    
+                    <div class="input-group slider-group">
+                        <div class="label-container">
+                            <label for="new-term-slider" class="h6 u-mb-0">New Loan Term (Years)</label>
+                            <input type="number" id="new-term-number" class="slider-number-input" min="5" max="40" step="5" value="30">
+                        </div>
+                        <input type="range" id="new-term-slider" min="5" max="40" step="5" value="30">
+                    </div>
+                    
+                    <div class="input-group slider-group" id="cashout-amount-group" style="display: none;">
+                        <div class="label-container">
+                            <label for="cashout-amount-slider" class="h6 u-mb-0">Cash-Out Amount</label>
+                            <input type="number" id="cashout-amount-number" class="slider-number-input" min="0" max="500000" step="1000" value="50000">
+                        </div>
+                        <input type="range" id="cashout-amount-slider" min="0" max="500000" step="1000" value="50000">
+                        <div id="cashout-guidance" class="slider-guidance"></div>
+                    </div>
+                    
+                    <div class="input-group slider-group" id="monthly-debt-group" style="display: none;">
+                        <div class="label-container">
+                            <label for="monthly-debt-slider" class="h6 u-mb-0">
+                                Total Non-Housing Debt Payments
+                                <div class="tooltip">
+                                    <span class="tooltip-trigger">?</span>
+                                    <div class="tooltip-content">Enter your total monthly payments for debts you plan to consolidate (credit cards, auto loans, etc.)</div>
+                                </div>
+                            </label>
+                            <input type="number" id="monthly-debt-number" class="slider-number-input" min="0" max="10000" step="50" value="500">
+                        </div>
+                        <input type="range" id="monthly-debt-slider" min="0" max="10000" step="50" value="500">
+                    </div>
+
+                    <h3 class="u-mb-xs u-mt-md advanced-only">Closing Costs</h3>
+                    
+                    <div class="input-group slider-group advanced-only">
+                        <div class="label-container">
+                            <label for="closing-costs-slider" class="h6 u-mb-0">Estimated Closing Costs</label>
+                            <input type="number" id="closing-costs-number" class="slider-number-input" min="0" max="25000" step="100" value="3000">
+                        </div>
+                        <input type="range" id="closing-costs-slider" min="0" max="25000" step="100" value="3000">
+                    </div>
+
+                    <h3 class="u-mb-xs u-mt-md advanced-only">Monthly Escrows</h3>
+                    
+                    <div class="input-group slider-group advanced-only">
+                        <div class="label-container">
+                            <label for="property-tax-slider" class="h6 u-mb-0">Property Tax (Monthly)</label>
+                            <input type="number" id="property-tax-number" class="slider-number-input" min="0" max="2000" step="25" value="400">
+                        </div>
+                        <input type="range" id="property-tax-slider" min="0" max="2000" step="25" value="400">
+                    </div>
+                    
+                    <div class="input-group slider-group advanced-only">
+                        <div class="label-container">
+                            <label for="insurance-slider" class="h6 u-mb-0">Home Insurance (Monthly)</label>
+                            <input type="number" id="insurance-number" class="slider-number-input" min="0" max="1000" step="10" value="167">
+                        </div>
+                        <input type="range" id="insurance-slider" min="0" max="1000" step="10" value="167">
+                    </div>
+                    
+                    <div class="input-group slider-group advanced-only">
+                        <div class="label-container">
+                            <label for="hoa-slider" class="h6 u-mb-0">HOA Fees (Monthly)</label>
+                            <input type="number" id="hoa-number" class="slider-number-input" min="0" max="1000" step="25" value="0">
+                        </div>
+                        <input type="range" id="hoa-slider" min="0" max="1000" step="25" value="0">
+                    </div>
+
+                    <h3 class="u-mb-xs u-mt-md advanced-only">Additional Payment</h3>
+                    
+                    <div class="input-group slider-group advanced-only">
+                        <div class="label-container">
+                            <label for="extra-payment-slider" class="h6 u-mb-0">Extra Monthly Payment</label>
+                            <input type="number" id="extra-payment-number" class="slider-number-input" min="0" max="5000" step="50" value="0">
+                        </div>
+                        <input type="range" id="extra-payment-slider" min="0" max="5000" step="50" value="0">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col col-lg-6 col-md-12">
+            <div class="results-section">
+                
+                <div class="cl-card">
+                    <div class="results-container-wr">
+                        <div class="result-group">
+                            <div class="result-item primary-result u-mb-sm">
+                                <span id="payment-label">New Monthly Payment (P&I)</span>
+                                <span id="result-new-payment" class="result-value h1">$2,365/mo</span>
+                            </div>
+                            <div class="result-item small">
+                                <span>Rate Change</span>
+                                <span id="rate-change-display">7.50% → 6.00%</span>
+                            </div>
+                            <div class="result-item small">
+                                <span>New Loan Term</span>
+                                <span id="term-display">30 years</span>
+                            </div>
+                            <div class="result-item small" id="max-cashout-row" style="display: none;">
+                                <span>Max Cash-Out Available</span>
+                                <span id="max-cashout-display">$50,000</span>
+                            </div>
+                            <div class="result-item savings-highlight" id="savings-message-standard">
+                                <span>📉 Monthly Savings</span>
+                                <span id="result-monthly-savings" class="result-value positive">+$135/mo</span>
+                            </div>
+                            <div class="result-item cashout-highlight" id="savings-message-cashout" style="display: none;">
+                                <span>💵 Get <strong id="cashout-enticement-amount">$50,000</strong> cash</span>
+                                <span id="cashout-enticement-cost" class="result-value">for just $300/mo</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="cl-card">
+                    <div class="results-container-wr">
+                        <div class="result-group">
+                            <h3 class="u-mb-xs">Loan Details</h3>
+                            <div class="result-item small">
+                                <span>New Loan Amount</span>
+                                <span id="result-loan-amount">$300,000</span>
+                            </div>
+                            <div class="result-item small">
+                                <span>Interest Rate</span>
+                                <span id="result-effective-rate">6.000%</span>
+                            </div>
+                            <div class="result-item small">
+                                <span>New Loan-to-Value (LTV)</span>
+                                <span id="result-ltv">75.0%</span>
+                            </div>
+                            <div class="result-item small" id="cashout-result-row" style="display: none;">
+                                <span>Cash-Out Amount</span>
+                                <span id="result-cashout-amount">$50,000</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="cl-card" id="debt-consolidation-card" style="display: none;">
+                    <div class="results-container-wr">
+                        <div class="result-group">
+                            <h3 class="u-mb-xs">Debt Consolidation Estimate</h3>
+                            <div class="result-item small savings-highlight">
+                                <span>💰 Monthly Savings</span>
+                                <span id="result-consolidation-savings" class="positive">+$0/mo</span>
+                            </div>
+                            <div class="result-item small">
+                                <span>Current Debt Payments</span>
+                                <span id="result-current-debt-payments">$0/mo</span>
+                            </div>
+                            <div class="result-item small">
+                                <span>Added to Mortgage Payment</span>
+                                <span id="result-added-to-mortgage">$0/mo</span>
+                            </div>
+                            <div class="result-item small">
+                                <span>New Payoff Date</span>
+                                <span id="result-payoff-date-consolidation">1/15/2056</span>
+                            </div>
+                            <div class="result-item small advanced-only">
+                                <span>Total Interest (New Loan)</span>
+                                <span id="result-total-interest-consolidation">$347,515</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="cl-card advanced-only">
+                    <div class="results-container-wr">
+                        <div class="result-group">
+                            <h3 class="u-mb-xs">Cost Analysis</h3>
+                            <div class="result-item small">
+                                <span>Closing Costs</span>
+                                <span id="result-total-closing">$3,000</span>
+                            </div>
+                            <div class="result-item small break-even-highlight" id="break-even-row">
+                                <span>
+                                    ⏱ Break-Even Period
+                                    <div class="tooltip">
+                                        <span class="tooltip-trigger">?</span>
+                                        <div class="tooltip-content">How long until your monthly savings cover the closing costs. After this point, you start saving money.</div>
+                                    </div>
+                                </span>
+                                <span id="result-break-even">23 months</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="cl-card advanced-only">
+                    <div class="results-container-wr">
+                        <div class="result-group">
+                            <h3 class="u-mb-xs">Payment Breakdown (New Loan)</h3>
+                            <div class="result-item small">
+                                <span>Principal & Interest</span>
+                                <span id="result-pi">$1,799</span>
+                            </div>
+                            <div class="result-item small">
+                                <span>Property Tax</span>
+                                <span id="result-tax">$400</span>
+                            </div>
+                            <div class="result-item small">
+                                <span>Home Insurance</span>
+                                <span id="result-insurance">$167</span>
+                            </div>
+                            <div class="result-item small">
+                                <span>HOA Fees</span>
+                                <span id="result-hoa">$0</span>
+                            </div>
+                            <div class="result-item small hidden" id="result-pmi-container">
+                                <span>
+                                    <span id="result-pmi-label">PMI</span>
+                                    <div class="tooltip">
+                                        <span class="tooltip-trigger">?</span>
+                                        <div class="tooltip-content" id="pmi-tooltip-content"></div>
+                                    </div>
+                                </span>
+                                <span id="result-pmi">$0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="cl-card" id="long-term-savings-card">
+                    <div class="results-container-wr">
+                        <div class="result-group">
+                            <h3 class="u-mb-xs">Long-Term Savings</h3>
+                            <div class="result-item small">
+                                <span>💰 Lifetime Interest Savings</span>
+                                <span id="result-interest-savings" class="positive">+$17,577</span>
+                            </div>
+                            <div class="result-item small">
+                                <span>New Payoff Date</span>
+                                <span id="result-payoff-date">1/15/2056</span>
+                            </div>
+                            <div class="result-item small advanced-only">
+                                <span>Total Interest (New Loan)</span>
+                                <span id="result-total-interest">$347,515</span>
+                            </div>
+                            <div class="result-item small advanced-only">
+                                <span>Total Cost of Loan</span>
+                                <span id="result-total-cost">$647,515</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="cl-card advanced-only" id="extra-payment-results" style="display: none;">
+                    <div class="results-container-wr">
+                        <div class="result-group">
+                            <h3 class="u-mb-xs">Extra Payment Impact</h3>
+                            <div class="result-item small">
+                                <span>Time Saved</span>
+                                <span id="result-time-saved">0 months</span>
+                            </div>
+                            <div class="result-item small">
+                                <span>💰 Interest Saved</span>
+                                <span id="result-extra-interest-saved" class="positive">$0</span>
+                            </div>
+                            <div class="result-item small">
+                                <span>New Payoff Date (w/ Extra)</span>
+                                <span id="result-payoff-date-extra">1/15/2056</span>
+                            </div>
+                            <div class="result-item small">
+                                <span>
+                                    Net Effective Rate
+                                    <div class="tooltip">
+                                        <span class="tooltip-trigger">?</span>
+                                        <div class="tooltip-content">The effective interest rate when factoring in the interest saved from extra payments.</div>
+                                    </div>
+                                </span>
+                                <span id="result-net-effective-rate">6.000%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="amortization-section advanced-only">
+        <div class="amortization-header">
+            <summary>Amortization Schedule</summary>
+            <div class="amortization-view-toggle">
+                <input type="radio" name="amortization-view" value="years" id="view-years" checked>
+                <label for="view-years">Yearly</label>
+                <input type="radio" name="amortization-view" value="months" id="view-months">
+                <label for="view-months">Monthly</label>
+            </div>
+        </div>
+        <div class="table-container">
+            <div class="table-fade">
+                <span class="expand-table-btn">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3V13M3 8H13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    View Full Schedule
+                </span>
+            </div>
+            <table id="amortization-table">
+                <thead id="amortization-head"></thead>
+                <tbody id="amortization-body"></tbody>
+            </table>
+            <div class="row row-justify-center">
+                <div class="col col-shrink">
+                    <div style="padding: 1rem;">
+                        <button class="collapse-table-btn" id="hide-table">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                            Hide Schedule
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
