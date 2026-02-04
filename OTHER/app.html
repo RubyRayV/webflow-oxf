@@ -1,0 +1,483 @@
+<div class="calculator-container">
+  <div class="row u-mb-md">
+      <div class="col col-lg-6 col-sm-12"><h1>Mortgage Calculator</h1></div>
+      <div class="col col-lg-6 col-sm-12">
+          <div class="u-d-flex-right-center cc-sm-left">
+              <div class="mode-toggle-buttons">
+                  <button id="simple-mode-btn" class="active">Simple</button>
+                  <button id="advanced-mode-btn">Advanced</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  
+  <!-- <div class="main-content"> -->
+      <div class="row row-justify-between">
+          <div class="col col-lg-6 col-md-12">
+              <div class="cl-card">
+                  <div class="inputs-section">
+                      <div class="selector-wrapper">
+                      <!-- Added simple calculation mode toggle at top for simple mode -->
+                          <!-- <div class="simple-calc-mode-toggle simple-only" id="simple-calc-mode-toggle"> -->
+                              <p class="paragraph-sm">Calculate by:</p><div class="simple-calc-mode-selector">
+                              
+                              <div class="mode-selector">
+                              <input type="radio" name="simple-calc-mode" value="home-price" id="simple-home-price" checked=""><label for="simple-home-price">Home Price</label>
+                              
+                              <input type="radio" name="simple-calc-mode" value="affordability" id="simple-affordability"><label for="simple-affordability">Income &amp; Debt</label>
+                              </div>
+                          <!-- </div> -->
+                      </div>
+                      <!-- Moved calculation mode selector to appear before affordability in advanced mode -->
+                      <div class="mode-selector-container advanced-only">
+                          <p class="paragraph-sm u-mt-md">Calculation Mode: Default (uses loan type's max DTI). Select below to override:</p>
+                          <div>
+                              <div class="mode-selector">
+                                  <!-- Target DTI Option -->
+                                  <input type="radio" name="calculation-mode-override" value="dti" id="mode-dti">
+                                  <label for="mode-dti">Target DTI</label>
+                                  
+                                  <!-- Target Monthly Payment Option -->
+                                  <input type="radio" name="calculation-mode-override" value="payment" id="mode-payment">
+                                  <label for="mode-payment">Target Monthly Payment</label>
+
+                                  <input type="radio" name="calculation-mode-override" value="override" id="mode-override">
+                                  <label for="mode-override">Override Loan Amount</label>
+                                  
+                                  <!-- Reset Button (styled to match) -->
+                                  <button id="clear-mode-button">Reset to Default</button>
+                              </div>
+                          </div>
+                      </div>
+                      </div>
+
+              <!--         <div class="mode-selector-container advanced-only">
+                          <p>Calculation Mode: Default (uses loan type's max DTI). Select below to override:</p>
+                          <div class="mode-selector">
+                              <label><input type="radio" name="calculation-mode-override" value="dti"> Target DTI</label>
+                              <label><input type="radio" name="calculation-mode-override" value="payment"> Target Monthly Payment</label>
+                          </div>
+                          <button id="clear-mode-button">Reset to Default Mode</button>
+                      </div>
+-->
+                      <!-- Moved loan type to top and removed advanced-only class so it shows in simple mode -->
+                      <div class="input-group">
+                          <label for="loan-type" class="h3 u-mb-xs">Loan Type</label>
+                          <select id="loan-type">
+                              <option value="conventional">Conventional</option>
+                              <option value="fha">FHA</option>
+                              <option value="va">VA</option>
+                              <option value="usda">USDA</option>
+                          </select>
+                          <div id="loan-type-info" class="info-box paragraph-sm"></div>
+                      </div>
+
+                   
+                      <h3 class="u-mb-xs">Loan, Property & Closing Details</h3>
+                      
+
+                      <div class="calculation-group advanced-only">
+                          <div class="input-group slider-group" id="target-dti-input-group">
+                              <div class="label-container">
+                                  <label for="target-dti-slider" class="h6 u-mb-0">Target DTI (%)</label>
+                                  <input type="number" id="target-dti-number" class="slider-number-input" min="20" max="60" step="1" value="43">
+                              </div>
+                              <input type="range" id="target-dti-slider" min="20" max="60" step="1" value="43">
+                          </div>
+                      </div>
+
+                      <!-- Moved target payment section here, right after calculation mode -->
+
+                      <div class="calculation-group advanced-only" id="target-payment-input-section">
+                          <div class="input-group slider-group" id="target-monthly-payment-input-group">
+                              <div class="label-container">
+                                  <label for="target-monthly-payment-slider" class="h6 u-mb-0">Target Monthly Payment</label>
+                                  <input type="number" id="target-monthly-payment-number" class="slider-number-input" min="500" max="15000" step="100" value="3000">
+                              </div>
+                              <input type="range" id="target-monthly-payment-slider" min="500" max="15000" step="100" value="3000">
+                          </div>
+                      </div>
+
+                      <div class="calculation-group advanced-only" >
+                      <div class="input-group slider-group" id="loan-amount-override-group">
+                              <div class="label-container">
+                                  <label for="loan-amount-override-slider" class="h6 u-mb-0">Override Loan Amount</label>
+                                  <input type="number" id="loan-amount-override-number" class="slider-number-input" min="0" max="2000000" step="1000" value="0">
+                              </div>
+                              <input type="range" id="loan-amount-override-slider" min="0" max="2000000" step="1000" value="0">
+                      </div>
+                   </div>
+                      
+                      <!-- Simple mode affordability inputs -->
+                      <div class="input-group slider-group simple-affordability-only" id="simple-annual-income-group">
+                          <div class="label-container">
+                              <label for="simple-annual-income-slider" class="h6 u-mb-0">Annual Income</label>
+                              <input type="number" id="simple-annual-income-number" class="slider-number-input" min="20000" max="1000000" step="1000" value="100000">
+                          </div>
+                          <input type="range" id="simple-annual-income-slider" min="20000" max="1000000" step="1000" value="100000">
+                      </div>
+
+                      <div class="input-group slider-group simple-affordability-only" id="simple-monthly-debt-group">
+                          <div class="label-container">
+                              <label for="simple-monthly-debt-slider" class="h6 u-mb-0">Monthly Debt</label>
+                              <input type="number" id="simple-monthly-debt-number" class="slider-number-input" min="0" max="10000" step="50" value="500">
+                          </div>
+                          <input type="range" id="simple-monthly-debt-slider" min="0" max="10000" step="50" value="500">
+                      </div>
+                      
+                      <!-- Home price input for simple mode -->
+                      <div class="input-group slider-group simple-home-price-only" id="simple-loan-amount-group">
+                          <div class="label-container">
+                              <label for="simple-loan-amount-slider" class="h6 u-mb-0">Home Price</label>
+                              <input type="number" id="simple-loan-amount-number" class="slider-number-input" min="50000" max="2000000" step="5000" value="500000">
+                          </div>
+                          <input type="range" id="simple-loan-amount-slider" min="50000" max="2000000" step="5000" value="500000">
+                      </div>
+
+                      <div class="input-group slider-group">
+                          <div class="label-container">
+                              <label for="down-payment-slider" class="h6 u-mb-0">Down Payment</label>
+                              <input type="number" id="down-payment-number" class="slider-number-input" min="0" max="500000" step="1000" value="50000">
+                          </div>
+                          <input type="range" id="down-payment-slider" min="0" max="500000" step="1000" value="50000">
+                          <p id="down-payment-warning" class="warning-text hidden"></p>
+                      </div>
+
+                      <div class="input-group slider-group">
+                          <div class="label-container">
+                              <label for="interest-rate-slider" class="h6 u-mb-0">Interest Rate (%)</label>
+                              <input type="number" id="interest-rate-number" class="slider-number-input" min="1" max="15" step="0.125" value="6.5">
+                          </div>
+                          <input type="range" id="interest-rate-slider" min="1" max="15" step="0.125" value="6.5">
+                      </div>
+
+                      <div class="input-group slider-group">
+                          <div class="label-container">
+                              <label for="loan-term-slider" class="h6 u-mb-0">Loan Term (Years)</label>
+                              <input type="number" id="loan-term-number" class="slider-number-input" min="5" max="40" step="1" value="30">
+                          </div>
+                          <input type="range" id="loan-term-slider" min="5" max="40" step="1" value="30">
+                      </div>
+
+                      <!-- Seller credits is advanced only -->
+                      <div class="input-group slider-group advanced-only">
+                          <div class="label-container">
+                              <label for="seller-credits-percent-slider" class="h6 u-mb-0">
+                                  Seller Credits (%)
+                                  <div class="tooltip">
+                                      <span class="tooltip-trigger">?</span>
+                                      <div class="tooltip-content" id="seller-credits-tooltip-content">
+                                          Percentage of home price. Reduces cash needed at closing. Max limits apply by loan type.
+                                      </div>
+                                  </div>
+                              </label>
+                              <input type="number" id="seller-credits-percent-number" class="slider-number-input" min="0" max="10" step="0.1" value="0"> 
+                              <span id="seller-credits-dollar-value" class="seller-credits-dollar-value">($0)</span>
+                          </div>
+                          <input type="range" id="seller-credits-percent-slider" min="0" max="10" step="0.1" value="0">
+                      </div>
+
+                 
+                      <!-- Property tax and insurance are advanced only -->
+                      <div class="grid-2-col advanced-only">
+                          <div class="input-group slider-group">
+                              <div class="label-container">
+                                  <label for="property-tax-slider" class="h6 u-mb-0">Property Tax ($/mo)</label>
+                                  <input type="number" id="property-tax-number" class="slider-number-input" min="0" max="2000" step="10" value="300">
+                              </div>
+                              <input type="range" id="property-tax-slider" min="0" max="2000" step="10" value="300">
+                          </div>
+                          <div class="input-group slider-group">
+                              <div class="label-container">
+                                  <label for="insurance-slider" class="h6 u-mb-0">Insurance ($/mo)</label>
+                                  <input type="number" id="insurance-number" class="slider-number-input" min="0" max="1000" step="10" value="125">
+                              </div>
+                              <input type="range" id="insurance-slider" min="0" max="1000" step="10" value="125">
+                          </div>
+                      </div>
+
+                      <!-- Added HOA fees input -->
+                      <div class="input-group slider-group advanced-only">
+                          <div class="label-container">
+                              <label for="hoa-slider" class="h6 u-mb-0">HOA Fees ($/mo)</label>
+                              <input type="number" id="hoa-number" class="slider-number-input" min="0" max="1000" step="10" value="0">
+                          </div>
+                          <input type="range" id="hoa-slider" min="0" max="1000" step="10" value="0">
+                      </div>
+
+                      <!-- Extra payment is advanced only -->
+                      <div class="input-group slider-group advanced-only">
+                          <div class="label-container">
+                              <label for="additional-payment-slider" class="h6 u-mb-0">Extra Monthly Payment</label>
+                              <input type="number" id="additional-payment-number" class="slider-number-input" min="0" max="5000" step="50" value="0">
+                          </div>
+                          <input type="range" id="additional-payment-slider" min="0" max="5000" step="50" value="0">
+                      </div>
+
+                  
+                  </div>
+              </div>
+          </div>
+          <div class="col col-lg-6 col-md-12">
+              <div class="results-section">
+
+                  <div class="cl-card">
+                      <div class="results-container-wr">
+                          
+                          <!-- Estimated Home Price - Visible in both simple and advanced mode -->
+                          <div class="result-item primary-result  u-mb-sm">
+                              <div >
+                              <h4 >Total Monthly Payment (PITI)</h4>
+                              <span id="result-monthly-payment" class="result-value h1"></span>
+                              </div>
+                          </div>
+                          <div class="result-item small">
+                              <span>Estimated Home Price</span>
+                              <span id="result-home-price" class="result-value"></span>
+                          </div>
+                          
+                          <div class="result-item small">
+                              <span>Estimated Loan Amount</span>
+                              <span id="result-loan-amount" class="result-value"></span>
+                          </div>
+                          
+                          <!-- Down Payment info for simple mode -->
+                          <div class="result-item small">
+                              <span>Down Payment</span>
+                              <span id="result-down-payment-simple" class="result-value"></span>
+                          </div>
+                          
+                          <!-- Effective interest rate and LTV are advanced only -->
+                          <div class="advanced-only">
+                              <div class="result-item small">
+                                  <span>Effective Interest Rate</span>
+                                  <span id="result-effective-interest-rate" class="result-value"></span>
+                              </div>
+                          </div>
+                          <div class="advanced-only">
+                               <div class="result-item small">
+                                  <span>Loan-to-Value (LTV)</span>
+                                  <span id="result-ltv" class="result-value"></span>
+                              </div>
+                          </div>
+                        
+                      </div>
+                  </div>
+
+                  <!-- Monthly Payment Breakdown for Simple Mode -->
+                  <div class="cl-card">
+                      <div class="results-container-wr">
+                          <h3 class="u-mb-xs">Monthly Payment Breakdown</h3>
+                          <div class="result-item small">
+                              <span>Principal & Interest</span>
+                              <span id="result-pi-simple"></span>
+                          </div>
+                          <div class="result-item small">
+                              <span>Property Tax</span>
+                              <span id="result-tax-simple"></span>
+                          </div>
+                          <div class="result-item small">
+                              <span>Home Insurance</span>
+                              <span id="result-insurance-simple"></span>
+                          </div>
+                          <div class="result-item small hidden" id="result-pmi-container-simple">
+                              <span id="result-pmi-label-simple">PMI</span>
+                              <span id="result-pmi-simple"></span>
+                          </div>
+                      </div>  
+                  </div>
+
+                  <div class="cl-card">
+                      <div class="results-container-wr">
+                          <!-- Loan Summary for Simple Mode -->
+                          <div class="result-group">
+                              <h3 class="u-mb-xs">Loan Summary</h3>
+                              <div class="result-item small">
+                                  <span>Total Amount Paid</span>
+                                  <span id="result-total-paid"></span>
+                              </div>
+                              <div class="result-item small">
+                                  <span>Total Interest Paid</span>
+                                  <span id="result-total-interest"></span>
+                              </div>
+                              <div class="result-item small">
+                                  <span>Payoff Date</span>
+                                  <span id="result-payoff-date-simple"></span>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="cl-card advanced-only">
+                      <div class="results-container-wr advanced-only">
+                          <!-- All closing figures are advanced only -->
+                          <div class="result-group">
+                              <h3 class="u-mb-sm">Estimated Closing Figures</h3>
+                               <div class="result-item small">
+                                  <span>Required Down Payment</span>
+                                  <span id="result-down-payment-summary" class="result-value"></span>
+                              </div>
+                              <div class="result-item small">
+                                  <span>Seller Credits Applied ($)</span>
+                                  <span id="result-seller-credits-applied" class="result-value"></span>
+                              </div>
+                              <div class="result-item small" style="font-weight: bold;">
+                                  <span>
+                                      Est. Cash for DP (after Credits)
+                                      <div class="tooltip">
+                                          <span class="tooltip-trigger">?</span>
+                                          <div class="tooltip-content">
+                                              This is your estimated out-of-pocket cash needed at closing for the down payment, after applying seller credits. Additional closing costs (title, appraisal, etc.) are not included in this estimate.
+                                          </div>
+                                      </div>
+                                  </span>
+                                  <span id="result-estimated-cash-to-close" class="result-value"></span>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="cl-card advanced-only">
+                      <div class="results-container-wr advanced-only">
+                          <div class="result-group">
+                              <h3 class="u-mb-xs">Monthly Payment Breakdown</h3>
+                              <div class="result-item small">
+                                  <span>Principal & Interest</span>
+                                  <span id="result-pi"></span>
+                              </div>
+                              <div class="result-item small">
+                                  <span>Property Tax</span>
+                                  <span id="result-tax"></span>
+                              </div>
+                              <div class="result-item small">
+                                  <span>Home Insurance</span>
+                                  <span id="result-insurance"></span>
+                              </div>
+                              <!-- Added HOA to monthly breakdown -->
+                              <div class="result-item small">
+                                  <span>HOA Fees</span>
+                                  <span id="result-hoa"></span>
+                              </div>
+                              <div class="result-item small hidden" id="result-pmi-container">
+                                  <span>
+                                      <span id="result-pmi-label">PMI</span>
+                                      <div class="tooltip">
+                                          <span class="tooltip-trigger">?</span>
+                                          <div class="tooltip-content" id="pmi-mip-tooltip-content">
+                                          </div>
+                                      </div>
+                                  </span>
+                                  <span id="result-pmi"></span>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="cl-card advanced-only">
+                      <div class="results-container-wr advanced-only">
+                          <div class="result-group">
+                              <h3 class="u-mb-xs">Debt-to-Income Ratios</h3>
+                              <div class="result-item small">
+                                  <span>Calculated Housing DTI</span>
+                                  <span id="result-housing-dti"></span>
+                              </div>
+                              <div class="result-item small">
+                                  <span>Calculated Total DTI</span>
+                                  <span id="result-total-dti"></span>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="">
+                      <div class="results-container-wr hidden cl-card" id="extra-payment-results">
+                          <div class="result-group " >
+                              <h3 class="u-mb-xs">Extra Payment Impact</h3>
+                              <div class="result-item small">
+                                  <span>Time Saved</span>
+                                  <span id="result-time-saved"></span>
+                              </div>
+                              <div class="result-item small">
+                                  <span>Interest Saved</span>
+                                  <span id="result-interest-saved"></span>
+                              </div>
+                              <div class="result-item small">
+                                  <span>New Payoff Date</span>
+                                  <span id="result-payoff-date"></span>
+                              </div>
+                              <div class="result-item small hidden" id="result-pmi-dropoff-extra-container">
+                                  <span>PMI/MIP Drop-off Date (w/ Extra)</span>
+                                  <span id="result-pmi-dropoff-extra-date"></span>
+                              </div>
+                              <div class="result-item small">
+                                  <span>
+                                      Net Effective Rate (from extra payments)
+                                      <div class="tooltip">
+                                          <span class="tooltip-trigger">?</span>
+                                          <div class="tooltip-content">
+                                              The estimated annual interest rate when factoring in the interest saved due to making extra monthly payments.
+                                          </div>
+                                      </div>
+                                  </span>
+                                  <span id="result-effective-rate"></span>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  <!-- </div> -->
+
+  <!-- Amortization is advanced only -->
+  <div class="amortization-section advanced-only">
+      <div class="amortization-header">
+          <summary>Amortization Schedule</summary>
+          <div class="amortization-view-toggle">
+              <input type="radio" name="amortization-view" value="years" id="view-years" checked>
+              <label for="view-years">Yearly</label>
+              <input type="radio" name="amortization-view" value="months" id="view-months">
+              <label for="view-months">Monthly</label>
+          </div>
+      </div>
+       <div class="table-container">
+        <!-- FADE OVERLAY with Learn More button -->
+        <div class="table-fade">
+          <div data-wf--button--variant="primary" class="button u-mb-sm">
+            <div class="u-overflow-clip u-z-index-2">
+              <div aria-hidden="true" class="btn-txt">Learn More</div>
+              <div aria-hidden="true" class="btn-txt2">Learn More</div>
+            </div>
+            <a href="#" class="u-link-cover w-inline-block">
+              <div class="u-sr-only">Learn More</div>
+            </a>
+            <div class="btn-bg"></div>
+          </div>
+        </div>
+
+        <!-- ACTUAL TABLE -->
+        <table id="amortization-table">
+          <thead id="amortization-head"></thead>
+          <tbody id="amortization-body"></tbody>
+        </table>
+
+        <!-- HIDE BUTTON (at bottom) -->
+        <div class="row row-justify-center">
+          <div class="col col-shrink">
+            <div style="padding: 1rem;">
+              <div data-wf--button--variant="primary" class="button u-mb-sm" id="hide-tabble">
+                  <div class="u-overflow-clip u-z-index-2">
+                    <div aria-hidden="true" class="btn-txt">Hide Table</div>
+                    <div aria-hidden="true" class="btn-txt2">Hide Table</div>
+                  </div>
+                  <a href="#" class="u-link-cover w-inline-block">
+                    <div class="u-sr-only">Hide Table</div>
+                  </a>
+                  <div class="btn-bg"></div>
+              </div>
+            </div>
+          </div>                  
+        </div>
+        
+</div>
+</div>

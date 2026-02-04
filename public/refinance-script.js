@@ -2,6 +2,12 @@ document.addEventListener("DOMContentLoaded", () => {
     let calculatorMode = 'simple', amortizationViewMode = 'years', isAmortizationTableVisible = false;
     const validLoanTerms = [5, 10, 15, 20, 25, 30, 35, 40];
     
+    // Performance optimization - debounced updates
+    let updateRAFId = null;
+    let debounceTimerId = null;
+    const DEBOUNCE_DELAY = 1500; // Wait 1.5 seconds after user stops interacting
+    let isCalculating = false;
+    
     function snapToNearestLoanTerm(value) {
         let nearest = validLoanTerms[0], minDiff = Math.abs(value - nearest);
         for (let term of validLoanTerms) { const diff = Math.abs(value - term); if (diff < minDiff) { minDiff = diff; nearest = term; } }
@@ -249,6 +255,80 @@ document.addEventListener("DOMContentLoaded", () => {
         }).join('');
     }
     
+    // Show loading indicator on results section
+    function showLoadingIndicator() {
+        const resultsSection = document.querySelector('.results-section');
+        if (resultsSection) {
+            isCalculating = true;
+            resultsSection.classList.add('calculating');
+            
+            // Add loading spinner if it doesn't exist
+            let loadingSpinner = resultsSection.querySelector('.loading-indicator');
+            if (!loadingSpinner) {
+                loadingSpinner = document.createElement('div');
+                loadingSpinner.className = 'loading-indicator';
+                loadingSpinner.innerHTML = `
+                    <div class="spinner"></div>
+                    <span>Calculating...</span>
+                `;
+                resultsSection.insertBefore(loadingSpinner, resultsSection.firstChild);
+            }
+            loadingSpinner.style.display = 'flex';
+        }
+    }
+    
+    // Hide loading indicator
+    function hideLoadingIndicator() {
+        const resultsSection = document.querySelector('.results-section');
+        if (resultsSection) {
+            isCalculating = false;
+            resultsSection.classList.remove('calculating');
+            
+            const loadingSpinner = resultsSection.querySelector('.loading-indicator');
+            if (loadingSpinner) {
+                loadingSpinner.style.display = 'none';
+            }
+        }
+    }
+    
+    // Debounced update function with loading indicator
+    function scheduleFullUpdate() {
+        // Cancel any pending debounced update
+        if (debounceTimerId) {
+            clearTimeout(debounceTimerId);
+        }
+        
+        // Cancel any pending animation frame
+        if (updateRAFId) {
+            cancelAnimationFrame(updateRAFId);
+        }
+        
+        // Show loading indicator
+        showLoadingIndicator();
+        
+        // Schedule debounced update
+        debounceTimerId = setTimeout(() => {
+            updateRAFId = requestAnimationFrame(() => { 
+                updateUI(); 
+                
+                // Hide loading indicator
+                hideLoadingIndicator();
+                
+                // Update all slider visual fills after UI updates
+                setTimeout(() => {
+                    document.querySelectorAll('input[type="range"]').forEach(slider => {
+                        if (slider && !slider.disabled) {
+                            updateRangeFill(slider);
+                        }
+                    });
+                }, 50);
+                
+                updateRAFId = null; 
+            });
+            debounceTimerId = null;
+        }, DEBOUNCE_DELAY);
+    }
+    
     function updateUI() {
         const v = getInputValues();
         updateCashoutSliderLimits(v.homeValue, v.currentBalance, v.loanType);
@@ -407,20 +487,20 @@ document.addEventListener("DOMContentLoaded", () => {
             // Update payment label for advanced mode (full PITI)
             if (results.paymentLabel) results.paymentLabel.textContent = 'New Monthly Payment (PITI)';
         }
-        updateUI();
+        scheduleFullUpdate();
     }
     
     function syncSliderAndNumber(slider, number) {
         if (!slider || !number) return;
-        slider.addEventListener('input', () => { number.value = slider.value; updateRangeFill(slider); updateUI(); });
-        number.addEventListener('input', () => { slider.value = number.value; updateRangeFill(slider); updateUI(); });
-        number.addEventListener('change', () => { let val = parseFloat(number.value); val = Math.max(parseFloat(slider.min), Math.min(parseFloat(slider.max), val)); number.value = val; slider.value = val; updateRangeFill(slider); updateUI(); });
+        slider.addEventListener('input', () => { number.value = slider.value; updateRangeFill(slider); scheduleFullUpdate(); });
+        number.addEventListener('input', () => { slider.value = number.value; updateRangeFill(slider); scheduleFullUpdate(); });
+        number.addEventListener('change', () => { let val = parseFloat(number.value); val = Math.max(parseFloat(slider.min), Math.min(parseFloat(slider.max), val)); number.value = val; slider.value = val; updateRangeFill(slider); scheduleFullUpdate(); });
     }
     
     function syncLoanTermSlider(slider, number) {
         if (!slider || !number) return;
-        slider.addEventListener('input', () => { const snapped = snapToNearestLoanTerm(parseFloat(slider.value)); slider.value = snapped; number.value = snapped; updateRangeFill(slider); updateUI(); });
-        number.addEventListener('change', () => { const snapped = snapToNearestLoanTerm(parseFloat(number.value)); number.value = snapped; slider.value = snapped; updateRangeFill(slider); updateUI(); });
+        slider.addEventListener('input', () => { const snapped = snapToNearestLoanTerm(parseFloat(slider.value)); slider.value = snapped; number.value = snapped; updateRangeFill(slider); scheduleFullUpdate(); });
+        number.addEventListener('change', () => { const snapped = snapToNearestLoanTerm(parseFloat(number.value)); number.value = snapped; slider.value = snapped; updateRangeFill(slider); scheduleFullUpdate(); });
     }
     
     function updateRangeFill(el) {
@@ -436,9 +516,9 @@ document.addEventListener("DOMContentLoaded", () => {
     function setupEventListeners() {
         simpleModeBtn.addEventListener('click', () => setCalculatorMode('simple'));
         advancedModeBtn.addEventListener('click', () => setCalculatorMode('advanced'));
-        inputs.loanType.addEventListener('change', () => { updateRefinanceTypeUI(); updateUI(); });
-        inputs.refinanceTypeRadios.forEach(r => r.addEventListener('change', () => { updateRefinanceTypeUI(); updateUI(); }));
-        inputs.amortizationViewRadios.forEach(r => r.addEventListener('change', () => { amortizationViewMode = r.value; updateUI(); }));
+        inputs.loanType.addEventListener('change', () => { updateRefinanceTypeUI(); scheduleFullUpdate(); });
+        inputs.refinanceTypeRadios.forEach(r => r.addEventListener('change', () => { updateRefinanceTypeUI(); scheduleFullUpdate(); }));
+        inputs.amortizationViewRadios.forEach(r => r.addEventListener('change', () => { amortizationViewMode = r.value; scheduleFullUpdate(); }));
         syncSliderAndNumber(inputs.homeValueSlider, inputs.homeValueNumber);
         syncSliderAndNumber(inputs.currentBalanceSlider, inputs.currentBalanceNumber);
         syncSliderAndNumber(inputs.currentRateSlider, inputs.currentRateNumber);
@@ -457,7 +537,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const tableFade = document.querySelector('.table-fade');
         const expandBtn = document.querySelector('.expand-table-btn');
         const hideBtn = document.getElementById('hide-table');
-        if (expandBtn && tableFade && tableContainer) expandBtn.addEventListener('click', () => { tableFade.classList.add('hidden'); tableContainer.classList.add('expanded'); isAmortizationTableVisible = true; updateUI(); });
+        if (expandBtn && tableFade && tableContainer) expandBtn.addEventListener('click', () => { tableFade.classList.add('hidden'); tableContainer.classList.add('expanded'); isAmortizationTableVisible = true; scheduleFullUpdate(); });
         if (hideBtn && tableFade && tableContainer) hideBtn.addEventListener('click', () => { tableFade.classList.remove('hidden'); tableContainer.classList.remove('expanded'); });
     }
     
