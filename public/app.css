@@ -338,7 +338,6 @@ input[type="number"].slider-number-input:disabled {
 .table-container {
   position: relative;
   max-height: 300px;
-  overflow: hidden;
   padding: 0 1rem 1rem;
 }
 .table-container.expanded {
