@@ -1113,14 +1113,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
      // helper so you can reuse it anywhere
     function updateRangeFill(el) {
-      if (!el || el.type !== 'range') return;
       const min = +el.min || 0;
       const max = +el.max || 100;
       const val = +el.value;
       let pct = ((val - min) * 100) / (max - min);
       pct = Math.max(0, Math.min(100, pct)); // clamp
       el.style.background =
-        `linear-gradient(to right, var(--text-color) 0%, var(--text-color) ${pct}%, var(--input-bg-color) ${pct}%)`;
+        `linear-gradient(to right, var(--text-color) ${pct}%, var(--input-bg-color) ${pct}%)`;
     }
     
     // delegated listener (keeps working with dozens of sliders)
@@ -1129,20 +1128,9 @@ document.addEventListener("DOMContentLoaded", () => {
       updateRangeFill(e.target);
     });
     
-    // init once with delay to ensure DOM is ready
-    setTimeout(() => {
-      document.querySelectorAll('input[type="range"]')
-        .forEach(updateRangeFill);
-    }, 50);
-    
-    // Update fills on resize with debounce
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => {
-        document.querySelectorAll('input[type="range"]').forEach(updateRangeFill);
-      }, 150);
-    });
+    // init once
+    document.querySelectorAll('input[type="range"]')
+      .forEach(updateRangeFill);
 
 
     initialize();
