@@ -6,26 +6,26 @@
 // ============================================================================
 
 document.addEventListener("DOMContentLoaded", () => {
-  
+
     // ==========================================================================
     // STATE VARIABLES - Track the current mode and settings of the calculator
     // ==========================================================================
-    
+  
     // Controls whether we use default DTI, custom DTI, or target payment
     let currentCalculationMode = 'default'; 
-    
+  
     // Controls whether amortization table shows yearly or monthly data
     let amortizationViewMode = 'years';
-    
+  
     // Controls whether calculator is in 'simple' or 'advanced' mode
     let calculatorMode = 'simple';
-    
+  
     // In simple mode: 'home-price' (user enters price) or 'affordability' (calculate max price)
     let simpleCalcMode = 'home-price';
   
     // Valid loan term options in years (used for snapping slider values)
     const validLoanTerms = [5, 10, 15, 20, 25, 30, 35, 40];
-    
+  
     // ==========================================================================
     // HELPER FUNCTION: Snap loan term to nearest valid value
     // ==========================================================================
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function snapToNearestLoanTerm(value) {
       let nearest = validLoanTerms[0];
       let minDiff = Math.abs(value - nearest);
-      
+  
       // Loop through valid terms and find the closest one
       for (let term of validLoanTerms) {
         const diff = Math.abs(value - term);
@@ -53,14 +53,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputs = {
       // Loan type dropdown (Conventional, FHA, VA, USDA)
       loanType: document.getElementById("loan-type"),
-      
+  
       // Radio buttons for calculation mode override (DTI or Payment target)
       calculationModeOverrideRadios: document.querySelectorAll('input[name="calculation-mode-override"]'),
       clearModeButton: document.getElementById("clear-mode-button"),
-      
+  
       // Radio buttons for amortization table view (years vs months)
       amortizationViewRadios: document.querySelectorAll('input[name="amortization-view"]'),
-      
+  
       // Radio buttons for simple calculator mode (home-price vs affordability)
       simpleCalcModeRadios: document.querySelectorAll('input[name="simple-calc-mode"]'), 
   
@@ -77,37 +77,37 @@ document.addEventListener("DOMContentLoaded", () => {
       // annualIncomeNumber: document.getElementById("annual-income-number"),
       // monthlyDebtSlider: document.getElementById("monthly-debt-slider"),
       // monthlyDebtNumber: document.getElementById("monthly-debt-number"),
-      
+  
       // Target DTI input (custom debt-to-income ratio)
       targetDTISlider: document.getElementById("target-dti-slider"),
       targetDTINumber: document.getElementById("target-dti-number"),
-      
+  
       // Target monthly payment input (specify exact payment amount)
       targetMonthlyPaymentSlider: document.getElementById("target-monthly-payment-slider"),
       targetMonthlyPaymentNumber: document.getElementById("target-monthly-payment-number"),
-      
+  
       // Loan amount override (manually set loan amount instead of calculating)
       loanAmountOverrideSlider: document.getElementById("loan-amount-override-slider"),
       loanAmountOverrideNumber: document.getElementById("loan-amount-override-number"),
-      
+  
       // Down payment input
       downPaymentSlider: document.getElementById("down-payment-slider"),
       downPaymentNumber: document.getElementById("down-payment-number"),
-      
+  
       // Interest rate input
       interestRateSlider: document.getElementById("interest-rate-slider"), 
       interestRateNumber: document.getElementById("interest-rate-number"),
-      
+  
       // Seller credits (percentage of home price seller pays toward closing)
       sellerCreditsPercentSlider: document.getElementById("seller-credits-percent-slider"),
       sellerCreditsPercentNumber: document.getElementById("seller-credits-percent-number"),
       sellerCreditsDollarValue: document.getElementById("seller-credits-dollar-value"),
       sellerCreditsTooltipContent: document.getElementById("seller-credits-tooltip-content"),
-      
+  
       // Loan term (length of mortgage in years)
       loanTermSlider: document.getElementById("loan-term-slider"),
       loanTermNumber: document.getElementById("loan-term-number"),
-      
+  
       // Monthly costs
       propertyTaxSlider: document.getElementById("property-tax-slider"),
       propertyTaxNumber: document.getElementById("property-tax-number"),
@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
       insuranceNumber: document.getElementById("insurance-number"),
       hoaSlider: document.getElementById("hoa-slider"),
       hoaNumber: document.getElementById("hoa-number"),
-      
+  
       // Additional principal payment (extra payment toward principal each month)
       additionalPaymentSlider: document.getElementById("additional-payment-slider"),
       additionalPaymentNumber: document.getElementById("additional-payment-number"),
@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
       effectiveInterestRate: document.getElementById("result-effective-interest-rate"),
       ltv: document.getElementById("result-ltv"), // Loan-to-Value ratio
       monthlyPayment: document.getElementById("result-monthly-payment"),
-      
+  
       // Simple mode payment breakdown
       piSimple: document.getElementById("result-pi-simple"), // Principal & Interest
       taxSimple: document.getElementById("result-tax-simple"),
@@ -141,17 +141,17 @@ document.addEventListener("DOMContentLoaded", () => {
       pmiContainerSimple: document.getElementById("result-pmi-container-simple"),
       pmiLabelSimple: document.getElementById("result-pmi-label-simple"),
       pmiSimple: document.getElementById("result-pmi-simple"),
-      
+  
       // Loan summary
       totalPaid: document.getElementById("result-total-paid"),
       totalInterest: document.getElementById("result-total-interest"),
       payoffDateSimple: document.getElementById("result-payoff-date-simple"),
-      
+  
       // Closing costs section
       downPaymentSummary: document.getElementById("result-down-payment-summary"),
       sellerCreditsApplied: document.getElementById("result-seller-credits-applied"),
       estimatedCashToClose: document.getElementById("result-estimated-cash-to-close"),
-      
+  
       // Advanced mode payment breakdown
       pi: document.getElementById("result-pi"),
       tax: document.getElementById("result-tax"),
@@ -161,11 +161,11 @@ document.addEventListener("DOMContentLoaded", () => {
       pmiLabel: document.getElementById("result-pmi-label"),
       pmiTooltipContent: document.getElementById("pmi-mip-tooltip-content"),
       pmi: document.getElementById("result-pmi"),
-      
+  
       // DTI (Debt-to-Income) ratios
       housingDTI: document.getElementById("result-housing-dti"), // Housing costs only
       totalDTI: document.getElementById("result-total-dti"), // Housing + other debts
-      
+  
       // Extra payment results (when additional payment is made)
       timeSaved: document.getElementById("result-time-saved"),
       interestSaved: document.getElementById("result-interest-saved"),
@@ -191,7 +191,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==========================================================================
     const amortizationHead = document.getElementById("amortization-head");
     const amortizationBody = document.getElementById("amortization-body");
-    
+  
     // Information and warning displays
     const loanTypeInfo = document.getElementById("loan-type-info");
     const downPaymentWarning = document.getElementById("down-payment-warning");
@@ -231,14 +231,14 @@ document.addEventListener("DOMContentLoaded", () => {
         pmiTargetLtvUpper: 80, // PMI can be requested for removal at 80% LTV
         canRemovePmi: true, // PMI can be removed when conditions are met
         description: "Standard mortgage. PMI usually required if down payment < 20%.",
-        
+  
         // Seller credits limit depends on down payment percentage
         getMaxSellerCreditPercent: (dpPercent) => { 
           if (dpPercent < 0.10) return 0.03; // <10% down = 3% max seller credit
           if (dpPercent < 0.25) return 0.06; // 10-24% down = 6% max seller credit
           return 0.09; // ≥25% down = 9% max seller credit
         },
-        
+  
         // Generate tooltip explaining PMI removal for conventional loans
         getPmiDropoffTooltip: (ltv) => {
           if (ltv <= 78) {
@@ -250,7 +250,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
       },
-      
+  
       // FHA LOAN
       fha: { 
         name: "FHA", 
@@ -263,7 +263,7 @@ document.addEventListener("DOMContentLoaded", () => {
         canRemovePmi: false, // MIP cannot be removed (except in specific cases)
         description: "FHA-insured. Allows lower down payments. Includes MIP.",
         getMaxSellerCreditPercent: () => 0.06, // Fixed 6% max seller credit
-        
+  
         // FHA MIP removal rules are complex
         getPmiDropoffTooltip: (ltv, initialLtv, loanTermMonths, currentMonth) => {
           // MIP can be removed after 11 years IF initial LTV ≤ 90% AND loan term > 11 years
@@ -276,7 +276,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
       },
-      
+  
       // VA LOAN
       va: { 
         name: "VA", 
@@ -291,7 +291,7 @@ document.addEventListener("DOMContentLoaded", () => {
         getMaxSellerCreditPercent: () => 0.04, // Fixed 4% max seller credit
         getPmiDropoffTooltip: () => "" // No PMI to explain
       },
-      
+  
       // USDA LOAN
       usda: { 
         name: "USDA", 
@@ -304,7 +304,7 @@ document.addEventListener("DOMContentLoaded", () => {
         canRemovePmi: false, // Guarantee fee cannot be removed
         description: "USDA Rural Development loan. No down payment required. Must meet income limits (typically 115% of area median income) and property must be in eligible rural/suburban area. Includes guarantee fee that remains for life of loan.",
         getMaxSellerCreditPercent: () => 0.06, // Fixed 6% max seller credit
-        
+  
         // USDA guarantee fee never goes away
         getPmiDropoffTooltip: (ltv) => {
           return `LTV at ${formatPercent(ltv, 1)}. The USDA guarantee fee remains for the life of the loan and cannot be removed. Consider refinancing to a conventional loan when LTV reaches 80% to eliminate mortgage insurance.`;
@@ -316,17 +316,17 @@ document.addEventListener("DOMContentLoaded", () => {
     // FORMATTING HELPER FUNCTIONS
     // ==========================================================================
     // These functions format numbers for display to the user
-    
+  
     // Format as currency (e.g., $350,000)
     const formatCurrency = val => new Intl.NumberFormat("en-US", { 
       style: "currency", 
       currency: "USD", 
       maximumFractionDigits: 0 
     }).format(val);
-    
+  
     // Format as percentage (e.g., 5.2%)
     const formatPercent = (val, digits = 1) => `${Number(val).toFixed(digits)}%`;
-    
+  
     // Format as years (e.g., 3.5 years)
     const formatYears = val => `${Number(val).toFixed(1)} years`;
   
@@ -370,13 +370,13 @@ document.addEventListener("DOMContentLoaded", () => {
     function estimateHomeAndLoan({pmiRate, pmiThreshold, requiresPmi}, PITI_max, r_m, tau_m, ins_m, hoa_m, n, downPayment) {
       let HP = 0; // Home Price
       let L = 0;  // Loan amount
-      
+  
       // Iterate up to 10 times to converge on accurate values
       // (PMI calculation creates circular dependency that requires iteration)
       for(let k = 0; k < 10; k++){ 
         // Calculate fixed monthly costs (escrows)
         const escrows = tau_m + ins_m + hoa_m;
-        
+  
         // Calculate PMI if required
         let pmi = 0;
         if(requiresPmi && HP > 0 && pmiRate > 0){
@@ -386,16 +386,16 @@ document.addEventListener("DOMContentLoaded", () => {
           if (HP > 0 && curLoan / HP > 1 - pmiThreshold) 
             pmi = (curLoan * pmiRate) / 12; // Annual PMI rate divided by 12
         }
-        
+  
         // Calculate available amount for Principal & Interest
         const availPI = PITI_max - escrows - pmi;
-        
+  
         // If no money left for P&I, user can't afford any home
         if(availPI <= 0) { 
           HP = L = 0; 
           break;
         }
-        
+  
         // Calculate loan amount using mortgage formula
         // If interest rate > 0, use standard mortgage formula
         // Formula: L = P × [(1 - (1 + r)^-n) / r]
@@ -406,7 +406,7 @@ document.addEventListener("DOMContentLoaded", () => {
           // If 0% interest, just multiply payment by months
           L = availPI * n;
         }
-        
+  
         // Home price = Loan + Down payment
         HP = L + downPayment;
       }
@@ -419,14 +419,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // Given a loan amount, interest rate, and term, calculate monthly P&I
     function computeBasePI(L, r_m, n){
       if(L <= 0) return 0; // No loan = no payment
-      
+  
       if(r_m > 0){
         // Standard mortgage payment formula
         // M = L × [r(1+r)^n] / [(1+r)^n - 1]
         const f = Math.pow(1 + r_m, n); // (1+r)^n
         return (L * r_m * f) / (f - 1);
       }
-      
+  
       // If 0% interest, just divide loan by number of months
       return L / n;
     }
@@ -440,7 +440,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const tax = monthlyTax;
       const insurance = monthlyInsurance;
       const hoa = monthlyHoa;
-      
+  
       let pmi = 0;
       if(requiresPmi && L > 0 && HP > 0 && pmiRate > 0){
         // Calculate LTV (Loan-to-Value ratio)
@@ -448,7 +448,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (L / HP > 1 - pmiThreshold) 
           pmi = (L * pmiRate) / 12; // Annual PMI rate / 12 months
       }
-      
+  
       return { tax, insurance, hoa, pmi };
     }
   
@@ -460,7 +460,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return {
         // Housing DTI: Housing costs as percentage of income
         housingDti: I_m ? PITI / I_m * 100 : 0,
-        
+  
         // Total DTI: All debts (housing + other) as percentage of income
         totalDti: I_m ? (PITI + monthlyDebt) / I_m * 100 : 0
       };
@@ -472,20 +472,20 @@ document.addEventListener("DOMContentLoaded", () => {
     // This function simulates the entire life of the loan month-by-month
     // It calculates payoff time, total interest, and when PMI drops off
     function simulatePayoff(homePrice, loanAmount, basePI, extraPayment, r_m, n_original, cfg, loanTermYears) {
-      
+  
       // PART 1: Calculate total interest WITHOUT extra payments
       let totalInterestNoExtra = 0;
       if (loanAmount > 0 && basePI > 0) {
         let balance = loanAmount;
-        
+  
         // Loop through each month of the original loan term
         for (let m = 0; m < n_original; m++) {
           const interestThisMonth = balance * r_m; // Interest = Balance × Monthly Rate
           totalInterestNoExtra += interestThisMonth;
-          
+  
           const principalThisMonth = basePI - interestThisMonth; // Principal = Payment - Interest
           balance -= principalThisMonth; // Reduce balance by principal paid
-          
+  
           // If balance paid off, stop
           if (balance <= 0.005) { 
             balance = 0; 
@@ -507,24 +507,24 @@ document.addEventListener("DOMContentLoaded", () => {
   
         // Check if payment is enough to cover interest (prevents infinite loop)
         if (totalMonthlyPaymentWithExtra > balanceWithExtra * r_m || r_m === 0) {
-          
+  
           // Simulate each month with extra payment
           while (balanceWithExtra > 0.005 && currentMonths < n_original * 2) { 
             const interestThisMonth = balanceWithExtra * r_m;
             currentTotalInterestWithExtra += interestThisMonth;
             const principalThisMonth = totalMonthlyPaymentWithExtra - interestThisMonth;
-            
+  
             // Safety check: If principal payment is negative, something's wrong
             if (principalThisMonth <= 0 && balanceWithExtra > 0.005 && extraPayment > 0) { 
               currentMonths = n_original * 2; // Exit loop
               currentTotalInterestWithExtra = totalInterestNoExtra; 
               break;
             }
-            
+  
             balanceWithExtra -= principalThisMonth;
             currentMonths++;
           }
-          
+  
           // If loan paid off early, update values
           if (balanceWithExtra <= 0.005 && extraPayment > 0) { 
             monthsToPayoff = currentMonths;
@@ -535,36 +535,36 @@ document.addEventListener("DOMContentLoaded", () => {
             totalInterestWithExtra = totalInterestNoExtra;
           }
         }
-        
+  
         // PART 3: Calculate when PMI drops off with extra payments
         if (cfg.requiresPmi && homePrice > 0 && extraPayment > 0) { 
           const initialLtv = loanAmount / homePrice;
-          
+  
           // CONVENTIONAL LOAN: PMI drops at 80% LTV
           if (cfg.name === "Conventional") {
             if (initialLtv > (1 - cfg.pmiThreshold)) { 
               pmiDropOffMonthsWithExtra = monthsToPayoff; // Default to payoff month
               let tempBalanceConv = loanAmount;
               let tempMonthsConv = 0;
-              
+  
               if (totalMonthlyPaymentWithExtra > tempBalanceConv * r_m || r_m === 0) {
                 // Simulate to find when LTV reaches 80%
                 while (tempBalanceConv > 0.005 && tempMonthsConv < monthsToPayoff) {
                   const ltvCurrentConv = (tempBalanceConv / homePrice);
-                  
+  
                   // Check if LTV has dropped below threshold
                   if (ltvCurrentConv <= (1 - cfg.pmiThreshold)) {
                     pmiDropOffMonthsWithExtra = tempMonthsConv + 1;
                     break;
                   }
-                  
+  
                   const interestConv = tempBalanceConv * r_m;
                   const principalConv = totalMonthlyPaymentWithExtra - interestConv;
-                  
+  
                   if (principalConv <= 0 && tempBalanceConv > 0.005) { 
                     break; 
                   }
-                  
+  
                   tempBalanceConv -= principalConv;
                   tempMonthsConv++;
                 }
@@ -591,11 +591,11 @@ document.addEventListener("DOMContentLoaded", () => {
         monthsToPayoff = 0;
         totalInterestWithExtra = 0;
       }
-      
+  
       // Calculate time and money saved by extra payments
       const yearsSaved = Math.max(0, (n_original - monthsToPayoff) / 12);
       const interestSaved = Math.max(0, totalInterestNoExtra - totalInterestWithExtra);
-      
+  
       // Calculate payoff date
       const payoffDate = new Date();
       if (monthsToPayoff > 0) 
@@ -619,11 +619,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==========================================================================
     // This is the heart of the calculator - it runs all calculations and returns results
     function calculateAll(){
-      
+  
       // STEP 1: Gather all input values into an object
       const V = {
         loanType: inputs.loanType.value,
-        
+  
         // Use simple mode inputs if in simple affordability mode, otherwise use advanced inputs
         // annualIncome: calculatorMode === 'simple' && simpleCalcMode === 'affordability' 
         //   ? +inputs.simpleAnnualIncomeNumber.value 
@@ -633,7 +633,7 @@ document.addEventListener("DOMContentLoaded", () => {
         //   : +inputs.monthlyDebtNumber.value,
           annualIncome: +inputs.simpleAnnualIncomeNumber.value || 0,
           monthlyDebt: +inputs.simpleMonthlyDebtNumber.value || 0,
-        
+  
         targetDti: +inputs.targetDTINumber.value, 
         targetPayment: +inputs.targetMonthlyPaymentNumber.value,
         loanAmountOverride: calculatorMode === 'simple' ? 0 : +inputs.loanAmountOverrideNumber.value,
@@ -647,7 +647,7 @@ document.addEventListener("DOMContentLoaded", () => {
         monthlyHoa: +inputs.hoaNumber.value,
         additionalPayment: +inputs.additionalPaymentNumber.value
       };
-      
+  
       // STEP 2: Get configuration for selected loan type and set PMI rate
       const cfg = {...loanTypeConfig[V.loanType]}; 
       if (V.loanType === 'fha') {
@@ -668,10 +668,10 @@ document.addEventListener("DOMContentLoaded", () => {
         monthlyHoa: V.monthlyHoa,
         annualIncome: V.annualIncome
       });
-      
+  
       // STEP 4: Determine home price and loan amount based on mode
       let homePrice, loanAmount;
-      
+  
       if (calculatorMode === 'simple' && simpleCalcMode === 'home-price' && V.simpleHomePrice > 0) {
         // SIMPLE HOME-PRICE MODE: User entered home price directly
         homePrice = V.simpleHomePrice;
@@ -696,18 +696,18 @@ document.addEventListener("DOMContentLoaded", () => {
         homePrice = estimation.homePrice;
         loanAmount = estimation.loanAmount;
       }
-      
+  
       // STEP 5: Calculate seller credits and validate
       const dpPercentForSellerCredit = homePrice > 0 ? V.downPayment / homePrice : 0;
       const maxAllowableSellerCreditPercent = cfg.getMaxSellerCreditPercent(dpPercentForSellerCredit) * 100; 
-      
+  
       // Cap seller credits at maximum allowed for this loan type
       V.sellerCreditsPercent = Math.min(V.sellerCreditsPercent, maxAllowableSellerCreditPercent);
-      
+  
       // Update slider/input maximums
       inputs.sellerCreditsPercentSlider.max = maxAllowableSellerCreditPercent.toFixed(1);
       inputs.sellerCreditsPercentNumber.max = maxAllowableSellerCreditPercent.toFixed(1);
-      
+  
       // If user's input exceeds max, reduce it
       if (+inputs.sellerCreditsPercentNumber.value > maxAllowableSellerCreditPercent) {
         inputs.sellerCreditsPercentNumber.value = maxAllowableSellerCreditPercent.toFixed(1);
@@ -716,10 +716,10 @@ document.addEventListener("DOMContentLoaded", () => {
   
       // Calculate dollar amount of seller credits
       const sellerCreditsDollarAmount = homePrice > 0 ? homePrice * (V.sellerCreditsPercent / 100) : 0;
-      
+  
       // Calculate minimum down payment required for this loan type
       const requiredMinDownPayment = homePrice > 0 ? homePrice * cfg.minDownPayment : 0;
-      
+  
       // Calculate estimated cash needed at closing (down payment minus seller credits)
       let estimatedCashToClose = Math.max(0, V.downPayment - sellerCreditsDollarAmount);
   
@@ -728,10 +728,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const {tax, insurance, hoa, pmi} = computeEscrowsAndPmi(homePrice, loanAmount, V.monthlyPropertyTax, V.monthlyInsurance, V.monthlyHoa, cfg);
       const PITI = basePI + tax + insurance + hoa + pmi; // Total housing payment
       const displayedPayment = PITI + V.additionalPayment; // Including extra payment
-      
+  
       // Calculate DTI ratios
       const {housingDti, totalDti} = computeDti(PITI, V.monthlyDebt, I_m);
-      
+  
       // STEP 7: Simulate payoff schedule with and without extra payments
       const payoffDetails = simulatePayoff(homePrice, loanAmount, basePI, V.additionalPayment, r_m, V.loanTerm*12, cfg, V.loanTerm);
   
@@ -748,11 +748,11 @@ document.addEventListener("DOMContentLoaded", () => {
   
       // Calculate LTV (Loan-to-Value) ratio
       const ltv = homePrice > 0 ? (loanAmount / homePrice) * 100 : 0;
-      
+  
       // Check if down payment meets minimum requirement
       const actualDownPaymentAmount = V.downPayment;
       const dpOK = actualDownPaymentAmount >= requiredMinDownPayment;
-      
+  
       // Calculate when PMI drops off with extra payments
       let pmiDropOffDateWithExtra = null;
       if (payoffDetails.pmiDropOffMonthsWithExtra >= 0) { 
@@ -761,15 +761,15 @@ document.addEventListener("DOMContentLoaded", () => {
           pmiDropOffDateWithExtra.setMonth(pmiDropOffDateWithExtra.getMonth() + payoffDetails.pmiDropOffMonthsWithExtra);
         }
       }
-      
+  
       const initialLtv = homePrice > 0 ? (loanAmount / homePrice) * 100 : 0;
-      
+  
       // STEP 9: Generate month-by-month amortization schedule
       const monthlyAmortization = [];
       if (loanAmount > 0 && homePrice > 0) {
         let bal = loanAmount;   // Balance without extra payments
         let balX = loanAmount;  // Balance with extra payments
-        
+  
         // Loop through each month of the loan term
         for (let mo = 1; mo <= V.loanTerm * 12; mo++) {
           // Calculate payment date
@@ -781,7 +781,7 @@ document.addEventListener("DOMContentLoaded", () => {
           let i = 0;  // Interest paid (no extra)
           let pX = 0; // Principal paid (with extra)
           let iX = 0; // Interest paid (with extra)
-          
+  
           // CALCULATE WITHOUT EXTRA PAYMENT
           if (bal > 0.005) {
             i = bal * r_m; // Interest = Balance × Rate
@@ -789,13 +789,13 @@ document.addEventListener("DOMContentLoaded", () => {
             bal -= p; // Reduce balance
             if (bal < 0.005) bal = 0; // Round to zero if very small
           }
-          
+  
           // CALCULATE WITH EXTRA PAYMENT
           if (balX > 0.005) {
             iX = balX * r_m;
             const paymentWithExtra = basePI + V.additionalPayment;
             pX = Math.min(balX, paymentWithExtra - iX);
-            
+  
             // Safety check for negative principal
             if (paymentWithExtra - iX < 0 && balX > 0.005 && V.additionalPayment > 0) { 
               pX = 0; 
@@ -812,7 +812,7 @@ document.addEventListener("DOMContentLoaded", () => {
           // Check if this month is a PMI drop-off candidate (for highlighting in table)
           let pmiDropoffCandidate = false;
           let pmiTooltip = "";
-          
+  
           // CONVENTIONAL: Check if LTV is in 78-80% range
           if (V.loanType === 'conventional' && cfg.requiresPmi) {
             if (ltvNoExtra >= cfg.pmiTargetLtvLower && ltvNoExtra <= cfg.pmiTargetLtvUpper) {
@@ -841,7 +841,7 @@ document.addEventListener("DOMContentLoaded", () => {
           // Same checks for "with extra payment" scenario
           let pmiDropoffCandidateExtra = false;
           let pmiTooltipExtra = "";
-          
+  
           if (V.additionalPayment > 0) {
             if (V.loanType === 'conventional' && cfg.requiresPmi) {
               if (ltvWithExtra >= cfg.pmiTargetLtvLower && ltvWithExtra <= cfg.pmiTargetLtvUpper) {
@@ -924,7 +924,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function updateUI(){
       // Run all calculations
       const R = calculateAll();
-      
+  
       // Determine if we should show extra payment results section
       const showExtra = R.loanAmount > 0 && R.V.additionalPayment > 0 && R.yearsSaved > 0.001; 
   
@@ -946,17 +946,17 @@ document.addEventListener("DOMContentLoaded", () => {
       inputs.downPaymentNumber.value = R.V.downPayment;
       inputs.interestRateSlider.value = R.V.interestRate; 
       inputs.interestRateNumber.value = R.V.interestRate;
-      
+  
       // Update seller credits display and limits
       inputs.sellerCreditsPercentSlider.value = R.V.sellerCreditsPercent.toFixed(1);
       inputs.sellerCreditsPercentNumber.value = R.V.sellerCreditsPercent.toFixed(1);
       inputs.sellerCreditsDollarValue.textContent = `(${formatCurrency(R.sellerCreditsDollarAmount)})`;
-      
+  
       // Generate tooltip explaining seller credits for this loan type
       const maxSCPercent = R.maxAllowableSellerCreditPercent.toFixed(1);
       const maxSCDollar = formatCurrency(R.homePrice * (R.maxAllowableSellerCreditPercent / 100));
       let tooltipText = `Seller credits are a percentage of the home price (${formatCurrency(R.homePrice)}) that the seller contributes towards your closing costs. This reduces your out-of-pocket expenses. <br><br><strong>Current Max for ${R.cfg.name} loan: ${maxSCPercent}% (${maxSCDollar}).</strong><br>`;
-      
+  
       // Add loan-type-specific explanation
       if (R.V.loanType === 'conventional') {
         tooltipText += "Conventional: Up to 3% (DP < 10%), 6% (DP 10-24.99%), or 9% (DP >= 25%).";
@@ -984,16 +984,16 @@ document.addEventListener("DOMContentLoaded", () => {
       // PART 3: Update primary results display (Simple Mode)
       results.homePrice.textContent = formatCurrency(R.homePrice);
       results.loanAmount.textContent = formatCurrency(R.loanAmount);
-      
+  
       // Show down payment as dollar amount and percentage
       const downPaymentPercent = R.homePrice > 0 ? (R.V.downPayment / R.homePrice) * 100 : 0;
       results.downPaymentSimple.textContent = `${formatCurrency(R.V.downPayment)} (${formatPercent(downPaymentPercent, 1)})`;
-      
+  
       // Payment breakdown
       results.piSimple.textContent = formatCurrency(R.basePI);
       results.taxSimple.textContent = formatCurrency(R.tax);
       results.insuranceSimple.textContent = formatCurrency(R.insurance);
-      
+  
       // PMI/MIP display (hide if zero)
       results.pmiContainerSimple.classList.toggle('hidden', R.pmi <= 0);
       if (R.pmi > 0) {
@@ -1007,18 +1007,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         results.pmiSimple.textContent = formatCurrency(R.pmi);
       }
-      
+  
       // Total paid and interest (for simple mode, use base payment without extra)
       const totalPaidSimple = R.basePI * R.V.loanTerm * 12; 
       const totalInterestSimple = R.totalInterestNoExtra || 0;
       results.totalPaid.textContent = formatCurrency(totalPaidSimple);
       results.totalInterest.textContent = formatCurrency(totalInterestSimple);
-      
+  
       // Payoff date (without extra payments)
       const payoffDateSimple = new Date();
       payoffDateSimple.setMonth(payoffDateSimple.getMonth() + (R.V.loanTerm * 12));
       results.payoffDateSimple.textContent = payoffDateSimple.toLocaleDateString();
-      
+  
       // Other key metrics
       results.effectiveInterestRate.textContent = formatPercent(R.V.interestRate, 3);
       results.ltv.textContent = formatPercent(R.ltv, 1);
@@ -1032,7 +1032,7 @@ document.addEventListener("DOMContentLoaded", () => {
       results.tax.textContent = formatCurrency(R.tax);
       results.insurance.textContent = formatCurrency(R.insurance);
       results.hoa.textContent = formatCurrency(R.hoa);
-      
+  
       // PMI/MIP for advanced mode (with detailed tooltip)
       results.pmiContainer.classList.toggle('hidden', R.pmi <= 0);
       if (R.pmi > 0) {
@@ -1069,7 +1069,7 @@ document.addEventListener("DOMContentLoaded", () => {
           } else {
             if (results.pmiDropoffExtraContainer) results.pmiDropoffExtraContainer.classList.add('hidden');
           }
-          
+  
           // Show effective interest rate (reduced by extra payments)
           if (results.effectiveRate) results.effectiveRate.textContent = formatPercent(R.netEffectiveRateFromExtraPayments, 3); 
         } else {
@@ -1083,16 +1083,16 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!R.dpOK && R.homePrice > 0) {
         downPaymentWarning.textContent = `Min down payment for ${R.cfg.name}: ${formatCurrency(R.requiredMinDownPayment)}`;
       }
-      
+  
       // PART 8: Generate Amortization Table (Desktop)
       // Only generate if table is visible (performance optimization)
       if (!isAmortizationTableVisible) {
         // Table is hidden, skip generation to save CPU
         return;
       }
-      
+  
       amortizationBody.innerHTML = ""; // Clear existing table
-      
+  
       if (amortizationViewMode === 'years') {
         // YEARLY VIEW: Show one row per year
         amortizationHead.innerHTML = `
@@ -1106,7 +1106,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <th class="extra-col">End Balance (w/ Extra)</th>
             <th class="extra-col">LTV (w/ Extra)</th>
           </tr>`;
-        
+  
         // Aggregate monthly data into yearly data
         const yearlyAmortization = [];
         for (let yr = 0; yr < R.V.loanTerm; yr++) {
@@ -1114,7 +1114,7 @@ document.addEventListener("DOMContentLoaded", () => {
           if (yearData.length === 0) break;
   
           const lastMonthOfYear = yearData[yearData.length - 1];
-          
+  
           const yearlyRow = {
             year: yr + 1,
             startBalance: yearData[0].endBalance + yearData[0].principal, // Balance at start of year
@@ -1136,7 +1136,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Generate table rows
         yearlyAmortization.forEach(row => {
           const tr = document.createElement("tr");
-          
+  
           // LTV cell (no extra payment) - highlight if PMI dropoff candidate
           let ltvNoExtraCell = `<td${row.pmiDropoffCandidate ? ' class="pmi-dropoff-candidate"' : ''}>
             ${formatPercent(row.ltvNoExtra, 1)}
@@ -1146,7 +1146,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="tooltip-content">${row.pmiTooltip}</div>
               </div>` : ''}
           </td>`;
-          
+  
           // LTV cell (with extra payment)
           let ltvWithExtraCell = `<td class="${row.pmiDropoffCandidateExtra ? 'pmi-dropoff-candidate extra-col' : 'extra-col'}">
             ${showExtra ? (row.ltvWithExtra > 100 ? '-' : formatPercent(row.ltvWithExtra, 1)) : '-'}
@@ -1156,7 +1156,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="tooltip-content">${row.pmiTooltipExtra}</div>
               </div>` : ''}
           </td>`;
-          
+  
           // Build complete row
           tr.innerHTML = `
             <td>${row.year}</td>
@@ -1184,11 +1184,11 @@ document.addEventListener("DOMContentLoaded", () => {
             <th class="extra-col">End Balance (w/ Extra)</th>
             <th class="extra-col">LTV (w/ Extra)</th>
           </tr>`;
-        
+  
         // Generate table rows directly from monthly data
         R.monthlyAmortization.forEach(row => {
           const tr = document.createElement("tr");
-          
+  
           // LTV cell (no extra) with PMI dropoff highlighting
           let ltvNoExtraCell = `<td${row.pmiDropoffCandidate ? ' class="pmi-dropoff-candidate"' : ''}>
             ${formatPercent(row.ltvNoExtra, 1)}
@@ -1198,7 +1198,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="tooltip-content">${row.pmiTooltip}</div>
               </div>` : ''}
           </td>`;
-          
+  
           // LTV cell (with extra) with PMI dropoff highlighting
           let ltvWithExtraCell = `<td class="${row.pmiDropoffCandidateExtra ? 'pmi-dropoff-candidate extra-col' : 'extra-col'}">
             ${showExtra ? (row.ltvWithExtra > 100 ? '-' : formatPercent(row.ltvWithExtra, 1)) : '-'}
@@ -1208,7 +1208,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="tooltip-content">${row.pmiTooltipExtra}</div>
               </div>` : ''}
           </td>`;
-          
+  
           // Build complete row
           tr.innerHTML = `
             <td>${row.month}</td>
@@ -1225,7 +1225,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
   
     }
-    
+  
     // ==========================================================================
     // PERFORMANCE OPTIMIZATION: Debounced update function
     // ==========================================================================
@@ -1234,39 +1234,39 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==========================================================================
     // PERFORMANCE OPTIMIZATION - Debounced Updates & Table Visibility Control
     // ==========================================================================
-    
+  
     let updateRAFId = null;
     let debounceTimerId = null;
     const DEBOUNCE_DELAY = 1500; // Wait 1.5 seconds after user stops interacting
-    
+  
     // Track whether amortization table is visible (for performance)
     let isAmortizationTableVisible = false;
-    
+  
     // Loading state
     let isCalculating = false;
-    
+  
     function scheduleFullUpdate() {
       // Cancel any pending debounced update
       if (debounceTimerId) {
         clearTimeout(debounceTimerId);
       }
-      
+  
       // Cancel any pending animation frame
       if (updateRAFId) {
         cancelAnimationFrame(updateRAFId);
       }
-      
+  
       // Show loading indicator
       showLoadingIndicator();
-      
+  
       // Schedule debounced update
       debounceTimerId = setTimeout(() => {
         updateRAFId = requestAnimationFrame(() => { 
           updateUI(); 
-          
+  
           // Hide loading indicator
           hideLoadingIndicator();
-          
+  
           // Update all slider visual fills after UI updates
           setTimeout(() => {
             document.querySelectorAll('input[type="range"]').forEach(slider => {
@@ -1275,20 +1275,20 @@ document.addEventListener("DOMContentLoaded", () => {
               }
             });
           }, 50);
-          
+  
           updateRAFId = null; 
         });
         debounceTimerId = null;
       }, DEBOUNCE_DELAY);
     }
-    
+  
     // Show loading indicator on results section
     function showLoadingIndicator() {
       const resultsSection = document.querySelector('.results-section');
-      if (resultsSection && !isCalculating) {
+      if (resultsSection) {
         isCalculating = true;
         resultsSection.classList.add('calculating');
-        
+  
         // Add loading spinner if it doesn't exist
         let loadingSpinner = resultsSection.querySelector('.loading-indicator');
         if (!loadingSpinner) {
@@ -1303,14 +1303,14 @@ document.addEventListener("DOMContentLoaded", () => {
         loadingSpinner.style.display = 'flex';
       }
     }
-    
+  
     // Hide loading indicator
     function hideLoadingIndicator() {
       const resultsSection = document.querySelector('.results-section');
       if (resultsSection) {
         isCalculating = false;
         resultsSection.classList.remove('calculating');
-        
+  
         const loadingSpinner = resultsSection.querySelector('.loading-indicator');
         if (loadingSpinner) {
           loadingSpinner.style.display = 'none';
@@ -1340,7 +1340,7 @@ document.addEventListener("DOMContentLoaded", () => {
     //     targetDTISliderEl.disabled = true;
     //     targetDTINumberEl.disabled = true;
     //     targetDtiGroupEl.classList.add('disabled-visual');
-        
+  
     //     // Reset to default DTI for the loan type
     //     if (mode === 'default') {
     //       targetDTISliderEl.value = loanCfg.maxDtiTotalDefault;
@@ -1368,7 +1368,7 @@ document.addEventListener("DOMContentLoaded", () => {
     //     targetPaymentNumberEl.disabled = true;
     //     targetPaymentGroupEl.classList.add('disabled-visual');
     //     targetPaymentSectionEl.style.opacity = "0.6";
-        
+  
     //     if (mode === 'default') { 
     //       // Default mode: Collapse payment section completel
     //       targetPaymentSectionEl.style.maxHeight = "0";
@@ -1378,7 +1378,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
     //     }
     //   }
-      
+  
     //   scheduleFullUpdate(); // Recalculate with new mode
     // }
   
@@ -1418,44 +1418,44 @@ document.addEventListener("DOMContentLoaded", () => {
         targetDTISliderEl.value = loanCfg.maxDtiTotalDefault;
         targetDTINumberEl.value = loanCfg.maxDtiTotalDefault;
         setGroupState(targetDtiGroupEl, targetDTISliderEl, targetDTINumberEl, false);
-        
+  
         setGroupState(targetPaymentGroupEl, targetPaymentSliderEl, targetPaymentNumberEl, false);
-        
+  
         // Clear override value
         loanOverrideSliderEl.value = 0;
         loanOverrideNumberEl.value = 0;
         setGroupState(loanOverrideGroupEl, loanOverrideSliderEl, loanOverrideNumberEl, false);
       }
-      
+  
       // DTI MODE: Enable DTI, disable others
       else if (mode === 'dti') {
         setGroupState(targetDtiGroupEl, targetDTISliderEl, targetDTINumberEl, true);
         setGroupState(targetPaymentGroupEl, targetPaymentSliderEl, targetPaymentNumberEl, false);
-        
+  
         // Clear override value
         loanOverrideSliderEl.value = 0;
         loanOverrideNumberEl.value = 0;
         setGroupState(loanOverrideGroupEl, loanOverrideSliderEl, loanOverrideNumberEl, false);
       }
-      
+  
       // PAYMENT MODE: Enable Payment, disable others
       else if (mode === 'payment') {
         setGroupState(targetPaymentGroupEl, targetPaymentSliderEl, targetPaymentNumberEl, true);
         setGroupState(targetDtiGroupEl, targetDTISliderEl, targetDTINumberEl, false);
-        
+  
         // Clear override value
         loanOverrideSliderEl.value = 0;
         loanOverrideNumberEl.value = 0;
         setGroupState(loanOverrideGroupEl, loanOverrideSliderEl, loanOverrideNumberEl, false);
       }
-      
+  
       // OVERRIDE MODE: Enable Override, disable DTI and Payment
       else if (mode === 'override') {
         setGroupState(loanOverrideGroupEl, loanOverrideSliderEl, loanOverrideNumberEl, true);
         setGroupState(targetDtiGroupEl, targetDTISliderEl, targetDTINumberEl, false);
         setGroupState(targetPaymentGroupEl, targetPaymentSliderEl, targetPaymentNumberEl, false);
       }
-      
+  
       scheduleFullUpdate();
     }
   
@@ -1470,12 +1470,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     });
-    
+  
     // Clear mode button: Return to default mode
-    inputs.clearModeButton.addEventListener('click', () => {
-      inputs.calculationModeOverrideRadios.forEach(radio => radio.checked = false); 
-      setMode('default');
-    });
+    if (inputs.clearModeButton) {
+      inputs.clearModeButton.addEventListener('click', () => {
+        inputs.calculationModeOverrideRadios.forEach(radio => radio.checked = false); 
+        setMode('default');
+      });
+    }
   
     // ==========================================================================
     // EVENT LISTENERS: Amortization view toggle (years vs months)
@@ -1488,7 +1490,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     });
-    
+  
     // Mobile amortization view toggle (if exists)
     const mobileAmortViewRadios = document.querySelectorAll('input[name="mobile-amortization-view"]');
     mobileAmortViewRadios.forEach(radio => {
@@ -1507,35 +1509,35 @@ document.addEventListener("DOMContentLoaded", () => {
     function handleLoanTypeChange() {
       const config = loanTypeConfig[inputs.loanType.value];
       loanTypeInfo.textContent = config.description; // Update description text
-      
+  
       // Reset DTI to default for new loan type (if in default or DTI mode)
       if (currentCalculationMode === 'default' || currentCalculationMode === 'dti') {
         inputs.targetDTISlider.value = config.maxDtiTotalDefault;
         inputs.targetDTINumber.value = config.maxDtiTotalDefault;
       }
-      
+  
       // USDA and VA loans allow zero down payment
       if (inputs.loanType.value === 'usda' || inputs.loanType.value === 'va') {
         inputs.downPaymentSlider.value = 0;
         inputs.downPaymentNumber.value = 0;
       }
-      
+  
       setMode(currentCalculationMode); // Re-apply current mode
     }
-    
+  
     // ==========================================================================
     // MODE MANAGEMENT: Set calculator mode (simple vs advanced)
     // ==========================================================================
     function setCalculatorMode(mode) {
       calculatorMode = mode;
-      
+  
       if (mode === 'simple') {
         // SIMPLE MODE
         calculatorContainer.classList.add('simple-mode'); // Add CSS class to show/hide elements
         simpleModeBtn.classList.add('active');
         advancedModeBtn.classList.remove('active');
         setSimpleCalcMode(simpleCalcMode); // Apply current simple calc mode
-        
+  
         // Transfer advanced mode values to simple mode inputs
         const currentLoanAmount = +inputs.loanAmountOverrideNumber.value || 0;
         const currentDownPayment = +inputs.downPaymentNumber.value || 50000;
@@ -1547,12 +1549,12 @@ document.addEventListener("DOMContentLoaded", () => {
         calculatorContainer.classList.remove('simple-mode');
         advancedModeBtn.classList.add('active');
         simpleModeBtn.classList.remove('active');
-        
+  
         // Hide simple-only input fields (but keep the mode selector visible)
         document.querySelectorAll('.simple-affordability-only, .simple-home-price-only').forEach(el => {
           el.style.display = 'none';
         });
-        
+  
         // Transfer simple mode home price to loan override in advanced mode
         const simpleHomePrice = +inputs.simpleLoanAmountNumber.value;
         const downPayment = +inputs.downPaymentNumber.value;
@@ -1560,9 +1562,9 @@ document.addEventListener("DOMContentLoaded", () => {
         inputs.loanAmountOverrideSlider.value = calculatedLoan;
         inputs.loanAmountOverrideNumber.value = calculatedLoan;
       }
-      
+  
       scheduleFullUpdate();
-      
+  
       // Update range fills after mode switch
       setTimeout(() => {
         document.querySelectorAll('input[type="range"]').forEach(slider => {
@@ -1578,14 +1580,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==========================================================================
       function setSimpleCalcMode(mode) {
         simpleCalcMode = mode;
-        
+  
         const homePriceElements = document.querySelectorAll('.simple-home-price-only');
         const affordabilityElements = document.querySelectorAll('.simple-affordability-only');
-        
+  
         if (mode === 'home-price') {
           homePriceElements.forEach(el => el.style.display = 'block');
           affordabilityElements.forEach(el => el.style.display = 'none');
-          
+  
           // ADD THIS: Actually check the radio button
           const homePriceRadio = document.getElementById('simple-home-price');
           if (homePriceRadio) {
@@ -1594,14 +1596,14 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
           homePriceElements.forEach(el => el.style.display = 'none');
           affordabilityElements.forEach(el => el.style.display = 'block');
-          
+  
           // ADD THIS: Actually check the radio button
           const affordabilityRadio = document.getElementById('simple-affordability');
           if (affordabilityRadio) {
             affordabilityRadio.checked = true;
           }
         }
-        
+  
         scheduleFullUpdate();
       }
   
@@ -1660,14 +1662,14 @@ document.addEventListener("DOMContentLoaded", () => {
           scheduleFullUpdate();
         }
       });
-      
+  
       // NUMBER INPUT (while typing): Update slider in real-time
       pair.number.addEventListener('input', () => {
         if (!pair.number.disabled) {
           let value = parseFloat(pair.number.value);
           const min = parseFloat(pair.number.min);
           const max = parseFloat(pair.slider.max); 
-          
+  
           if (isNaN(value)) { 
             // Allow temporary invalid input (user still typing)
           } else {
@@ -1677,7 +1679,7 @@ document.addEventListener("DOMContentLoaded", () => {
           scheduleFullUpdate(); 
         }
       });
-      
+  
       // NUMBER INPUT (on blur/enter): Validate and snap to valid value
       pair.number.addEventListener('change', () => { 
         if (!pair.number.disabled) {
@@ -1702,7 +1704,7 @@ document.addEventListener("DOMContentLoaded", () => {
               value = Math.min(Math.max(value, min), max); // Clamp
             }
           }
-          
+  
           // Update both inputs with validated value
           const decimals = (step.toString().split('.')[1] || '').length;
           pair.number.value = value.toFixed(decimals);
@@ -1716,20 +1718,20 @@ document.addEventListener("DOMContentLoaded", () => {
     // EVENT LISTENER: Loan type dropdown
     // ==========================================================================
     inputs.loanType.addEventListener('change', handleLoanTypeChange);
-    
+  
     // ==========================================================================
     // INITIALIZATION FUNCTION: Set up calculator on page load
     // ==========================================================================
     function initialize() {
       // Clear all mode radio buttons
       inputs.calculationModeOverrideRadios.forEach(r => r.checked = false); 
-      
+  
       // Set to default calculation mode
       setMode('default'); 
-      
+  
       // Initialize loan type settings
       handleLoanTypeChange();
-      
+  
       // Start in simple mode
       setCalculatorMode('simple');
     }
@@ -1742,24 +1744,24 @@ document.addEventListener("DOMContentLoaded", () => {
         const min = parseFloat(el.min) || 0;
         const max = parseFloat(el.max) || 100;
         const val = parseFloat(el.value) || 0;
-        
+  
         // Calculate the raw percentage
         const percentage = ((val - min) / (max - min)) * 100;
-        
-        // Account for your 36px wide pill thumb
-        const thumbWidth = 36;
+  
+        // Account for 48px wide pill thumb (matches CSS)
+        const thumbWidth = 48;
         const sliderWidth = el.offsetWidth;
-        
+  
         if (sliderWidth > 0) {
           // Calculate where the thumb CENTER is positioned
           const halfThumb = thumbWidth / 2; // 18px
           const availableRange = sliderWidth - thumbWidth;
           const thumbCenterPosition = halfThumb + (percentage / 100) * availableRange;
-          
+  
           // Convert thumb center position to percentage for gradient
           const fillPercentage = (thumbCenterPosition / sliderWidth) * 100;
           const clampedFill = Math.max(0, Math.min(100, fillPercentage));
-          
+  
           // Apply gradient with precise alignment
           el.style.background = `linear-gradient(
             to right,
@@ -1780,7 +1782,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
   
-      // Keep your existing event listeners
+      // Event delegation for slider fills (works for all sliders)
       document.addEventListener('input', (e) => {
         if (!e.target.matches('input[type="range"]')) return;
         updateRangeFill(e.target);
@@ -1805,27 +1807,18 @@ document.addEventListener("DOMContentLoaded", () => {
           document.querySelectorAll('input[type="range"]').forEach(updateRangeFill);
         }, 150);
       });
-    
-    // ==========================================================================
-    // EVENT DELEGATION: Update slider fill on any range input change
-    // ==========================================================================
-    // Using delegation so it works even for dynamically created sliders
-    document.addEventListener('input', (e) => {
-      if (!e.target.matches('input[type="range"]')) return; // Only handle range inputs
-      updateRangeFill(e.target);
-    });
-    
+  
     // ==========================================================================
     // AMORTIZATION TABLE SHOW/HIDE BUTTONS
     // ==========================================================================
-    
+  
     // Find elements - be more specific to get the right ones
     const amortizationSection = document.querySelector('.amortization-section');
     const tableContainer = amortizationSection ? amortizationSection.querySelector('.table-container') : null;
     const tableFade = tableContainer ? tableContainer.querySelector('.table-fade') : null;
     const learnMoreBtn = tableFade ? tableFade.querySelector('.button') : null;
     const hideTableBtn = document.getElementById('hide-tabble');
-    
+  
     // Debug logging
     console.log('Amortization elements found:', {
       amortizationSection: !!amortizationSection,
@@ -1834,38 +1827,26 @@ document.addEventListener("DOMContentLoaded", () => {
       learnMoreBtn: !!learnMoreBtn,
       hideTableBtn: !!hideTableBtn
     });
-    
+  
     // Function to show table
     function showAmortizationTable() {
       console.log('showAmortizationTable called');
       if (tableContainer && tableFade) {
         console.log('Before show - tableContainer classes:', tableContainer.className);
         console.log('Before show - tableFade classes:', tableFade.className);
-        
+  
         // Add hidden to fade, remove from container
         tableFade.classList.add('hidden');
-        tableContainer.classList.add('hidden');
-        
+        tableContainer.classList.remove('hidden');
+  
         console.log('After show - tableContainer classes:', tableContainer.className);
         console.log('After show - tableFade classes:', tableFade.className);
-        
+  
         // Mark table as visible
         isAmortizationTableVisible = true;
-        
-        // Trigger immediate update to generate table
-        if (debounceTimerId) clearTimeout(debounceTimerId);
-        if (updateRAFId) cancelAnimationFrame(updateRAFId);
-        updateRAFId = requestAnimationFrame(() => {
-          updateUI();
-          setTimeout(() => {
-            document.querySelectorAll('input[type="range"]').forEach(slider => {
-              if (slider && !slider.disabled) {
-                updateRangeFill(slider);
-              }
-            });
-          }, 50);
-          updateRAFId = null;
-        });
+  
+        // Trigger immediate update to generate table (use scheduleFullUpdate to show loading)
+        scheduleFullUpdate();
       } else {
         console.error('showAmortizationTable: Missing elements', {
           tableContainer: !!tableContainer,
@@ -1873,21 +1854,21 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
     }
-    
+  
     // Function to hide table
     function hideAmortizationTable() {
       console.log('hideAmortizationTable called');
       if (tableContainer && tableFade) {
         console.log('Before hide - tableContainer classes:', tableContainer.className);
         console.log('Before hide - tableFade classes:', tableFade.className);
-        
+  
         // Add hidden to container, remove from fade
-        tableContainer.classList.remove('hidden');
+        tableContainer.classList.add('hidden');
         tableFade.classList.remove('hidden');
-        
+  
         console.log('After hide - tableContainer classes:', tableContainer.className);
         console.log('After hide - tableFade classes:', tableFade.className);
-        
+  
         // Mark table as not visible
         isAmortizationTableVisible = false;
       } else {
@@ -1897,7 +1878,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
     }
-    
+  
     // Event listeners for buttons
     if (learnMoreBtn) {
       learnMoreBtn.addEventListener('click', (e) => {
@@ -1908,7 +1889,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       console.warn('Learn More button not found');
     }
-    
+  
     if (hideTableBtn) {
       hideTableBtn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -1918,7 +1899,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       console.warn('Hide Table button not found');
     }
-    
+  
     // ==========================================================================
     // INITIALIZE SLIDER FILLS: Run once on page load
     // ==========================================================================
@@ -1931,4 +1912,4 @@ document.addEventListener("DOMContentLoaded", () => {
     // Show table by default on page load and generate with initial values
     isAmortizationTableVisible = true;
     initialize();
-  });
+  }); // End DOMContentLoaded
