@@ -1285,7 +1285,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Show loading indicator on results section
     function showLoadingIndicator() {
       const resultsSection = document.querySelector('.results-section');
-      if (resultsSection && !isCalculating) {
+      if (resultsSection) {
         isCalculating = true;
         resultsSection.classList.add('calculating');
   
@@ -1845,20 +1845,8 @@ document.addEventListener("DOMContentLoaded", () => {
         // Mark table as visible
         isAmortizationTableVisible = true;
   
-        // Trigger immediate update to generate table
-        if (debounceTimerId) clearTimeout(debounceTimerId);
-        if (updateRAFId) cancelAnimationFrame(updateRAFId);
-        updateRAFId = requestAnimationFrame(() => {
-          updateUI();
-          setTimeout(() => {
-            document.querySelectorAll('input[type="range"]').forEach(slider => {
-              if (slider && !slider.disabled) {
-                updateRangeFill(slider);
-              }
-            });
-          }, 50);
-          updateRAFId = null;
-        });
+        // Trigger immediate update to generate table (use scheduleFullUpdate to show loading)
+        scheduleFullUpdate();
       } else {
         console.error('showAmortizationTable: Missing elements', {
           tableContainer: !!tableContainer,
