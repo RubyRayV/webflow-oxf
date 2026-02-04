@@ -1472,10 +1472,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   
     // Clear mode button: Return to default mode
-    inputs.clearModeButton.addEventListener('click', () => {
-      inputs.calculationModeOverrideRadios.forEach(radio => radio.checked = false); 
-      setMode('default');
-    });
+    if (inputs.clearModeButton) {
+      inputs.clearModeButton.addEventListener('click', () => {
+        inputs.calculationModeOverrideRadios.forEach(radio => radio.checked = false); 
+        setMode('default');
+      });
+    }
   
     // ==========================================================================
     // EVENT LISTENERS: Amortization view toggle (years vs months)
@@ -1746,8 +1748,8 @@ document.addEventListener("DOMContentLoaded", () => {
         // Calculate the raw percentage
         const percentage = ((val - min) / (max - min)) * 100;
   
-        // Account for your 36px wide pill thumb
-        const thumbWidth = 36;
+        // Account for 48px wide pill thumb (matches CSS)
+        const thumbWidth = 48;
         const sliderWidth = el.offsetWidth;
   
         if (sliderWidth > 0) {
@@ -1780,7 +1782,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
   
-      // Keep your existing event listeners
+      // Event delegation for slider fills (works for all sliders)
       document.addEventListener('input', (e) => {
         if (!e.target.matches('input[type="range"]')) return;
         updateRangeFill(e.target);
@@ -1805,15 +1807,6 @@ document.addEventListener("DOMContentLoaded", () => {
           document.querySelectorAll('input[type="range"]').forEach(updateRangeFill);
         }, 150);
       });
-  
-    // ==========================================================================
-    // EVENT DELEGATION: Update slider fill on any range input change
-    // ==========================================================================
-    // Using delegation so it works even for dynamically created sliders
-    document.addEventListener('input', (e) => {
-      if (!e.target.matches('input[type="range"]')) return; // Only handle range inputs
-      updateRangeFill(e.target);
-    });
   
     // ==========================================================================
     // AMORTIZATION TABLE SHOW/HIDE BUTTONS
@@ -1845,7 +1838,6 @@ document.addEventListener("DOMContentLoaded", () => {
         // Add hidden to fade, remove from container
         tableFade.classList.add('hidden');
         tableContainer.classList.remove('hidden');
-        tableContainer.classList.add('hidden');
   
         console.log('After show - tableContainer classes:', tableContainer.className);
         console.log('After show - tableFade classes:', tableFade.className);
@@ -1884,7 +1876,6 @@ document.addEventListener("DOMContentLoaded", () => {
   
         // Add hidden to container, remove from fade
         tableContainer.classList.add('hidden');
-        tableContainer.classList.remove('hidden');
         tableFade.classList.remove('hidden');
   
         console.log('After hide - tableContainer classes:', tableContainer.className);
@@ -1933,3 +1924,4 @@ document.addEventListener("DOMContentLoaded", () => {
     // Show table by default on page load and generate with initial values
     isAmortizationTableVisible = true;
     initialize();
+  }); // End DOMContentLoaded
