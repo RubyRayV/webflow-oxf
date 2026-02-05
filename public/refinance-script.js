@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
-    let calculatorMode = 'simple', amortizationViewMode = 'years', isAmortizationTableVisible = false;
+    // Start with amortization table considered visible so it behaves
+    // like the mortgage calculator (rows are ready behind the overlay)
+    let calculatorMode = 'simple', amortizationViewMode = 'years', isAmortizationTableVisible = true;
     const validLoanTerms = [5, 10, 15, 20, 25, 30, 35, 40];
     
     // Performance optimization - debounced updates
@@ -450,7 +452,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (loanTypeInfo) loanTypeInfo.textContent = v.cfg.description;
         if (refinanceTypeInfo) refinanceTypeInfo.textContent = refinanceTypeDescriptions[v.refinanceType];
         
-        if (calculatorMode === 'advanced' && isAmortizationTableVisible) {
+        // Always generate the amortization table when in advanced mode,
+        // so UX matches the mortgage calculator (table exists behind
+        // the gradient overlay even before expanding).
+        if (calculatorMode === 'advanced') {
             const schedule = generateAmortizationSchedule(newLoanAmount, v.newRate, v.newTerm, v.extraPayment, totalClosingCosts, monthlySavings, v.homeValue, v.loanType);
             renderAmortizationTable(schedule, amortizationViewMode, v.extraPayment, v.loanType);
         }
