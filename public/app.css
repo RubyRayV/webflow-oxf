@@ -422,12 +422,16 @@ font-size: 1.1rem;
   color: var(--primary-color);
 }
 
-.result-item.small {
-  font-size: var(--_typography---h6--font-size);
-  padding: 0.25rem 0;
-}
+  .result-item.small {
+    font-size: var(--_typography---h6--font-size);
+    padding: 0.25rem 0;
+  }
 
-.amortization-section {
+  .hidden {
+    display: none !important;
+  }
+
+  .amortization-section {
   position: relative;
   overflow: hidden;
   margin-top: 2rem;
