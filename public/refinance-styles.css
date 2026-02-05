@@ -845,26 +845,11 @@
     visibility: hidden;
   }
   
-  /* Center content (text + icon) */
-  .table-fade span {
-  margin-bottom: 2rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--text-color, #222);
-  background: rgba(255, 255, 255, 1);
-  padding: 0.5rem 1rem;
-  border-radius: var(--_components---card--border-radius);
-  border: 1px solid var(--border-color);
-  cursor: pointer;
-  user-select: none;
-  transition: all 0.25s ease;
-  }
-  
-  
-  
+  /* NOTE: Button styling inside .table-fade now comes entirely
+     from the shared Webflow `.button` styles so it matches the
+     Mortgage Calculator (black button). We intentionally do NOT
+     override it here. */
+ 
   /* ============================================================================
   LOADING INDICATOR FOR CALCULATOR
   ============================================================================
