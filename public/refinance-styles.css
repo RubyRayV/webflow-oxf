@@ -168,10 +168,6 @@ input[type="number"].slider-number-input:disabled {
     cursor: not-allowed;
 }
 
-.slider-group {
-    margin-bottom: 0;
-}
-
 /* ============================================================================
  REFINANCE TYPE TOGGLE - PILL STYLE RADIO BUTTONS
  ============================================================================ */
@@ -287,106 +283,26 @@ input[type="number"].slider-number-input:disabled {
 
 /* ============================================================================
  RESULTS SECTION
+ NOTE: Layout, fonts and primary result sizing are inherited from
+       `Additional Styles.css` so this matches the mortgage calculator.
+       Here we only lightly tweak refinance‑specific highlight rows.
  ============================================================================ */
 
-.results-container-wr {
-    /* Results container wrapper */
-}
-
-.result-group {
-    /* Result group container */
-}
-
-.result-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center; 
-    padding: 0.5rem 0;
-}
-
-.result-item:last-child {
-    border-bottom: none;
-}
-
-.result-item span:first-child {
-    color: var(--colors--paragraphs);
-}
-
-.result-item .result-value {
-    font-weight: 600;
-}
-
-/* PRIMARY RESULT - VERTICAL LAYOUT */
-.result-item.primary-result {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-    padding: 1rem 0;
-}
-
-.result-item.primary-result h4 {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--colors--paragraphs);
-    line-height: 1.4;
-}
-
-.result-item.primary-result .result-value {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--primary-color);
-    line-height: 1.2;
-}
-
-.result-item.small {
-    font-size: var(--_typography---h6--font-size);
-    padding: 0.25rem 0;
-}
-
-/* ============================================================================
- RESULT HIGHLIGHT STYLES
- ============================================================================ */
-
-.result-item.savings-highlight {
-    background-color: rgba(22, 163, 74, 0.08);
-    margin: 0.5rem -1rem;
-    padding: 0.75rem 1rem;
-    border-radius: var(--_components---card--border-radius);
-}
-
-.result-item.savings-highlight span:first-child {
-    color: var(--success-color);
-    font-weight: 500;
-}
-
-.result-item.break-even-highlight {
-    background-color: var(--_color---secondary--oxford-blue-100);
-    margin: 0.25rem -1rem;
-    padding: 0.5rem 1rem;
-    border-radius: var(--_components---card--border-radius);
-}
-
-.result-item.break-even-highlight span:first-child {
-    color: #1d4ed8;
-    font-weight: 500;
-}
-
+/* Make savings / break‑even / cash‑out rows look like normal rows
+   (no colored background blocks) */
+.result-item.savings-highlight,
+.result-item.break-even-highlight,
 .result-item.cashout-highlight {
-    background-color: rgba(16, 185, 129, 0.12);
-    margin: 0.5rem -1rem;
-    padding: 0.75rem 1rem;
-    border-radius: var(--_components---card--border-radius);
+    background-color: transparent;
+    margin: 0;
+    padding: 0.5rem 0;
+    border-radius: 0;
 }
 
+.result-item.savings-highlight span:first-child,
+.result-item.break-even-highlight span:first-child,
 .result-item.cashout-highlight span:first-child {
-    color: #059669;
     font-weight: 500;
-}
-
-.result-item.cashout-highlight .result-value {
-    color: #059669;
-    font-weight: 600;
 }
 
 .positive {
