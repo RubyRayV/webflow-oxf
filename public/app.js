@@ -926,7 +926,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const R = calculateAll();
       
       // Determine if we should show extra payment results section
-      const showExtra = R.loanAmount > 0 && R.V.additionalPayment > 0 && R.yearsSaved > 0.001; 
+      // Only show in ADVANCED mode, and only when there is a real extra payment
+      // that actually saves time/interest. In Simple mode the extra payment
+      // slider is hidden, so this card should never be visible there.
+      const showExtra =
+        calculatorMode === 'advanced' &&
+        R.loanAmount > 0 &&
+        R.V.additionalPayment > 0 &&
+        R.yearsSaved > 0.001; 
   
       // PART 1: Sync input elements with calculated values
       // This ensures displayed values match what was actually used in calculations
