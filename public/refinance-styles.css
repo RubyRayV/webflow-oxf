@@ -810,11 +810,17 @@
   
   /*Hover for table of amortization section*/
   
-  .table-container {
+.table-container {
   max-height: 300px;
   position: relative;
   overflow: hidden; /* ensures overlay fits neatly */
-  }
+}
+
+/* Expanded state – allow full table height & horizontal scroll (matches mortgage calc UX) */
+.table-container.expanded {
+  max-height: unset;
+  overflow-x: auto;
+}
   
   /* Full-cover gradient overlay */
   .table-fade {
@@ -835,12 +841,8 @@
   
   /* Optional hidden state when expanded */
   .table-fade.hidden {
-  opacity: 0;
-  visibility: hidden;
-  }
-  
-  .table-container.hidden {
-  max-height: unset;
+    opacity: 0;
+    visibility: hidden;
   }
   
   /* Center content (text + icon) */
