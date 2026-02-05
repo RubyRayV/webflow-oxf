@@ -538,12 +538,47 @@ document.addEventListener("DOMContentLoaded", () => {
         syncSliderAndNumber(inputs.hoaSlider, inputs.hoaNumber);
         syncSliderAndNumber(inputs.extraPaymentSlider, inputs.extraPaymentNumber);
         syncSliderAndNumber(inputs.monthlyDebtSlider, inputs.monthlyDebtNumber);
-        const tableContainer = document.querySelector('.amortization-section .table-container');
-        const tableFade = document.querySelector('.table-fade');
-        const expandBtn = document.querySelector('.expand-table-btn');
+        // Amortization show/hide controls (mirrors mortgage calculator behaviour)
+        const amortizationSection = document.querySelector('.amortization-section');
+        const tableContainer = amortizationSection ? amortizationSection.querySelector('.table-container') : null;
+        const tableFade = tableContainer ? tableContainer.querySelector('.table-fade') : null;
+        const expandBtn = tableFade ? tableFade.querySelector('.button') : null;
         const hideBtn = document.getElementById('hide-table');
-        if (expandBtn && tableFade && tableContainer) expandBtn.addEventListener('click', () => { tableFade.classList.add('hidden'); tableContainer.classList.add('expanded'); isAmortizationTableVisible = true; scheduleFullUpdate(); });
-        if (hideBtn && tableFade && tableContainer) hideBtn.addEventListener('click', () => { tableFade.classList.remove('hidden'); tableContainer.classList.remove('expanded'); });
+
+        if (expandBtn && tableFade && tableContainer) {
+            expandBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                // Hide overlay, expand container, mark visible and force immediate update
+                tableFade.classList.add('hidden');
+                tableContainer.classList.add('expanded');
+                isAmortizationTableVisible = true;
+
+                // Cancel any pending debounced update and render immediately
+                if (debounceTimerId) clearTimeout(debounceTimerId);
+                if (updateRAFId) cancelAnimationFrame(updateRAFId);
+                updateRAFId = requestAnimationFrame(() => {
+                    updateUI();
+                    setTimeout(() => {
+                        document.querySelectorAll('input[type=\"range\"]').forEach(slider => {
+                            if (slider && !slider.disabled) {
+                                updateRangeFill(slider);
+                            }
+                        });
+                    }, 50);
+                    updateRAFId = null;
+                });
+            });
+        }
+
+        if (hideBtn && tableFade && tableContainer) {
+            hideBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                // Collapse container and show overlay again
+                tableContainer.classList.remove('expanded');
+                tableFade.classList.remove('hidden');
+                isAmortizationTableVisible = false;
+            });
+        }
     }
     
     function initialize() { 

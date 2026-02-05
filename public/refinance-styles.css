@@ -94,8 +94,6 @@
       border-radius: var(--_components---card--border-radius);
       background-color: var(--container-bg-color);
       color: var(--text-color);
-      /* font-weight: 600; */
-      -moz-appearance: textfield;
   }
   .slider-number-input::-webkit-outer-spin-button,
   .slider-number-input::-webkit-inner-spin-button {
@@ -190,7 +188,7 @@
   
   input[type="number"].slider-number-input:disabled {
     background-color: #adb5bd;
-    color: color: var(--colors--paragraphs);
+    color: var(--colors--paragraphs);
     opacity: 0.7;
   }
   
@@ -423,9 +421,7 @@
   .result-item.primary-result .result-value {
     color: var(--primary-color);
   }
-  .result-group {
-    /* margin-top: 1rem; */
-  }
+
   .result-item.small {
     font-size: var(--_typography---h6--font-size);
     padding: 0.25rem 0;
@@ -949,3 +945,4 @@
   .loading-indicator span {
   font-size: 0.85rem;
   }
+}
