@@ -1102,6 +1102,7 @@ document.addEventListener("DOMContentLoaded", () => {
       
       if (amortizationViewMode === 'years') {
         // YEARLY VIEW: Show one row per year
+        // Extra-payment columns only appear when showExtra is true
         amortizationHead.innerHTML = `
           <tr>
             <th>Year</th>
@@ -1110,8 +1111,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <th>Interest Paid</th>
             <th>End Balance</th>
             <th>LTV (No Extra)</th>
-            <th class="extra-col">End Balance (w/ Extra)</th>
-            <th class="extra-col">LTV (w/ Extra)</th>
+            ${showExtra ? '<th class="extra-col">End Balance (w/ Extra)</th><th class="extra-col">LTV (w/ Extra)</th>' : ''}
           </tr>`;
         
         // Aggregate monthly data into yearly data
@@ -1172,14 +1172,14 @@ document.addEventListener("DOMContentLoaded", () => {
             <td>${formatCurrency(row.interest)}</td>
             <td>${formatCurrency(row.endBalance)}</td>
             ${ltvNoExtraCell}
-            <td class="extra-col">${showExtra ? formatCurrency(row.extraEndBalance) : '-'}</td>
-            ${ltvWithExtraCell}
+            ${showExtra ? `<td class="extra-col">${formatCurrency(row.extraEndBalance)}</td>${ltvWithExtraCell}` : ''}
           `;
           amortizationBody.appendChild(tr);
         });
   
       } else {
         // MONTHLY VIEW: Show one row per month
+        // Extra-payment columns only appear when showExtra is true
         amortizationHead.innerHTML = `
           <tr>
             <th>Month</th>
@@ -1188,8 +1188,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <th>Interest Paid</th>
             <th>End Balance</th>
             <th>LTV</th>
-            <th class="extra-col">End Balance (w/ Extra)</th>
-            <th class="extra-col">LTV (w/ Extra)</th>
+            ${showExtra ? '<th class="extra-col">End Balance (w/ Extra)</th><th class="extra-col">LTV (w/ Extra)</th>' : ''}
           </tr>`;
         
         // Generate table rows directly from monthly data
@@ -1224,8 +1223,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <td>${formatCurrency(row.interest)}</td>
             <td>${formatCurrency(row.endBalance)}</td>
             ${ltvNoExtraCell}
-            <td class="extra-col">${showExtra ? formatCurrency(row.extraEndBalance) : '-'}</td>
-            ${ltvWithExtraCell}
+            ${showExtra ? `<td class="extra-col">${formatCurrency(row.extraEndBalance)}</td>${ltvWithExtraCell}` : ''}
           `;
           amortizationBody.appendChild(tr);
         });

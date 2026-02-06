@@ -242,7 +242,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const isYearly = viewMode === 'years', data = isYearly ? aggregateToYearly(schedule) : schedule;
         const showExtraCols = extraPayment > 0, showPmiDropOff = loanType === 'conventional';
         let headerHtml = `<tr><th>${isYearly ? 'Year' : 'Month'}</th><th>Start Balance</th><th>Principal Paid</th><th>Interest Paid</th><th>End Balance</th><th>LTV${showExtraCols ? ' (No Extra)' : ''}</th>`;
-        if (showExtraCols) headerHtml += `<th class="extra-payment-col">End Balance (w/ Extra)</th><th class="extra-payment-col">LTV (w/ Extra)</th>`;
+        if (showExtraCols) headerHtml += `<th class="extra-col">End Balance (w/ Extra)</th><th class="extra-col">LTV (w/ Extra)</th>`;
         headerHtml += `</tr>`;
         amortizationHead.innerHTML = headerHtml;
         amortizationBody.innerHTML = data.map(row => {
@@ -252,7 +252,7 @@ document.addEventListener("DOMContentLoaded", () => {
             else if (row.isBreakEven) { label = isYearly && row.breakEvenMonth ? `${period} (Break-Even @ Mo. ${row.breakEvenMonth})` : `${period} (Break-Even)`; rowClass = 'break-even-row'; }
             else if (row.isPmiDropOff && showPmiDropOff) { label = isYearly && row.pmiDropOffMonth ? `${period} (PMI Drops @ Mo. ${row.pmiDropOffMonth})` : `${period} (PMI Drops)`; rowClass = 'pmi-dropoff-row'; tooltip = 'LTV at ' + row.ltvNoExtra.toFixed(1) + '%. You can request PMI removal.'; }
             let rowHtml = `<tr class="${rowClass}" ${tooltip ? `title="${tooltip}"` : ''}><td>${label}</td><td>${formatCurrency(row.startBalanceNoExtra)}</td><td>${formatCurrency(row.principalNoExtra)}</td><td>${formatCurrency(row.interestNoExtra)}</td><td>${formatCurrency(row.endBalanceNoExtra)}</td><td>${formatPercent(row.ltvNoExtra, 1)}</td>`;
-            if (showExtraCols) rowHtml += `<td class="extra-payment-col">${formatCurrency(row.endBalanceWithExtra)}</td><td class="extra-payment-col">${formatPercent(row.ltvWithExtra, 1)}</td>`;
+            if (showExtraCols) rowHtml += `<td class="extra-col">${formatCurrency(row.endBalanceWithExtra)}</td><td class="extra-col">${formatPercent(row.ltvWithExtra, 1)}</td>`;
             return rowHtml + `</tr>`;
         }).join('');
     }
