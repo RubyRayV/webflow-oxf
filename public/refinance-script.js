@@ -110,7 +110,12 @@ document.addEventListener("DOMContentLoaded", () => {
         usda: { name: "USDA", requiresPmi: true, pmiThreshold: 0.0, pmiRate: 0.0035, description: "USDA Rural Development loan. No cash-out refinance available.", streamlineAvailable: true, cashoutAvailable: false, maxCashoutLTV: 0, getPmiTooltip: () => "USDA guarantee fee remains for life." }
     };
     
-    const refinanceTypeDescriptions = { 'rate-term': "Rate & Term: Refinance to get a better rate or change your loan term.", 'streamline': "Streamline: Simplified refinance for existing FHA/VA/USDA loans.", 'cashout': "Cash-Out: Refinance for more than you owe and receive cash." };
+    const refinanceTypeDescriptions = { 
+        'rate-term': "Rate & Term: Refinance to get a better rate or change your loan term.", 
+        'streamline': "Streamline: Simplified refinance for existing FHA loans.", 
+        'irrrl': "IRRRL: Interest Rate Reduction Refinance Loan for VA loans.",
+        'cashout': "Cash-Out: Refinance for more than you owe and receive cash." 
+    };
     
     const formatCurrency = (val) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(val);
     const formatPercent = (val, digits = 1) => `${Number(val).toFixed(digits)}%`;
@@ -483,7 +488,9 @@ document.addEventListener("DOMContentLoaded", () => {
         } else if (results.extraPaymentResults) results.extraPaymentResults.style.display = 'none';
         
         if (loanTypeInfo) loanTypeInfo.textContent = v.cfg.description;
-        if (refinanceTypeInfo) refinanceTypeInfo.textContent = refinanceTypeDescriptions[v.refinanceType];
+        // For VA loans, use 'irrrl' description when streamline is selected
+        const descriptionKey = (v.loanType === 'va' && v.refinanceType === 'streamline') ? 'irrrl' : v.refinanceType;
+        if (refinanceTypeInfo) refinanceTypeInfo.textContent = refinanceTypeDescriptions[descriptionKey] || '';
         
         // Always generate the amortization table when in advanced mode,
         // so UX matches the mortgage calculator (table exists behind
@@ -500,10 +507,35 @@ document.addEventListener("DOMContentLoaded", () => {
         containers.cashoutAmountGroup.style.display = isCashout ? 'block' : 'none';
         containers.monthlyDebtGroup.style.display = isCashout ? 'block' : 'none';
         containers.cashoutResultRow.style.display = isCashout ? 'flex' : 'none';
+        
+        // Handle Streamline/IRRRL button visibility and label
         if (containers.streamlineOption && containers.streamlineLabel) {
-            if (v.cfg.streamlineAvailable) { containers.streamlineOption.style.display = ''; containers.streamlineLabel.style.display = ''; }
-            else { containers.streamlineOption.style.display = 'none'; containers.streamlineLabel.style.display = 'none'; if (v.refinanceType === 'streamline') document.getElementById('rate-term').checked = true; }
+            // USDA: Hide Streamline button completely
+            if (v.loanType === 'usda') {
+                containers.streamlineOption.style.display = 'none';
+                containers.streamlineLabel.style.display = 'none';
+                if (v.refinanceType === 'streamline') document.getElementById('rate-term').checked = true;
+            }
+            // VA: Show button but rename to IRRRL
+            else if (v.loanType === 'va') {
+                containers.streamlineOption.style.display = '';
+                containers.streamlineLabel.style.display = '';
+                containers.streamlineLabel.textContent = 'IRRRL';
+            }
+            // Other loan types (FHA, Conventional): Show as Streamline
+            else if (v.cfg.streamlineAvailable) {
+                containers.streamlineOption.style.display = '';
+                containers.streamlineLabel.style.display = '';
+                containers.streamlineLabel.textContent = 'Streamline';
+            }
+            // Hide if streamline not available
+            else {
+                containers.streamlineOption.style.display = 'none';
+                containers.streamlineLabel.style.display = 'none';
+                if (v.refinanceType === 'streamline') document.getElementById('rate-term').checked = true;
+            }
         }
+        
         if (containers.cashoutOption && containers.cashoutLabel) {
             if (v.cfg.cashoutAvailable) { containers.cashoutOption.style.display = ''; containers.cashoutLabel.style.display = ''; }
             else { containers.cashoutOption.style.display = 'none'; containers.cashoutLabel.style.display = 'none'; if (v.refinanceType === 'cashout') document.getElementById('rate-term').checked = true; }
