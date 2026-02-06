@@ -1842,21 +1842,16 @@ document.addEventListener("DOMContentLoaded", () => {
       hideTableBtn: !!hideTableBtn
     });
     
-    // Function to show table
+    // Function to show table (matches refinance behavior)
     function showAmortizationTable() {
       console.log('showAmortizationTable called');
       if (tableContainer && tableFade) {
         console.log('Before show - tableContainer classes:', tableContainer.className);
         console.log('Before show - tableFade classes:', tableFade.className);
         
-        // Add hidden to fade, remove from container
+        // Hide overlay, expand container, mark visible
         tableFade.classList.add('hidden');
-        tableContainer.classList.add('hidden');
-        
-        console.log('After show - tableContainer classes:', tableContainer.className);
-        console.log('After show - tableFade classes:', tableFade.className);
-        
-        // Mark table as visible
+        tableContainer.classList.add('expanded');
         isAmortizationTableVisible = true;
         
         // Trigger immediate update to generate table
@@ -1888,8 +1883,8 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log('Before hide - tableContainer classes:', tableContainer.className);
         console.log('Before hide - tableFade classes:', tableFade.className);
         
-        // Add hidden to container, remove from fade
-        tableContainer.classList.remove('hidden');
+        // Collapse container and show overlay again
+        tableContainer.classList.remove('expanded');
         tableFade.classList.remove('hidden');
         
         console.log('After hide - tableContainer classes:', tableContainer.className);

@@ -843,6 +843,11 @@ opacity: 0;
 visibility: hidden;
 }
 
+.table-container.expanded {
+max-height: unset;
+overflow-x: auto;
+}
+
 .table-container.hidden {
 max-height: unset;
 }
