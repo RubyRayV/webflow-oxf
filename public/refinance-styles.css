@@ -521,7 +521,7 @@
   }
   /* Highlight LTV cell where break-even occurs (yellow background like PMI drop-off) */
   .break-even-candidate {
-    background-color: var(--highlight-color) !important; 
+    background-color: var(--_color---secondary--oxford-blue-100) !important; 
     font-weight: bold;
   }
   .break-even-candidate .tooltip { 
