@@ -511,6 +511,23 @@
   .extra-col {
     color: var(--success-color);
   }
+  /* Highlight row where break-even occurs */
+  .break-even-row {
+    background-color: var(--highlight-color) !important;
+    font-weight: 600;
+  }
+  .break-even-row td:first-child::before {
+    content: "⏱ ";
+  }
+  /* Highlight LTV cell where break-even occurs (yellow background like PMI drop-off) */
+  .break-even-candidate {
+    background-color: var(--highlight-color) !important; 
+    font-weight: bold;
+  }
+  .break-even-candidate .tooltip { 
+    display: inline-flex !important; 
+    align-items: center;
+  }
   .pmi-dropoff-candidate {
       background-color: var(--highlight-color) !important; 
       font-weight: bold;

@@ -251,14 +251,31 @@ document.addEventListener("DOMContentLoaded", () => {
             let rowClass = '';
             if (row.isBreakEven) rowClass = 'break-even-row';
 
-            // LTV cell with PMI drop-off highlighting and tooltip (match mortgage behavior)
-            let ltvNoExtraCell = `<td${row.isPmiDropOff && showPmiDropOff ? ' class="pmi-dropoff-candidate"' : ''}>
-              ${formatPercent(row.ltvNoExtra, 1)}
-              ${row.isPmiDropOff && showPmiDropOff ? `
+            // LTV cell with PMI drop-off and break-even highlighting and tooltip (match mortgage behavior)
+            let ltvCellClasses = [];
+            let ltvTooltip = '';
+            
+            // Break-even highlighting (takes priority if both occur)
+            if (row.isBreakEven) {
+                ltvCellClasses.push('break-even-candidate');
+                const breakEvenMonth = isYearly ? (row.breakEvenMonth || period) : period;
+                ltvTooltip = `
+                <div class="tooltip">
+                  <span class="tooltip-trigger">⏱</span>
+                  <div class="tooltip-content">Break-even point reached. Your monthly savings have covered the closing costs.</div>
+                </div>`;
+            } else if (row.isPmiDropOff && showPmiDropOff) {
+                ltvCellClasses.push('pmi-dropoff-candidate');
+                ltvTooltip = `
                 <div class="tooltip">
                   <span class="tooltip-trigger">?</span>
                   <div class="tooltip-content">LTV at ${row.ltvNoExtra.toFixed(1)}%. You can request PMI removal.</div>
-                </div>` : ''}
+                </div>`;
+            }
+            
+            let ltvNoExtraCell = `<td${ltvCellClasses.length > 0 ? ` class="${ltvCellClasses.join(' ')}"` : ''}>
+              ${formatPercent(row.ltvNoExtra, 1)}
+              ${ltvTooltip}
             </td>`;
 
             let rowHtml = `<tr class="${rowClass}"><td>${period}</td><td>${formatCurrency(row.startBalanceNoExtra)}</td><td>${formatCurrency(row.principalNoExtra)}</td><td>${formatCurrency(row.interestNoExtra)}</td><td>${formatCurrency(row.endBalanceNoExtra)}</td>${ltvNoExtraCell}`;
