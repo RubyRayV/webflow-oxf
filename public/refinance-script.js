@@ -247,11 +247,21 @@ document.addEventListener("DOMContentLoaded", () => {
         amortizationHead.innerHTML = headerHtml;
         amortizationBody.innerHTML = data.map(row => {
             const period = isYearly ? row.year : row.month;
-            let label = period, rowClass = '', tooltip = '';
-            if (row.isBreakEven && row.isPmiDropOff) { label = isYearly ? `${period} (Break-Even @ Mo. ${row.breakEvenMonth}, PMI Drops @ Mo. ${row.pmiDropOffMonth})` : `${period} (Break-Even & PMI Drops)`; rowClass = 'break-even-row'; }
-            else if (row.isBreakEven) { label = isYearly && row.breakEvenMonth ? `${period} (Break-Even @ Mo. ${row.breakEvenMonth})` : `${period} (Break-Even)`; rowClass = 'break-even-row'; }
-            else if (row.isPmiDropOff && showPmiDropOff) { label = isYearly && row.pmiDropOffMonth ? `${period} (PMI Drops @ Mo. ${row.pmiDropOffMonth})` : `${period} (PMI Drops)`; rowClass = 'pmi-dropoff-row'; tooltip = 'LTV at ' + row.ltvNoExtra.toFixed(1) + '%. You can request PMI removal.'; }
-            let rowHtml = `<tr class="${rowClass}" ${tooltip ? `title="${tooltip}"` : ''}><td>${label}</td><td>${formatCurrency(row.startBalanceNoExtra)}</td><td>${formatCurrency(row.principalNoExtra)}</td><td>${formatCurrency(row.interestNoExtra)}</td><td>${formatCurrency(row.endBalanceNoExtra)}</td><td>${formatPercent(row.ltvNoExtra, 1)}</td>`;
+            // Keep plain period label (no appended text), but allow row classes
+            let rowClass = '';
+            if (row.isBreakEven) rowClass = 'break-even-row';
+
+            // LTV cell with PMI drop-off highlighting and tooltip (match mortgage behavior)
+            let ltvNoExtraCell = `<td${row.isPmiDropOff && showPmiDropOff ? ' class="pmi-dropoff-candidate"' : ''}>
+              ${formatPercent(row.ltvNoExtra, 1)}
+              ${row.isPmiDropOff && showPmiDropOff ? `
+                <div class="tooltip">
+                  <span class="tooltip-trigger">?</span>
+                  <div class="tooltip-content">LTV at ${row.ltvNoExtra.toFixed(1)}%. You can request PMI removal.</div>
+                </div>` : ''}
+            </td>`;
+
+            let rowHtml = `<tr class="${rowClass}"><td>${period}</td><td>${formatCurrency(row.startBalanceNoExtra)}</td><td>${formatCurrency(row.principalNoExtra)}</td><td>${formatCurrency(row.interestNoExtra)}</td><td>${formatCurrency(row.endBalanceNoExtra)}</td>${ltvNoExtraCell}`;
             if (showExtraCols) rowHtml += `<td class="extra-col">${formatCurrency(row.endBalanceWithExtra)}</td><td class="extra-col">${formatPercent(row.ltvWithExtra, 1)}</td>`;
             return rowHtml + `</tr>`;
         }).join('');
