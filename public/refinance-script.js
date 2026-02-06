@@ -118,8 +118,14 @@ document.addEventListener("DOMContentLoaded", () => {
     
     function setGuidance(element, message, type) {
         if (!element) return;
+        // Always reset base class
         element.className = 'slider-guidance';
-        if (message) { element.textContent = message; element.classList.add(type || 'info'); }
+        // Always reset text so old warnings don't linger
+        element.textContent = message || '';
+        // Only add a style modifier when we actually have a message
+        if (message && type) {
+            element.classList.add(type);
+        }
     }
     
     function calculateMaxCashout(homeValue, currentBalance, loanType) {
