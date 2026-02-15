@@ -838,6 +838,16 @@
   max-height: unset;
   overflow-x: auto;
 }
+
+/* Sticky Hide Table button - sticks to bottom of viewport when scrolling long tables */
+.table-container.expanded .row.row-justify-center {
+  position: sticky;
+  bottom: 1.75rem;
+  z-index: 10;
+  background-color: var(--background-color);
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
   
   /* Full-cover gradient overlay */
   .table-fade {
