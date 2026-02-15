@@ -629,9 +629,15 @@ document.addEventListener("DOMContentLoaded", () => {
                                 updateRangeFill(slider);
                             }
                         });
+                        // Update sticky button visibility after table renders
+                        setTimeout(() => updateStickyButtonVisibility(), 100);
                     }, 50);
                     updateRAFId = null;
                 });
+                
+                // Add scroll listener for sticky button
+                window.addEventListener('scroll', handleStickyButtonScroll, { passive: true });
+                window.addEventListener('resize', updateStickyButtonVisibility, { passive: true });
             });
         }
 
@@ -642,8 +648,52 @@ document.addEventListener("DOMContentLoaded", () => {
                 tableContainer.classList.remove('expanded');
                 tableFade.classList.remove('hidden');
                 isAmortizationTableVisible = false;
+                
+                // Remove scroll listener when table is hidden
+                window.removeEventListener('scroll', handleStickyButtonScroll);
+                window.removeEventListener('resize', updateStickyButtonVisibility);
             });
         }
+    }
+    
+    // Handle sticky Hide Table button visibility based on scroll position
+    let stickyButtonScrollTimeout = null;
+    function updateStickyButtonVisibility() {
+        const amortizationSection = document.querySelector('.amortization-section');
+        const tableContainer = amortizationSection ? amortizationSection.querySelector('.table-container') : null;
+        if (!tableContainer || !tableContainer.classList.contains('expanded')) {
+            return; // Only handle when table is expanded
+        }
+        
+        const hideButtonRow = tableContainer.querySelector('.row.row-justify-center');
+        if (!hideButtonRow) return;
+        
+        const containerRect = tableContainer.getBoundingClientRect();
+        const scrollY = window.scrollY || window.pageYOffset;
+        const containerTop = containerRect.top + scrollY;
+        const containerHeight = tableContainer.offsetHeight;
+        const containerBottomAbsolute = containerTop + containerHeight;
+        const viewportHeight = window.innerHeight;
+        
+        // Check if we're near the bottom of the table container (within 200px)
+        const distanceFromBottom = containerBottomAbsolute - (scrollY + viewportHeight);
+        const isNearBottom = distanceFromBottom < 200;
+        
+        // Show as fixed when scrolling through table, hide sticky when near bottom
+        if (isNearBottom) {
+            hideButtonRow.classList.add('hide-sticky');
+        } else {
+            hideButtonRow.classList.remove('hide-sticky');
+        }
+    }
+    
+    // Throttled scroll handler for sticky button
+    function handleStickyButtonScroll() {
+        if (stickyButtonScrollTimeout) return;
+        stickyButtonScrollTimeout = requestAnimationFrame(() => {
+            updateStickyButtonVisibility();
+            stickyButtonScrollTimeout = null;
+        });
     }
     
     function initialize() { 
