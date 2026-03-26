@@ -1568,9 +1568,7 @@ document.addEventListener("DOMContentLoaded", () => {
         calculatorContainer.classList.add('simple-mode'); // Add CSS class to show/hide elements
         simpleModeBtn.classList.add('active');
         advancedModeBtn.classList.remove('active');
-        requestAnimationFrame(() => {
-          setSimpleCalcMode(simpleCalcMode);
-        }); 
+        setTimeout(() => setSimpleCalcMode(simpleCalcMode), 50);
         
         // Transfer advanced mode values to simple mode inputs
         const currentLoanAmount = +inputs.loanAmountOverrideNumber.value || 0;
