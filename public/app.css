@@ -542,67 +542,7 @@ font-size: 1.1rem;
       font-size: 0.8rem;
       margin-top: 0.25rem;
     }
-    .tooltip {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      vertical-align: middle;
-      margin-left: 5px;
-    }
-    .tooltip .tooltip-trigger {
-      cursor: help;
-      font-weight: bold;
-  color: var(--colors--paragraphs);
-  border: 1px solid var(--colors--paragraphs);
-      border-radius: 50%;
-      width: 16px;
-      height: 16px;
-      min-width: 16px;
-      min-height: 16px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.75rem;
-      line-height: 1;
-      flex-shrink: 0;
-    }
-    .tooltip .tooltip-content {
-      visibility: hidden;
-      width: max-content;
-      max-width: 320px;
-      background-color: #333;
-      color: #fff;
-      text-align: left; 
-  border-radius: var(--_components---card--border-radius);
-      padding: 10px;
-      position: absolute;
-      z-index: 10;
-      bottom: 135%; 
-      left: 50%;
-      transform: translateX(-50%);
-      opacity: 0;
-      transition: opacity 0.3s;
-      font-size: 0.75rem;
-      font-weight: normal;
-      line-height: 1.3;
-    }
-     .tooltip:hover .tooltip-content {
-      visibility: visible;
-      opacity: 1;
-    }
-    @media (max-width: 768px) {
-    .tooltip {
-        position: relative;
-    }
 
-    .tooltip .tooltip-content { 
-        max-width: 320px;
-        max-width: min(320px, calc(100vw - 2rem));
-        left: 50%;
-        transform: translateX(-50%);
-        bottom: 135%;
-    }
-    }
 
     .cta-button {
         width: 100%;
