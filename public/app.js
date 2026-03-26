@@ -1570,7 +1570,7 @@ document.addEventListener("DOMContentLoaded", () => {
         advancedModeBtn.classList.remove('active');
         requestAnimationFrame(() => {
           setSimpleCalcMode(simpleCalcMode);
-        }); // Apply current simple calc mode
+        }); 
         
         // Transfer advanced mode values to simple mode inputs
         const currentLoanAmount = +inputs.loanAmountOverrideNumber.value || 0;
