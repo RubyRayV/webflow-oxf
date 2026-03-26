@@ -411,7 +411,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const curLoan = Math.max(0, HP - downPayment);
           const dynamicPmiRate = getDynamicPmiRate(cfg, HP, curLoan);
 
-          if (HP > 0 && curLoan / HP > 1 - cfg.pmiThreshold) {
+          if (HP > 0 && (cfg.pmiThreshold === 0 || curLoan / HP > 1 - cfg.pmiThreshold)) {
             pmi = (curLoan * dynamicPmiRate) / 12;
           }
         }
@@ -474,7 +474,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (cfg.requiresPmi && HP > 0 && L > 0) {
         const dynamicPmiRate = getDynamicPmiRate(cfg, HP, L);
 
-        if (L / HP > 1 - cfg.pmiThreshold) {
+        if (cfg.pmiThreshold === 0 || L / HP > 1 - cfg.pmiThreshold) {
           pmi = (L * dynamicPmiRate) / 12;
         }
       }
