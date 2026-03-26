@@ -224,7 +224,7 @@ document.addEventListener("DOMContentLoaded", () => {
       conventional: { 
         name: "Conventional", 
         minDownPayment: 0.03, // Minimum 3% down payment
-        maxDtiTotalDefault: 43, // Maximum total debt-to-income ratio (43%)
+        maxDtiTotalDefault: 50, // Maximum total debt-to-income ratio (43%)
         requiresPmi: true, // PMI required if down payment < 20%
         pmiThreshold: 0.2, // PMI required when LTV > 80% (1 - 0.2 = 0.8)
         pmiTargetLtvLower: 78, // PMI auto-terminates at 78% LTV
@@ -255,7 +255,7 @@ document.addEventListener("DOMContentLoaded", () => {
       fha: { 
         name: "FHA", 
         minDownPayment: 0.035, // Minimum 3.5% down payment
-        maxDtiTotalDefault: 43, 
+        maxDtiTotalDefault: 57, 
         requiresPmi: true, // MIP (mortgage insurance premium) always required
         pmiThreshold: 0.0, // MIP required regardless of down payment
         pmiTargetLtvLower: 78, 
@@ -281,7 +281,7 @@ document.addEventListener("DOMContentLoaded", () => {
       va: { 
         name: "VA", 
         minDownPayment: 0, // No down payment required
-        maxDtiTotalDefault: 41, 
+        maxDtiTotalDefault: 57, 
         requiresPmi: false, // No PMI/MIP for VA loans
         pmiThreshold: 0, 
         pmiTargetLtvLower: 0, 
@@ -296,7 +296,7 @@ document.addEventListener("DOMContentLoaded", () => {
       usda: { 
         name: "USDA", 
         minDownPayment: 0, // No down payment required
-        maxDtiTotalDefault: 41, 
+        maxDtiTotalDefault: 45, 
         requiresPmi: true, // Guarantee fee required for life of loan
         pmiThreshold: 0.0, // Guarantee fee required regardless of down payment
         pmiTargetLtvLower: 0, 
@@ -363,11 +363,39 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   
     // ==========================================================================
+    // CALCULATION FUNCTION: Get dynamic PMI rate based on LTV and loan type
+    // ==========================================================================
+    // Returns an annual PMI rate. Conventional uses LTV-based bands;
+    // FHA and USDA use fixed rates; VA has no PMI.
+    function getDynamicPmiRate(cfg, homePrice, loanAmount) {
+      if (!cfg.requiresPmi || homePrice <= 0 || loanAmount <= 0) return 0;
+
+      const ltv = loanAmount / homePrice;
+
+      // No PMI once at or below 80% LTV
+      if (ltv <= 0.80) return 0;
+
+      // Keep FHA and USDA fixed
+      if (cfg.name === 'FHA') return 0.0055;
+      if (cfg.name === 'USDA') return 0.0035;
+
+      // Conventional: national average estimate by LTV band
+      if (cfg.name === 'Conventional') {
+        if (ltv <= 0.85) return 0.0030; // 0.30%
+        if (ltv <= 0.90) return 0.0045; // 0.45%
+        if (ltv <= 0.95) return 0.0065; // 0.65%
+        return 0.0085;                  // 0.85%
+      }
+
+      return 0;
+    }
+
+    // ==========================================================================
     // CALCULATION FUNCTION: Estimate home price and loan amount
     // ==========================================================================
     // Given a maximum PITI payment, this calculates how much home the user can afford
     // Uses iterative approach because PMI depends on loan amount, which depends on home price
-    function estimateHomeAndLoan({pmiRate, pmiThreshold, requiresPmi}, PITI_max, r_m, tau_m, ins_m, hoa_m, n, downPayment) {
+    function estimateHomeAndLoan(cfg, PITI_max, r_m, tau_m, ins_m, hoa_m, n, downPayment) {
       let HP = 0; // Home Price
       let L = 0;  // Loan amount
       
@@ -377,14 +405,15 @@ document.addEventListener("DOMContentLoaded", () => {
         // Calculate fixed monthly costs (escrows)
         const escrows = tau_m + ins_m + hoa_m;
         
-        // Calculate PMI if required
+        // Calculate PMI if required (using dynamic rate based on current LTV)
         let pmi = 0;
-        if(requiresPmi && HP > 0 && pmiRate > 0){
+        if (cfg.requiresPmi && HP > 0) {
           const curLoan = Math.max(0, HP - downPayment);
-          // PMI required if LTV > (1 - pmiThreshold)
-          // e.g., for conventional: if LTV > 80% (1 - 0.2)
-          if (HP > 0 && curLoan / HP > 1 - pmiThreshold) 
-            pmi = (curLoan * pmiRate) / 12; // Annual PMI rate divided by 12
+          const dynamicPmiRate = getDynamicPmiRate(cfg, HP, curLoan);
+
+          if (HP > 0 && curLoan / HP > 1 - cfg.pmiThreshold) {
+            pmi = (curLoan * dynamicPmiRate) / 12;
+          }
         }
         
         // Calculate available amount for Principal & Interest
@@ -436,17 +465,18 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==========================================================================
     // Escrows = Taxes + Insurance + HOA
     // PMI depends on loan type and LTV ratio
-    function computeEscrowsAndPmi(HP, L, monthlyTax, monthlyInsurance, monthlyHoa, {requiresPmi, pmiThreshold, pmiRate}){
+    function computeEscrowsAndPmi(HP, L, monthlyTax, monthlyInsurance, monthlyHoa, cfg){
       const tax = monthlyTax;
       const insurance = monthlyInsurance;
       const hoa = monthlyHoa;
       
       let pmi = 0;
-      if(requiresPmi && L > 0 && HP > 0 && pmiRate > 0){
-        // Calculate LTV (Loan-to-Value ratio)
-        // If LTV > threshold, PMI is required
-        if (L / HP > 1 - pmiThreshold) 
-          pmi = (L * pmiRate) / 12; // Annual PMI rate / 12 months
+      if (cfg.requiresPmi && HP > 0 && L > 0) {
+        const dynamicPmiRate = getDynamicPmiRate(cfg, HP, L);
+
+        if (L / HP > 1 - cfg.pmiThreshold) {
+          pmi = (L * dynamicPmiRate) / 12;
+        }
       }
       
       return { tax, insurance, hoa, pmi };
@@ -649,15 +679,14 @@ document.addEventListener("DOMContentLoaded", () => {
       };
       
       // STEP 2: Get configuration for selected loan type and set PMI rate
+      // Conventional PMI is now determined dynamically by getDynamicPmiRate() based on LTV
       const cfg = {...loanTypeConfig[V.loanType]}; 
       if (V.loanType === 'fha') {
         cfg.pmiRate = 0.0055; // 0.55% annual MIP for FHA
       } else if (V.loanType === 'usda') {
         cfg.pmiRate = 0.0035; // 0.35% annual guarantee fee for USDA
-      } else if (V.loanType === 'conventional' && cfg.requiresPmi) {
-        cfg.pmiRate = 0.005; // 0.5% annual PMI for conventional (estimated)
       } else {
-        cfg.pmiRate = 0; // No PMI (e.g., VA loans or 20%+ down)
+        cfg.pmiRate = 0; // Conventional uses dynamic rate; VA has no PMI
       }
   
       // STEP 3: Convert inputs to monthly rates
@@ -1051,7 +1080,7 @@ document.addEventListener("DOMContentLoaded", () => {
           results.pmiTooltipContent.textContent = "USDA Guarantee Fee is required for all USDA loans regardless of down payment. It includes an upfront fee (not calculated here) and an annual fee paid monthly. The guarantee fee remains for the life of the loan and cannot be removed.";
         } else { 
           results.pmiLabel.textContent = 'PMI';
-          results.pmiTooltipContent.textContent = "Private Mortgage Insurance (PMI) is usually required for conventional loans if your down payment is less than 20% of the home's price. It protects the lender if you default. PMI can often be requested for removal once your LTV reaches 80%, and automatically terminates around 78% LTV.";
+          results.pmiTooltipContent.textContent = "PMI is estimated using national average rates based on typical borrower profiles. Your actual PMI may vary depending on credit score, loan-to-value ratio, loan type, and lender guidelines.";
         }
         results.pmi.textContent = formatCurrency(R.pmi);
       }
