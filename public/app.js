@@ -1568,7 +1568,7 @@ document.addEventListener("DOMContentLoaded", () => {
         calculatorContainer.classList.add('simple-mode'); // Add CSS class to show/hide elements
         simpleModeBtn.classList.add('active');
         advancedModeBtn.classList.remove('active');
-        setTimeout(() => setSimpleCalcMode(simpleCalcMode), 50);
+        setSimpleCalcMode(simpleCalcMode); // ← direct call, no setTimeout
         
         // Transfer advanced mode values to simple mode inputs
         const currentLoanAmount = +inputs.loanAmountOverrideNumber.value || 0;
@@ -1582,10 +1582,7 @@ document.addEventListener("DOMContentLoaded", () => {
         advancedModeBtn.classList.add('active');
         simpleModeBtn.classList.remove('active');
         
-        // Hide simple-only input fields (but keep the mode selector visible)
-        document.querySelectorAll('.simple-affordability-only, .simple-home-price-only').forEach(el => {
-          el.style.display = 'none';
-        });
+        setSimpleCalcMode(simpleCalcMode);
         
         // Transfer simple mode home price to loan override in advanced mode
         const simpleHomePrice = +inputs.simpleLoanAmountNumber.value;
