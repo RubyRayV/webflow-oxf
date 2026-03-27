@@ -652,20 +652,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const V = {
         loanType: inputs.loanType.value,
         
-        // Use simple mode inputs if in simple affordability mode, otherwise use advanced inputs
-        // annualIncome: calculatorMode === 'simple' && simpleCalcMode === 'affordability' 
-        //   ? +inputs.simpleAnnualIncomeNumber.value 
-        //   : +inputs.annualIncomeNumber.value,
-        // monthlyDebt: calculatorMode === 'simple' && simpleCalcMode === 'affordability'
-        //   ? +inputs.simpleMonthlyDebtNumber.value
-        //   : +inputs.monthlyDebtNumber.value,
           annualIncome: +inputs.simpleAnnualIncomeNumber.value || 0,
           monthlyDebt: +inputs.simpleMonthlyDebtNumber.value || 0,
         
         targetDti: +inputs.targetDTINumber.value, 
         targetPayment: +inputs.targetMonthlyPaymentNumber.value,
         loanAmountOverride: calculatorMode === 'simple' ? 0 : +inputs.loanAmountOverrideNumber.value,
-        simpleHomePrice: calculatorMode === 'simple' && simpleCalcMode === 'home-price' ? +inputs.simpleLoanAmountNumber.value : 0,
+        simpleHomePrice: simpleCalcMode === 'home-price' ? +inputs.simpleLoanAmountNumber.value : 0,
         downPayment: +inputs.downPaymentNumber.value,
         interestRate: +inputs.interestRateNumber.value, 
         sellerCreditsPercent: +inputs.sellerCreditsPercentNumber.value, 
