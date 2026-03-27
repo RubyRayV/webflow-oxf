@@ -754,7 +754,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const basePI = computeBasePI(loanAmount, r_m, V.loanTerm * 12); // Principal & Interest
       const {tax, insurance, hoa, pmi} = computeEscrowsAndPmi(homePrice, loanAmount, V.monthlyPropertyTax, V.monthlyInsurance, V.monthlyHoa, cfg);
       const PITI = basePI + tax + insurance + hoa + pmi; // Total housing payment
-      const displayedPayment = PITI + V.additionalPayment; // Including extra payment
+      const simpleDisplayedPayment = calculatorMode === 'simple' 
+        ? basePI + pmi + V.additionalPayment 
+        : PITI + V.additionalPayment;
+      const displayedPayment = simpleDisplayedPayment;
       
       // Calculate DTI ratios
       const {housingDti, totalDti} = computeDti(PITI, V.monthlyDebt, I_m);
@@ -1025,8 +1028,8 @@ document.addEventListener("DOMContentLoaded", () => {
       
       // Payment breakdown
       results.piSimple.textContent = formatCurrency(R.basePI);
-      results.taxSimple.textContent = formatCurrency(R.tax);
-      results.insuranceSimple.textContent = formatCurrency(R.insurance);
+      results.taxSimple.textContent = 'Not Included';
+      results.insuranceSimple.textContent = 'Not Included';
       
       // PMI/MIP display (hide if zero)
       results.pmiContainerSimple.classList.toggle('hidden', R.pmi <= 0);
