@@ -698,27 +698,27 @@ document.addEventListener("DOMContentLoaded", () => {
       
       // STEP 4: Determine home price and loan amount based on mode
       let homePrice, loanAmount;
-      
-      if (calculatorMode === 'simple' && simpleCalcMode === 'home-price' && V.simpleHomePrice > 0) {
-        // SIMPLE HOME-PRICE MODE: User entered home price directly
+
+      if (simpleCalcMode === 'home-price' && V.simpleHomePrice > 0) {
+        // HOME-PRICE MODE: User entered home price directly (simple or advanced)
         homePrice = V.simpleHomePrice;
         loanAmount = Math.max(0, homePrice - V.downPayment);
-      } 
-      else if (calculatorMode === 'simple' && simpleCalcMode === 'affordability') {
-        // SIMPLE AFFORDABILITY MODE: Calculate max home price based on income
-        const PITI_max = computeMaxPiti(V, I_m, cfg, 'default');
+      }
+      else if (simpleCalcMode === 'affordability') {
+        // INCOME & DEBT MODE: Calculate based on income (simple or advanced)
+        const PITI_max = computeMaxPiti(V, I_m, cfg, calculatorMode === 'advanced' ? currentCalculationMode : 'default');
         const estimation = estimateHomeAndLoan(cfg, PITI_max, r_m, tau_m, ins_m, hoa_m, V.loanTerm*12, V.downPayment);
         homePrice = estimation.homePrice;
         loanAmount = estimation.loanAmount;
-      } 
+      }
       else if (V.loanAmountOverride > 0) {
-        // LOAN OVERRIDE MODE: User manually set the loan amount
+        // OVERRIDE MODE: User manually set the loan amount
         loanAmount = V.loanAmountOverride;
         homePrice = loanAmount + V.downPayment;
-      } 
+      }
       else {
-        // ADVANCED MODE: Calculate based on current calculation mode (default/DTI/payment)
-        const PITI_max = computeMaxPiti(V, I_m, cfg, currentCalculationMode); 
+        // FALLBACK: income-based calculation
+        const PITI_max = computeMaxPiti(V, I_m, cfg, currentCalculationMode);
         const estimation = estimateHomeAndLoan(cfg, PITI_max, r_m, tau_m, ins_m, hoa_m, V.loanTerm*12, V.downPayment);
         homePrice = estimation.homePrice;
         loanAmount = estimation.loanAmount;
