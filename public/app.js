@@ -1028,8 +1028,8 @@ document.addEventListener("DOMContentLoaded", () => {
       
       // Payment breakdown
       results.piSimple.textContent = formatCurrency(R.basePI);
-      results.taxSimple.textContent = 'Not Included';
-      results.insuranceSimple.textContent = 'Not Included';
+      results.taxSimple.textContent = '(Not Included)';
+      results.insuranceSimple.textContent = '(Not Included)';
       
       // PMI/MIP display (hide if zero)
       results.pmiContainerSimple.classList.toggle('hidden', R.pmi <= 0);
