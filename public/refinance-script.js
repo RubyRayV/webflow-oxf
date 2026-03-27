@@ -38,7 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
     
     const results = {
         newPayment: document.getElementById("result-new-payment"),
-        paymentLabel: document.getElementById("payment-label"),
         monthlySavings: document.getElementById("result-monthly-savings"),
         savingsMessageStandard: document.getElementById("savings-message-standard"),
         savingsMessageCashout: document.getElementById("savings-message-cashout"),
@@ -103,11 +102,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const simpleModeBtn = document.getElementById("simple-mode-btn"), advancedModeBtn = document.getElementById("advanced-mode-btn");
     const calculatorContainer = document.querySelector(".calculator-container");
     
-    const loanTypeConfig = {
-        conventional: { name: "Conventional", requiresPmi: true, pmiThreshold: 0.2, pmiRate: 0.0055, description: "Standard mortgage. PMI required if LTV > 80%.", streamlineAvailable: false, cashoutAvailable: true, maxCashoutLTV: 0.80, getPmiTooltip: (ltv) => ltv <= 78 ? `LTV at ${ltv.toFixed(1)}%. PMI terminated.` : ltv <= 80 ? `LTV at ${ltv.toFixed(1)}%. Can request PMI removal.` : `LTV at ${ltv.toFixed(1)}%. PMI required until 78% LTV.` },
-        fha: { name: "FHA", requiresPmi: true, pmiThreshold: 0.0, pmiRate: 0.0055, description: "FHA-insured loan. MIP required for life. Streamline available.", streamlineAvailable: true, cashoutAvailable: true, maxCashoutLTV: 0.80, getPmiTooltip: () => "MIP remains for life of loan." },
-        va: { name: "VA", requiresPmi: false, pmiThreshold: 0, pmiRate: 0, description: "VA loan for veterans. No PMI. Cash-out up to 100% LTV.", streamlineAvailable: true, cashoutAvailable: true, maxCashoutLTV: 1.00, getPmiTooltip: () => "No PMI required for VA loans." },
-        usda: { name: "USDA", requiresPmi: true, pmiThreshold: 0.0, pmiRate: 0.0035, description: "USDA Rural Development loan. No cash-out refinance available.", streamlineAvailable: true, cashoutAvailable: false, maxCashoutLTV: 0, getPmiTooltip: () => "USDA guarantee fee remains for life." }
+   const loanTypeConfig = {
+    conventional: { name: "Conventional", requiresPmi: true, pmiThreshold: 0.2, pmiRate: 0.0055, description: "Standard mortgage. PMI required if LTV > 80%.", streamlineAvailable: false, cashoutAvailable: true, maxCashoutLTV: 0.80, getPmiTooltip: (ltv) => (ltv <= 78 ? `LTV at ${ltv.toFixed(1)}%. PMI terminated.` : ltv <= 80 ? `LTV at ${ltv.toFixed(1)}%. Can request PMI removal.` : `LTV at ${ltv.toFixed(1)}%. PMI required until 78% LTV.`) + ' PMI is estimated using national average rates based on typical borrower profiles. Your actual PMI may vary depending on credit score, loan-to-value ratio, loan type, and lender guidelines.' },
+    fha: { name: "FHA", requiresPmi: true, pmiThreshold: 0.0, pmiRate: 0.0055, description: "FHA-insured loan. MIP required for life. Streamline available.", streamlineAvailable: true, cashoutAvailable: true, maxCashoutLTV: 0.80, getPmiTooltip: () => "MIP remains for life of loan." },
+    va: { name: "VA", requiresPmi: false, pmiThreshold: 0, pmiRate: 0, description: "VA loan for veterans. No PMI. Cash-out up to 100% LTV.", streamlineAvailable: true, cashoutAvailable: true, maxCashoutLTV: 1.00, getPmiTooltip: () => "No PMI required for VA loans." },
+    usda: { name: "USDA", requiresPmi: true, pmiThreshold: 0.0, pmiRate: 0.0035, description: "USDA Rural Development loan. No cash-out refinance available.", streamlineAvailable: true, cashoutAvailable: false, maxCashoutLTV: 0, getPmiTooltip: () => "USDA guarantee fee remains for life." }
     };
     
     const refinanceTypeDescriptions = { 
@@ -548,14 +547,10 @@ document.addEventListener("DOMContentLoaded", () => {
             calculatorContainer.classList.add('simple-mode');
             simpleModeBtn.classList.add('active');
             advancedModeBtn.classList.remove('active');
-            // Update payment label for simple mode (P&I only)
-            if (results.paymentLabel) results.paymentLabel.textContent = 'New Monthly Payment (P&I)';
         } else {
             calculatorContainer.classList.remove('simple-mode');
             simpleModeBtn.classList.remove('active');
             advancedModeBtn.classList.add('active');
-            // Update payment label for advanced mode (full PITI)
-            if (results.paymentLabel) results.paymentLabel.textContent = 'New Monthly Payment (PITI)';
         }
         scheduleFullUpdate();
     }
