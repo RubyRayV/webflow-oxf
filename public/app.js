@@ -372,12 +372,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const ltv = loanAmount / homePrice;
 
-      // No PMI once at or below 80% LTV
-      if (ltv <= 0.80) return 0;
-
-      // Keep FHA and USDA fixed
       if (cfg.name === 'FHA') return 0.0055;
       if (cfg.name === 'USDA') return 0.0035;
+
+      if (ltv <= 0.80) return 0;
 
       // Conventional: national average estimate by LTV band
       if (cfg.name === 'Conventional') {
@@ -715,8 +713,8 @@ document.addEventListener("DOMContentLoaded", () => {
       } 
       else if (V.loanAmountOverride > 0) {
         // LOAN OVERRIDE MODE: User manually set the loan amount
-        homePrice = V.loanAmountOverride;
-        loanAmount = Math.max(0, homePrice - V.downPayment);
+        loanAmount = V.loanAmountOverride;
+        homePrice = loanAmount + V.downPayment;
       } 
       else {
         // ADVANCED MODE: Calculate based on current calculation mode (default/DTI/payment)
@@ -1564,18 +1562,20 @@ document.addEventListener("DOMContentLoaded", () => {
       calculatorMode = mode;
       
       if (mode === 'simple') {
-        // SIMPLE MODE
-        calculatorContainer.classList.add('simple-mode'); // Add CSS class to show/hide elements
+        calculatorContainer.classList.add('simple-mode');
         simpleModeBtn.classList.add('active');
         advancedModeBtn.classList.remove('active');
-        setSimpleCalcMode(simpleCalcMode); // ← direct call, no setTimeout
+        setSimpleCalcMode(simpleCalcMode);
         
-        // Transfer advanced mode values to simple mode inputs
-        const currentLoanAmount = +inputs.loanAmountOverrideNumber.value || 0;
-        const currentDownPayment = +inputs.downPaymentNumber.value || 50000;
-        const currentHomePrice = currentLoanAmount + currentDownPayment;
-        inputs.simpleLoanAmountSlider.value = currentHomePrice;
-        inputs.simpleLoanAmountNumber.value = currentHomePrice;
+        // Only overwrite if simple home price is empty/zero
+        const existingSimplePrice = +inputs.simpleLoanAmountNumber.value;
+        if (existingSimplePrice <= 0) {
+          const currentLoanAmount = +inputs.loanAmountOverrideNumber.value || 0;
+          const currentDownPayment = +inputs.downPaymentNumber.value || 0;
+          const currentHomePrice = (currentLoanAmount + currentDownPayment) || 500000;
+          inputs.simpleLoanAmountSlider.value = currentHomePrice;
+          inputs.simpleLoanAmountNumber.value = currentHomePrice;
+        }
       } else {
         // ADVANCED MODE
         calculatorContainer.classList.remove('simple-mode');
@@ -1837,14 +1837,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 150);
       });
     
-    // ==========================================================================
-    // EVENT DELEGATION: Update slider fill on any range input change
-    // ==========================================================================
-    // Using delegation so it works even for dynamically created sliders
-    document.addEventListener('input', (e) => {
-      if (!e.target.matches('input[type="range"]')) return; // Only handle range inputs
-      updateRangeFill(e.target);
-    });
     
     // ==========================================================================
     // AMORTIZATION TABLE SHOW/HIDE BUTTONS
