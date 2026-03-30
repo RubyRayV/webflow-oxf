@@ -86,10 +86,6 @@ document.addEventListener("DOMContentLoaded", () => {
       targetMonthlyPaymentSlider: document.getElementById("target-monthly-payment-slider"),
       targetMonthlyPaymentNumber: document.getElementById("target-monthly-payment-number"),
       
-      // Loan amount override (manually set loan amount instead of calculating)
-      loanAmountOverrideSlider: document.getElementById("loan-amount-override-slider"),
-      loanAmountOverrideNumber: document.getElementById("loan-amount-override-number"),
-      
       // Down payment input
       downPaymentSlider: document.getElementById("down-payment-slider"),
       downPaymentNumber: document.getElementById("down-payment-number"),
@@ -657,7 +653,6 @@ document.addEventListener("DOMContentLoaded", () => {
         
         targetDti: +inputs.targetDTINumber.value, 
         targetPayment: +inputs.targetMonthlyPaymentNumber.value,
-        loanAmountOverride: calculatorMode === 'simple' ? 0 : +inputs.loanAmountOverrideNumber.value,
         simpleHomePrice: simpleCalcMode === 'home-price' ? +inputs.simpleLoanAmountNumber.value : 0,
         downPayment: +inputs.downPaymentNumber.value,
         interestRate: +inputs.interestRateNumber.value, 
@@ -703,11 +698,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const estimation = estimateHomeAndLoan(cfg, PITI_max, r_m, tau_m, ins_m, hoa_m, V.loanTerm*12, V.downPayment);
         homePrice = estimation.homePrice;
         loanAmount = estimation.loanAmount;
-      }
-      else if (V.loanAmountOverride > 0) {
-        // OVERRIDE MODE: User manually set the loan amount
-        loanAmount = V.loanAmountOverride;
-        homePrice = loanAmount + V.downPayment;
       }
       else {
         // FALLBACK: income-based calculation
@@ -970,8 +960,6 @@ document.addEventListener("DOMContentLoaded", () => {
       inputs.targetDTINumber.value = R.V.targetDti;
       inputs.targetMonthlyPaymentSlider.value = R.V.targetPayment;
       inputs.targetMonthlyPaymentNumber.value = R.V.targetPayment;
-      inputs.loanAmountOverrideSlider.value = R.V.loanAmountOverride;
-      inputs.loanAmountOverrideNumber.value = R.V.loanAmountOverride;
       inputs.downPaymentSlider.value = R.V.downPayment;
       inputs.downPaymentNumber.value = R.V.downPayment;
       inputs.interestRateSlider.value = R.V.interestRate; 
@@ -1422,11 +1410,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const targetPaymentGroupEl = containers.targetMonthlyPaymentInputGroup;
       const targetPaymentSliderEl = inputs.targetMonthlyPaymentSlider;
       const targetPaymentNumberEl = inputs.targetMonthlyPaymentNumber;
-  
-      const loanOverrideGroupEl = document.getElementById('loan-amount-override-group');
-      const loanOverrideSliderEl = inputs.loanAmountOverrideSlider;
-      const loanOverrideNumberEl = inputs.loanAmountOverrideNumber;
-  
+
       // Helper function to enable/disable a group with opacity effect
       const setGroupState = (groupEl, sliderEl, numberEl, enabled) => {
         if (enabled) {
@@ -1440,48 +1424,25 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       };
   
-      // DEFAULT MODE: All three disabled
+      // DEFAULT MODE: DTI and Payment both disabled
       if (mode === 'default') {
         // Reset DTI to loan default
         targetDTISliderEl.value = loanCfg.maxDtiTotalDefault;
         targetDTINumberEl.value = loanCfg.maxDtiTotalDefault;
         setGroupState(targetDtiGroupEl, targetDTISliderEl, targetDTINumberEl, false);
-        
         setGroupState(targetPaymentGroupEl, targetPaymentSliderEl, targetPaymentNumberEl, false);
-        
-        // Clear override value
-        loanOverrideSliderEl.value = 0;
-        loanOverrideNumberEl.value = 0;
-        setGroupState(loanOverrideGroupEl, loanOverrideSliderEl, loanOverrideNumberEl, false);
       }
       
-      // DTI MODE: Enable DTI, disable others
+      // DTI MODE: Enable DTI, disable Payment
       else if (mode === 'dti') {
         setGroupState(targetDtiGroupEl, targetDTISliderEl, targetDTINumberEl, true);
         setGroupState(targetPaymentGroupEl, targetPaymentSliderEl, targetPaymentNumberEl, false);
-        
-        // Clear override value
-        loanOverrideSliderEl.value = 0;
-        loanOverrideNumberEl.value = 0;
-        setGroupState(loanOverrideGroupEl, loanOverrideSliderEl, loanOverrideNumberEl, false);
       }
       
-      // PAYMENT MODE: Enable Payment, disable others
+      // PAYMENT MODE: Enable Payment, disable DTI
       else if (mode === 'payment') {
         setGroupState(targetPaymentGroupEl, targetPaymentSliderEl, targetPaymentNumberEl, true);
         setGroupState(targetDtiGroupEl, targetDTISliderEl, targetDTINumberEl, false);
-        
-        // Clear override value
-        loanOverrideSliderEl.value = 0;
-        loanOverrideNumberEl.value = 0;
-        setGroupState(loanOverrideGroupEl, loanOverrideSliderEl, loanOverrideNumberEl, false);
-      }
-      
-      // OVERRIDE MODE: Enable Override, disable DTI and Payment
-      else if (mode === 'override') {
-        setGroupState(loanOverrideGroupEl, loanOverrideSliderEl, loanOverrideNumberEl, true);
-        setGroupState(targetDtiGroupEl, targetDTISliderEl, targetDTINumberEl, false);
-        setGroupState(targetPaymentGroupEl, targetPaymentSliderEl, targetPaymentNumberEl, false);
       }
       
       scheduleFullUpdate();
@@ -1566,9 +1527,8 @@ document.addEventListener("DOMContentLoaded", () => {
         // Only overwrite if simple home price is empty/zero
         const existingSimplePrice = +inputs.simpleLoanAmountNumber.value;
         if (existingSimplePrice <= 0) {
-          const currentLoanAmount = +inputs.loanAmountOverrideNumber.value || 0;
           const currentDownPayment = +inputs.downPaymentNumber.value || 0;
-          const currentHomePrice = (currentLoanAmount + currentDownPayment) || 500000;
+          const currentHomePrice = currentDownPayment || 500000;
           inputs.simpleLoanAmountSlider.value = currentHomePrice;
           inputs.simpleLoanAmountNumber.value = currentHomePrice;
         }
@@ -1579,13 +1539,6 @@ document.addEventListener("DOMContentLoaded", () => {
         simpleModeBtn.classList.remove('active');
         
         setSimpleCalcMode(simpleCalcMode);
-        
-        // Transfer simple mode home price to loan override in advanced mode
-        const simpleHomePrice = +inputs.simpleLoanAmountNumber.value;
-        const downPayment = +inputs.downPaymentNumber.value;
-        const calculatedLoan = Math.max(0, simpleHomePrice - downPayment);
-        inputs.loanAmountOverrideSlider.value = calculatedLoan;
-        inputs.loanAmountOverrideNumber.value = calculatedLoan;
       }
       
       scheduleFullUpdate();
@@ -1659,7 +1612,6 @@ document.addEventListener("DOMContentLoaded", () => {
       { slider: inputs.simpleMonthlyDebtSlider, number: inputs.simpleMonthlyDebtNumber },
       { slider: inputs.targetDTISlider, number: inputs.targetDTINumber },
       { slider: inputs.targetMonthlyPaymentSlider, number: inputs.targetMonthlyPaymentNumber },
-      { slider: inputs.loanAmountOverrideSlider, number: inputs.loanAmountOverrideNumber },
       { slider: inputs.downPaymentSlider, number: inputs.downPaymentNumber },
       { slider: inputs.interestRateSlider, number: inputs.interestRateNumber },
       { slider: inputs.sellerCreditsPercentSlider, number: inputs.sellerCreditsPercentNumber }, 
