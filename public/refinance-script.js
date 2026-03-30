@@ -102,11 +102,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const simpleModeBtn = document.getElementById("simple-mode-btn"), advancedModeBtn = document.getElementById("advanced-mode-btn");
     const calculatorContainer = document.querySelector(".calculator-container");
     
-   const loanTypeConfig = {
-    conventional: { name: "Conventional", requiresPmi: true, pmiThreshold: 0.2, pmiRate: 0.0055, description: "Standard mortgage. PMI required if LTV > 80%.", streamlineAvailable: false, cashoutAvailable: true, maxCashoutLTV: 0.80, getPmiTooltip: (ltv) => (ltv <= 78 ? `LTV at ${ltv.toFixed(1)}%. PMI terminated.` : ltv <= 80 ? `LTV at ${ltv.toFixed(1)}%. Can request PMI removal.` : `LTV at ${ltv.toFixed(1)}%. PMI required until 78% LTV.`) + ' PMI is estimated using national average rates based on typical borrower profiles. Your actual PMI may vary depending on credit score, loan-to-value ratio, loan type, and lender guidelines.' },
-    fha: { name: "FHA", requiresPmi: true, pmiThreshold: 0.0, pmiRate: 0.0055, description: "FHA-insured loan. MIP required for life. Streamline available.", streamlineAvailable: true, cashoutAvailable: true, maxCashoutLTV: 0.80, getPmiTooltip: () => "MIP remains for life of loan." },
-    va: { name: "VA", requiresPmi: false, pmiThreshold: 0, pmiRate: 0, description: "VA loan for veterans. No PMI. Cash-out up to 100% LTV.", streamlineAvailable: true, cashoutAvailable: true, maxCashoutLTV: 1.00, getPmiTooltip: () => "No PMI required for VA loans." },
-    usda: { name: "USDA", requiresPmi: true, pmiThreshold: 0.0, pmiRate: 0.0035, description: "USDA Rural Development loan. No cash-out refinance available.", streamlineAvailable: true, cashoutAvailable: false, maxCashoutLTV: 0, getPmiTooltip: () => "USDA guarantee fee remains for life." }
+    const loanTypeConfig = {
+        conventional: { name: "Conventional", requiresPmi: true, pmiThreshold: 0.2, pmiRate: 0 /* tiered by LTV via getDynamicPmiRate */, description: "Standard mortgage. PMI required if LTV > 80%.", streamlineAvailable: false, cashoutAvailable: true, maxCashoutLTV: 0.80, getPmiTooltip: (ltv) => ltv <= 78 ? `LTV at ${ltv.toFixed(1)}%. PMI terminated.` : ltv <= 80 ? `LTV at ${ltv.toFixed(1)}%. Can request PMI removal.` : `LTV at ${ltv.toFixed(1)}%. PMI required until 78% LTV.` },
+        fha: { name: "FHA", requiresPmi: true, pmiThreshold: 0.0, pmiRate: 0.0055, description: "FHA-insured loan. MIP required for life. Streamline available.", streamlineAvailable: true, cashoutAvailable: true, maxCashoutLTV: 0.80, getPmiTooltip: () => "MIP remains for life of loan." },
+        va: { name: "VA", requiresPmi: false, pmiThreshold: 0, pmiRate: 0, description: "VA loan for veterans. No PMI. Cash-out up to 100% LTV.", streamlineAvailable: true, cashoutAvailable: true, maxCashoutLTV: 1.00, getPmiTooltip: () => "No PMI required for VA loans." },
+        usda: { name: "USDA", requiresPmi: true, pmiThreshold: 0.0, pmiRate: 0.0035, description: "USDA Rural Development loan. No cash-out refinance available.", streamlineAvailable: true, cashoutAvailable: false, maxCashoutLTV: 0, getPmiTooltip: () => "USDA loans include an annual guarantee fee that is typically paid monthly. This estimate uses a national average annual rate for calculation purposes." }
     };
     
     const refinanceTypeDescriptions = { 
@@ -368,6 +368,23 @@ document.addEventListener("DOMContentLoaded", () => {
         }, DEBOUNCE_DELAY);
     }
     
+    // Dynamic PMI rate by LTV band.
+    // FHA/USDA are identified by pmiThreshold === 0 (always required, no LTV exemption)
+    // and use their fixed cfg.pmiRate. Conventional uses tiered rates by LTV band.
+    function getDynamicPmiRate(cfg, loanAmount, homeValue) {
+        if (!cfg.requiresPmi || loanAmount <= 0 || homeValue <= 0) return 0;
+        // FHA MIP and USDA guarantee fee are required regardless of LTV — check before LTV gate
+        if (cfg.pmiThreshold === 0.0 && cfg.pmiRate > 0) return cfg.pmiRate;
+        const ltv = loanAmount / homeValue;
+        // Conventional: no PMI at or below 80% LTV
+        if (ltv <= 0.80) return 0;
+        // Tiered conventional PMI rates by LTV band
+        if (ltv <= 0.85) return 0.0030;
+        if (ltv <= 0.90) return 0.0045;
+        if (ltv <= 0.95) return 0.0065;
+        return 0.0085;
+    }
+
     function updateUI() {
         const v = getInputValues();
         updateCashoutSliderLimits(v.homeValue, v.currentBalance, v.loanType);
@@ -377,7 +394,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const totalClosingCosts = v.closingCosts;
         const newPI = calculateMortgagePayment(newLoanAmount, v.newRate, v.newTerm);
         let pmi = 0;
-        if (v.cfg.requiresPmi && ltv > (100 - v.cfg.pmiThreshold * 100)) pmi = (newLoanAmount * v.cfg.pmiRate) / 12;
+        if (v.cfg.requiresPmi && newLoanAmount > 0 && v.homeValue > 0) {
+            const dynamicRate = getDynamicPmiRate(v.cfg, newLoanAmount, v.homeValue);
+            if (dynamicRate > 0) pmi = (newLoanAmount * dynamicRate) / 12;
+        }
         const newPITI = newPI + v.propertyTax + v.insurance + v.hoa + pmi;
         const monthlySavings = v.currentPayment - newPITI;
         let breakEvenMonths = monthlySavings > 0 ? Math.ceil(totalClosingCosts / monthlySavings) : 0;
