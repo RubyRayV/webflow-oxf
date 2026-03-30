@@ -1005,6 +1005,8 @@ document.addEventListener("DOMContentLoaded", () => {
       
       // Show down payment as dollar amount and percentage
       const downPaymentPercent = R.homePrice > 0 ? (R.V.downPayment / R.homePrice) * 100 : 0;
+      const dpDisplay = document.getElementById('down-payment-percent-display');
+      if (dpDisplay) dpDisplay.textContent = R.homePrice > 0 ? `(${formatPercent(downPaymentPercent, 1)})` : '';
       results.downPaymentSimple.textContent = `${formatCurrency(R.V.downPayment)} (${formatPercent(downPaymentPercent, 1)})`;
       
       // Payment breakdown
